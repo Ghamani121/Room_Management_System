@@ -16,7 +16,11 @@ app.use(express.json());
 mongoose
 .connect(process.env.DATABASE_URL as string)
 .then(() => {console.log('Connected to MongoDB');})
-.catch((error) => console.error('MongoDB connection error:', error));
+.catch((error) => {
+  console.error('MongoDB connection error:', error.message);
+  process.exit(1);
+});
+
 
 // Routes
 app.get('/', (_req, res) => {
