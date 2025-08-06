@@ -54,12 +54,12 @@ export async function seedData() {
       }
     ]);
 
-    console.log('✅ Seeding completed!');
+    console.log('Populated database with initial data successfully.');
   } catch (error) {
-    console.error('❌ Seeding failed:', error);
+    console.error('Failed to populate data:', error);
   } finally {
     await mongoose.disconnect();
-    console.log('🔌 DB connection closed.');
+    console.log('Db is disconnected.');
   }
 }
 
