@@ -8,7 +8,6 @@ import Booking from '../models/booking';
 export async function seedData() {
   try {
     await connectToDB();
-    console.log('🌱 Seeding started...');
 
     // Clear old data
     await Booking.deleteMany({});
