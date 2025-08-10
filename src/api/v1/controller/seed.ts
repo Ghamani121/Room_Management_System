@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { connectToDB } from '../config/db';
+import { connectToDB } from '../../../config/db';
 
 import Room from '../models/room';
 import User from '../models/user';
