@@ -1,36 +1,39 @@
 import express from 'express';
 import http from 'http';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import compression from 'compression';
-import cors from 'cors';
-import mongoose from 'mongoose';
 import { connectToDB } from '../config/db';
+import userRoutes from './user/v1/user.routing';
 
 const app=express();
 
-app.use(cors({
-    credentials:true,
-}));
+//middleware to parse json
+app.use(express.json());
 
-app.use(compression());
-app.use(cookieParser());
-app.use(bodyParser.json());
-
-
+//routes
 app.get('/api/test',(req,res)=>{
     res.status(200).json({message:'server is up and running'});
 });
 
-const PORT=process.env.PORT || 8080;
+//user routes
+app.use('/api/users',userRoutes);
 
+//starting the server
+const PORT=process.env.PORT || 8080;
 const server = http.createServer(app);
 
-export const startServer = () => {
-    server.listen(PORT,()=>{
-        console.log(`Server is running on http://localhost:${PORT}/`);
+export async function startServer() {
+  try {
+    await connectToDB();
+    server.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}/`);
     });
-};
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
 
-connectToDB();
+
+
+
+
 
