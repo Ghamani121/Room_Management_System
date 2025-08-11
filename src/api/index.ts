@@ -17,11 +17,20 @@ app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+
+app.get('/api/test',(req,res)=>{
+    res.status(200).json({message:'server is up and running'});
+});
+
+const PORT=process.env.PORT || 8080;
+
 const server = http.createServer(app);
 
-server.listen(8080,()=>{
-    console.log("Server is running on http://localhost:8080/");
-})
+export const startServer = () => {
+    server.listen(PORT,()=>{
+        console.log(`Server is running on http://localhost:${PORT}/`);
+    });
+};
 
 connectToDB();
 

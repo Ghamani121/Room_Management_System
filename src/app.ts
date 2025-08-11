@@ -1,8 +1,3 @@
-// import { seedData } from './api/v1/controllers/seed';
+import {startServer} from './api/index'
 
-// async function main() {
-//   await seedData();
-// }
-
-// main();
-
+startServer();
