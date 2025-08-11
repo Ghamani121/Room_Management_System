@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import { connectToDB } from '../../../config/db';
 
-import Room from '../models/room';
-import User from '../models/user';
-import Booking from '../models/booking';
+import Room from '../../../models/room';
+import User from '../../../models/user';
+import Booking from '../../../models/booking';
 
 export async function seedData() {
   try {
