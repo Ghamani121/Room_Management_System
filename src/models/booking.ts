@@ -32,7 +32,7 @@ const bookingSchema = new Schema<BookingDocument>({
     default: 'confirmed'
   },
   attendees: { type: [attendeeSchema], default: [] }
-});
+ }, {timestamps:true});//automatically generates createdAt and UpdatedAt
 
 const Booking = model<BookingDocument>('Booking', bookingSchema);
 

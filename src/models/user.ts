@@ -16,7 +16,7 @@ const userSchema = new Schema<UserDocument>({
     enum: ['admin', 'employee'],
     required: true
   }
-});
+}, {timestamps:true});
 
 const User = model<UserDocument>('User', userSchema);
 

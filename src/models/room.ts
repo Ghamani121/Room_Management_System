@@ -10,7 +10,7 @@ const roomSchema = new Schema<RoomDocument>({
   name: { type: String, required: true },
   capacity: { type: Number, required: true },
   equipment: { type: [String], default: [] }
-});
+}, {timestamps:true});
 
 const Room = model<RoomDocument>('Room', roomSchema);
 
