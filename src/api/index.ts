@@ -8,13 +8,13 @@ const app=express();
 //middleware to parse json
 app.use(express.json());
 
-//routes
-app.get('/api/test',(req,res)=>{
-    res.status(200).json({message:'server is up and running'});
-});
+//test if the server is working
+// app.get('/api/test',(req,res)=>{
+//     res.status(200).json({message:'server is up and running'});
+// });
 
 //user routes
-app.use('/api/v1/users',userRoutes);
+app.use('/api/user/v1',userRoutes);
 
 //starting the server
 const PORT=process.env.PORT || 8080;

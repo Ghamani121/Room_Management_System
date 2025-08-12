@@ -10,14 +10,6 @@ const createUserSchema = Joi.object({
   role: Joi.string().valid('admin', 'employee').required()
 });
 
-// // Schema for updating a user (all fields optional)
-// const updateUserSchema = Joi.object({
-//   name: Joi.string().min(3).max(50),
-//   email: Joi.string().email(),
-//   password: Joi.string().min(6),
-//   role: Joi.string().valid('admin', 'employee')
-// }).min(1); // at least one field required
-
 // Middleware for validation
 export function createUserValidation(req: Request, res: Response, next: NextFunction) {
   const { error } = createUserSchema.validate(req.body);
@@ -27,10 +19,46 @@ export function createUserValidation(req: Request, res: Response, next: NextFunc
   next();
 }
 
-// export function updateUserValidation(req: Request, res: Response, next: NextFunction) {
-//   const { error } = updateUserSchema.validate(req.body);
-//   if (error) {
-//     return res.status(400).json({ message: error.details[0].message });
-//   }
-//   next();
-// }
+
+
+// Schema for updating a user (all fields optional)
+const updateUserSchema = Joi.object({
+  name: Joi.string().min(3).max(50),
+  email: Joi.string().email(),
+  password: Joi.string().min(6),
+  role: Joi.string().valid('admin', 'employee')
+}).min(1); // at least one field required
+
+
+//validation middleware to check 
+export function updateUserValidation(req: Request, res: Response, next: NextFunction) {
+  const { error } = updateUserSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({  message: error?.details?.[0]?.message || 'Invalid request data' });
+  }
+  next();
+}
+
+
+// schema and middleware for checking object id format
+const deleteUserSchema = Joi.object({
+    id: Joi.string()
+        .pattern(/^[0-9a-fA-F]{24}$/)
+        .message('User ID must be a valid 24-character hexadecimal string')
+        .required()
+        .messages({
+            'any.required': 'User ID parameter is required',
+            'string.pattern.base': 'User ID must be a valid 24-character hexadecimal string',
+            'string.empty': 'User ID cannot be empty'
+        })
+});
+
+export function deleteUserValidation(req: Request, res: Response, next: NextFunction) {
+    const { error } = deleteUserSchema.validate(req.params);
+    if (error) {
+        return res.status(400).json({
+            message: error?.details?.[0]?.message || 'Invalid user ID'
+        });
+    }
+    next();
+}
