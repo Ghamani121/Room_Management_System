@@ -21,10 +21,10 @@ export async function createUser(req:Request,res:Response)
 {
     try{
         const{name,email,password,role}=req.body;
-        if(!name || !email || !password || !role)
-            return res.status(400).json({message:'fields are missing'});
-        if(role !=='admin' && role !=='employee')
-            return res.status(400).json({message:'enter correct value for role'});
+        // if(!name || !email || !password || !role)
+        //     return res.status(400).json({message:'fields are missing'});
+        // if(role !=='admin' && role !=='employee')
+        //     return res.status(400).json({message:'enter correct value for role'});
 
         const newUser=await userService.createUser({name,email,password,role});
         res.status(201).json(newUser);
@@ -37,3 +37,4 @@ export async function createUser(req:Request,res:Response)
         res.status(500).json({message:'server error'});
     }
 }
+
