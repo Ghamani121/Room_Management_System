@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
 import *as userService from './user.service';
-
+import { StatusCodes } from 'http-status-codes';
 
 //logic to create user
 export async function createUser(req:Request,res:Response)
@@ -15,7 +15,7 @@ export async function createUser(req:Request,res:Response)
         //     return res.status(400).json({message:'enter correct value for role'});
 
         const newUser=await userService.createUser(req.body);
-        res.status(201).json(newUser);
+        res.status(StatusCodes.CREATED).json(newUser);
     }
     catch(error:any)
     {
@@ -106,7 +106,7 @@ export async function deleteUserById(req:Request, res:Response)
         if(!deletedUser)
             return res.status(404).json({message:'user with given id not found'});
 
-        res.status(204);
+        res.status(204).send();
     }
     catch(error){
         console.error(error);
