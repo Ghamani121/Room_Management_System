@@ -1,13 +1,17 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface RoomDocument extends Document {
-  name: string;
+  name:'Board Room' | 'Conference Room';
   capacity: number;
   equipment: string[];
 }
 
 const roomSchema = new Schema<RoomDocument>({
-  name: { type: String, required: true },
+  name: { 
+    type: String, 
+    enum: ['Board Room', 'Conference Room'],
+    required: true 
+  },
   capacity: { type: Number, required: true },
   equipment: { type: [String], default: [] }
 }, {timestamps:true});
