@@ -2,8 +2,6 @@ import {Request,Response} from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
-// import User from "../../../models/user"
-import { HydratedDocument } from "mongoose";
 import User, { UserDocument } from "../../../models/user";
 
 
@@ -34,7 +32,7 @@ export async function login(req:Request,res:Response) {
             {id,role:user.role},//data inside the token is called payload
             //convert object id to string because jwt cant store object id
             JWT_SECRET,
-            {expiresIn: "10h"}
+            {expiresIn: "30d"}
         );
 
         res.status(StatusCodes.OK).json({message:"Login Successful",token});
