@@ -6,9 +6,6 @@ import { StatusCodes } from 'http-status-codes';
 export async function createUser(req:Request,res:Response)
 {
     try{
-        // const{name,email,password,role}=req.body;
-        //request body is valid as done by the validaton file
-
         // if(!name || !email || !password || !role)
         //     return res.status(400).json({message:'fields are missing'});
         // if(role !=='admin' && role !=='employee')

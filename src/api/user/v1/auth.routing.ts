@@ -5,6 +5,7 @@ import {validateObjectId} from '../../../middlewares/validateobjectid';
 
 const router=Router();
 
-router.post('/',authController.login)
+router.post('/login',authController.login);
+router.post('/logout',authController.logout);
 
 export default router;
