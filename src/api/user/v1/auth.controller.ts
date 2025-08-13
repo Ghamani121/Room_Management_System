@@ -1,9 +1,11 @@
 import {Request,Response} from 'express';
-import *as userService from './user.service';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
-import User from "../../../models/user"
+// import User from "../../../models/user"
+import { HydratedDocument } from "mongoose";
+import User, { UserDocument } from "../../../models/user";
+
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -13,7 +15,7 @@ export async function login(req:Request,res:Response) {
         const{email,password}=req.body;
 
         //find the email in User db
-        const user=await User.findOne({email}).select("+password");//select to include the password while returning, its set to false in db
+        const user = await User.findOne<UserDocument>({ email }).select("+password");//select to include the password while returning, its set to false in db
 
         //if user is empty, then the email does't exist
         if(!user)
@@ -25,21 +27,22 @@ export async function login(req:Request,res:Response) {
         if(!isPasswordValid) 
             return res.status(StatusCodes.UNAUTHORIZED).json({message:"invalid password"});
 
+        const id = user._id.toString();
+
         //generate jwt
         const token=jwt.sign(
-            {id:user._id,role:user.role},
+            {id,role:user.role},//data inside the token is called payload
+            //convert object id to string because jwt cant store object id
             JWT_SECRET,
             {expiresIn: "10h"}
         );
 
-        res.status(StatusCodes.OK).json({message:"Login Successful",
-            token
-        });
+        res.status(StatusCodes.OK).json({message:"Login Successful",token});
+
     }catch(error)
         {
             console.error(error);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"server error"
-            });
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"server error" });
         }
 }
 

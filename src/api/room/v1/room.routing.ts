@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as roomController from './room.controller'
 import * as roomValidation from './room.validation';
-import {validateObjectId} from '../../../middlewares/validateobjectid';
+import {validateObjectId} from '../../../middlewares/middleware.validateobjectid';
 
 const router=Router();
 
