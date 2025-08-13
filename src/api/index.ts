@@ -2,19 +2,20 @@ import express from 'express';
 import http from 'http';
 import { connectToDB } from '../config/db';
 import userRoutes from './user/v1/user.routing';
+import roomRoutes from './room/v1/room.routing';
+import bookingRoutes from './booking/v1/booking.routing';
+import authRoutes from './user/v1/auth.routing';
 
 const app=express();
 
 //middleware to parse json
 app.use(express.json());
 
-//test if the server is working
-// app.get('/api/test',(req,res)=>{
-//     res.status(200).json({message:'server is up and running'});
-// });
-
-//user routes
+//routes
 app.use('/api/user/v1',userRoutes);
+app.use('/api/room/v1',roomRoutes);
+app.use('/api/booking/v1',bookingRoutes);
+app.use('/api/user/auth/v1',authRoutes);
 
 //starting the server
 const PORT=process.env.PORT || 8080;
@@ -31,6 +32,11 @@ export async function startServer() {
     process.exit(1);
   }
 }
+
+// test if the server is working
+app.get('/api/room/v/',(req,res)=>{
+    res.status(200).json({message:'server is up and running'});
+});
 
 
 

@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose'
+import { Schema, model, Document,Types } from 'mongoose'
 //schema: defining structure of documents
 //model: creating models from schemas
 //Document: interface for ts type definition
@@ -7,6 +7,7 @@ import { Schema, model, Document } from 'mongoose'
 //extends mongoose's Document interface and defines document for user
 //declare the properties of the document
 export interface UserDocument extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
