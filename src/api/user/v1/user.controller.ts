@@ -15,7 +15,10 @@ export async function createUser(req:Request,res:Response)
         //     return res.status(400).json({message:'enter correct value for role'});
 
         const newUser=await userService.createUser(req.body);
-        res.status(StatusCodes.CREATED).json(newUser);
+
+        //remove password from the response as well
+        const{password, ...userWithoutPassword}=newUser.toObject();
+        res.status(StatusCodes.CREATED).json(userWithoutPassword);
     }
     catch(error:any)
     {
@@ -51,7 +54,7 @@ export async function getUserById(req:Request,res:Response)
     try{
         //takes the id from the path given and checks if the id exists in the url
         const id=req.params.id;
-        if(!id) return res.status(400).json({messsage:'mising user id parameter in given url'});
+        if(!id) return res.status(400).json({messsage:'missing user id parameter in given url'});
 
         //calls the service layer to fetch users acc to the id extracted
         const user=await userService.getUserById(id);
@@ -80,7 +83,9 @@ export async function updateUserById(req:Request, res:Response)
         //checks if id exists in the db
         if(!updatedUser) return res.status(404).json({message:'user with given id not found'});
 
-        res.status(200).json(updatedUser);
+        //remove password from the response
+        const { password, ...userWithoutPassword } = updatedUser.toObject();
+        res.status(200).json(userWithoutPassword);
     }
     catch(error:any){
         console.error(error);

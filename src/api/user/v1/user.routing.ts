@@ -1,13 +1,21 @@
 import { Router } from "express";
 import * as userController from './user.controller'
 import * as userValidation from './user.validation';
+import {validateObjectId} from '../../../middlewares/validateobjectid';
 
 const router=Router();
 
 router.post('/',  userValidation.createUserValidation  ,userController.createUser);
+
+
 router.get('/',  userController.getUser);
-router.get('/:id',  userController.getUserById);
-router.put('/:id',  userValidation.updateUserValidation,  userController.updateUserById);
-router.delete('/:id',  userValidation.deleteUserValidation,  userController.deleteUserById);
+router.get('/:id', validateObjectId("id"),  userController.getUserById);
+
+//no id in the url sends bad request error
+router.put('/', (req, res) => {res.status(400).json({ message: 'id is required' });});
+router.put('/:id', validateObjectId("id"), userValidation.updateUserValidation,  userController.updateUserById);
+
+router.delete('/', (req, res) => {res.status(400).json({ message: 'id is required' });});
+router.delete('/:id', validateObjectId("id"), userValidation.deleteUserValidation,  userController.deleteUserById);
 
 export default router;

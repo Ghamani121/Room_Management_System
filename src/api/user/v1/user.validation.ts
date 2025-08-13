@@ -20,6 +20,7 @@ export function createUserValidation(req: Request, res: Response, next: NextFunc
 }
 
 
+
 // Schema for updating a user (all fields optional)
 const updateUserSchema = Joi.object({
   name: Joi.string().min(3).max(50),
