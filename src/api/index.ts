@@ -4,6 +4,7 @@ import { connectToDB } from '../config/db';
 import userRoutes from './user/v1/user.routing';
 import roomRoutes from './room/v1/room.routing';
 import bookingRoutes from './booking/v1/booking.routing';
+import authRoutes from './user/v1/auth.routing';
 
 const app=express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/api/user/v1',userRoutes);
 app.use('/api/room/v1',roomRoutes);
 app.use('/api/booking/v1',bookingRoutes);
+app.use('/api/user/auth/v1',authRoutes);
 
 //starting the server
 const PORT=process.env.PORT || 8080;
