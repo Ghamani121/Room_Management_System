@@ -25,12 +25,16 @@ export async function login(req:Request,res:Response) {
         if(!isPasswordValid) 
             return res.status(StatusCodes.UNAUTHORIZED).json({message:"invalid password"});
 
+        //convert object id to string because jwt cant store object id
         const id = user._id.toString();
-
         //generate jwt
-        const token=jwt.sign(
-            {id,role:user.role},//data inside the token is called payload
-            //convert object id to string because jwt cant store object id
+        const token=jwt.sign({
+            //data inside the token is called payload
+            id,
+            name:user.name,
+            role:user.role,
+            email:user.email,
+        },
             JWT_SECRET,
             {expiresIn: "30d"}
         );

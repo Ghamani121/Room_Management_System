@@ -1,9 +1,9 @@
 import { Router } from "express";
 import * as userController from './user.controller'
 import * as userValidation from './user.validation';
-import {validateObjectId} from '../../../middlewares/middleware.validateobjectid';
+import {validateObjectId} from '../../../utils/validateobjectid';
 import { authenticateJWT,authorizeAdmin } from "../../../middlewares/authenticate.middleware";
-import { checkEmployeeAccessMiddleware } from "./helper/employeeAccess";
+import { checkEmployeeAccessMiddleware } from "../../../utils/employeeAccess";
 
 
 const router=Router();

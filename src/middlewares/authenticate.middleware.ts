@@ -4,10 +4,11 @@ import { StatusCodes } from "http-status-codes";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-//describes what the jwt payload will contain
-
+//describes what the jwt payload we receive will look like
 interface JwtPayload {
   id: string;
+  name: string;
+  email: string;
   role: "admin" | "employee";
 }
 
@@ -15,32 +16,37 @@ interface JwtPayload {
 export function authenticateJWT(req: Request, res: Response, next: NextFunction) {
 
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+
+  //check if they have entered the token in the header tab in given format
+  if (!authHeader || !authHeader.toLowerCase().startsWith("bearer ")) 
     return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Authorization header missing or malformed" });
-  }
+
+  //extract the token, everything after the bearer+space
   const token = authHeader.split(" ")[1];
-  if (token == null) return res.sendStatus(401);
-try {
+
+  try {
+        //verify the token using the secret key
         const decoded = jwt.verify(token!, JWT_SECRET) as JwtPayload;
 
-    // Optional: extra runtime check
-    if (!decoded.id || !decoded.role) {
-      throw new Error("Invalid token payload");
+        //store the decoded payload on the request object so we can use it in other routes
+        (req as any).user = decoded;
+
+        next();
+    } 
+    catch (err) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        message: "Invalid or expired token",
+      });
     }
-
-    (req as any).user = decoded; // now TS knows req.user exists
-
-    next();
-  } catch (err) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: "Invalid token",
-    });
-  }
 }
 
 // --------- NEW: Admin Authorization Middleware ----------
 export function authorizeAdmin(req: Request, res: Response, next: NextFunction) {
+
+  //retrieves the payload that was set in authentication function
   const user = (req as any).user as JwtPayload;
+
+  //check if user object exists and that role of user is admin
   if (!user || user.role !== "admin") {
     return res.status(StatusCodes.FORBIDDEN).json({ message: "Admin access only" });
   }
