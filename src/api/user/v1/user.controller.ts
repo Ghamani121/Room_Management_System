@@ -2,6 +2,7 @@ import {Request,Response} from 'express';
 import *as userService from './user.service';
 import { StatusCodes } from 'http-status-codes';
 
+
 //logic to create user
 export async function createUser(req:Request,res:Response)
 {
