@@ -1,21 +1,37 @@
 import {Request,Response} from 'express';
 import *as userService from './user.service';
 import { StatusCodes } from 'http-status-codes';
-
+import { sendWelcomeEmail } from '../../../utils/sendmail';
+import { generateTempPassword } from '../../../utils/password';
 
 //logic to create user
 export async function createUser(req:Request,res:Response)
 {
     try{
-        // if(!name || !email || !password || !role)
-        //     return res.status(400).json({message:'fields are missing'});
-        // if(role !=='admin' && role !=='employee')
-        //     return res.status(400).json({message:'enter correct value for role'});
+        //generate a unique password instead of typing it
+        const tempPassword= generateTempPassword();
 
-        const newUser=await userService.createUser(req.body);
+        //add the new user details from request body and the temp password
+        const newUser = await userService.createUser({
+            ...req.body,
+            password: tempPassword,
+        });
 
         //remove password from the response as well
         const{password, ...userWithoutPassword}=newUser.toObject();
+
+        //send email with thier defualt password
+        try{
+            await sendWelcomeEmail(newUser.email, tempPassword);
+        } 
+        catch (emailError) {
+            console.error("Email sending failed:", emailError);
+
+            return res.status(StatusCodes.CREATED).json({
+                ...userWithoutPassword,
+                warning: "User created, but failed to send welcome email"
+            });
+            }
         res.status(StatusCodes.CREATED).json(userWithoutPassword);
     }
     catch(error:any)
@@ -26,6 +42,7 @@ export async function createUser(req:Request,res:Response)
         res.status(500).json({message:'server error'});
     }
 }
+
 
 //logic to get all users
 export async function getUser(req:Request,res:Response) {
