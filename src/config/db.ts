@@ -12,8 +12,13 @@ export async function connectToDB() {
     console.log('Connected to MongoDB');
 
     //ensure the unique indexes are being created
-    await User.syncIndexes();
-    await Room.syncIndexes();
+    try {
+      await Room.syncIndexes(); 
+      await User.syncIndexes();
+      console.log('Indexes synced');
+    } catch (err) {
+      console.error('Error syncing indexes:', err);
+    }
 
   } catch (error: any) {
     console.error('MongoDB connection error:', error.message);

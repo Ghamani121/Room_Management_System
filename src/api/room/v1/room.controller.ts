@@ -8,13 +8,20 @@ export async function createroom(req:Request,res:Response)
 {
     try{
         //convert room name to lowercase and required case before saving
-        const roomName=req.body.name?.toLowerCase();
-        if(roomName==='board room') req.body.name='Board Room';
-        else req.body.name='Conference Room';
+        const roomName = req.body.name?.toLowerCase().trim();
+        if (roomName === 'board room') {
+            req.body.name = 'Board Room';
+        } else if (roomName === 'conference room') {
+            req.body.name = 'Conference Room';
+        }
+
+        // const existingRoom = await roomService.findRoomByName(req.body.name);
+        // if (existingRoom) {
+        //     return res.status(409).json({message: 'Room name already exists'});
+        // }
 
         //go to roomservice file to create room in db
         const newroom=await roomService.createroom(req.body);
-        console.log("new room");
         //respond with status code and room details
         res.status(201).json(newroom);
     }
