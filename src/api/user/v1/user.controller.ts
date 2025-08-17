@@ -2,7 +2,7 @@ import {Request,Response} from 'express';
 import *as userService from './user.service';
 import { StatusCodes } from 'http-status-codes';
 import { sendWelcomeEmail } from '../../../utils/sendmail';
-import { generateTempPassword } from '../../../utils/password';
+import { generateTempPassword } from '../../../utils/temppassword';
 
 //logic to create user
 export async function createUser(req:Request,res:Response)

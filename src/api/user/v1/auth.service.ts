@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
 import User, { UserDocument } from "../../../models/user";
 import { sendPasswordResetEmail } from '../../../utils/sendmail';
-import { isTempPasswordFormat } from '../../../utils/password';
+import { isTempPasswordFormat } from '../../../utils/temppassword';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -76,36 +76,40 @@ export async function logoutService() {
 
 
 //fucntion to change the password
-
 export async function changePasswordService(
   userId: string,
   email: string,
   oldPassword: string,
   newPassword: string
 ) {
-  // 1. Find user
-  const user = await User.findOne<UserDocument>({ _id: userId, email }).select("+password");
+  try {
+    // 1. Find user
+    const user = await User.findOne<UserDocument>({ _id: userId, email }).select("+password");
 
-  if (!user) {
-    return { status: StatusCodes.BAD_REQUEST, data: { message: "User not found" } };
+    if (!user ) {
+      return { status: StatusCodes.BAD_REQUEST, data: { error: "UserNotFound", message: "User not found in the db" } };
+    }
+
+    // 2. Validate old password
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password!);
+    if (!isPasswordValid) {
+      return { status: StatusCodes.UNAUTHORIZED, data: { error: "InvalidPassword", message: "Invalid old password" } };
+    }
+
+    // 3. Prevent reusing the same password
+    const isSamePassword = await bcrypt.compare(newPassword, user.password!);
+    if (isSamePassword) {
+      return { status: StatusCodes.BAD_REQUEST, data: { error: "PasswordReuse", message: "New password cannot be same as old password" } };
+    }
+
+    // 4. Hash and update password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return { status: StatusCodes.OK, data: { error: null, message: "Password changed successfully" } };
+  } catch (err) {
+    console.error("Change password service error:", err);
+    return { status: StatusCodes.INTERNAL_SERVER_ERROR, data: { error: "ServerError", message: "Internal server error" } };
   }
-
-  // 2. Validate old password
-  const isPasswordValid = await bcrypt.compare(oldPassword, user.password!);
-  if (!isPasswordValid) {
-    return { status: StatusCodes.UNAUTHORIZED, data: { message: "Invalid old password" } };
-  }
-
-  // 3. Prevent reusing the same password
-  const isSamePassword = await bcrypt.compare(newPassword, user.password!);
-  if (isSamePassword) {
-    return { status: StatusCodes.BAD_REQUEST, data: { message: "New password cannot be same as old password" } };
-  }
-
-  // 4. Hash and update password
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-  user.password = hashedPassword;
-  await user.save();
-
-  return { status: StatusCodes.OK, data: { message: "Password changed successfully" } };
-}
+};

@@ -35,7 +35,8 @@ export async function changePassword(req: Request, res: Response) {
     const result = await changePasswordService(userId, email, oldPassword, newPassword);
     return res.status(result.status).json(result.data);
   } catch (error) {
-    console.error("Change password error:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error("Change password controller error:", error);
+    return res.status(500).json({ error: "ServerError", message: "Internal Server Error" });
   }
 }
+
