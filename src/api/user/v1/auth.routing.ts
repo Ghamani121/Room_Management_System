@@ -6,5 +6,6 @@ const router=Router();
 
 router.post('/login',authValidation.validateLogin,authController.login);
 router.post('/logout',authController.logout);
+router.post("/changePassword", authValidation.validateChangePassword,authController.changePassword);
 
 export default router;
