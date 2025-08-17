@@ -9,7 +9,7 @@ export async function createroom(req:Request,res:Response)
     try{
         //convert room name to lowercase and required case before saving
         const roomName=req.body.name?.toLowerCase();
-        if(roomName==='board name') req.body.name='Board Room';
+        if(roomName==='board room') req.body.name='Board Room';
         else req.body.name='Conference Room';
 
         //go to roomservice file to create room in db

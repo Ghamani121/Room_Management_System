@@ -10,7 +10,8 @@ const roomSchema = new Schema<RoomDocument>({
   name: { 
     type: String, 
     enum: ['Board Room', 'Conference Room'],
-    required: true 
+    required: true,
+    unique: true, 
   },
   capacity: { type: Number, required: true },
   equipment: { type: [String], default: [] }
