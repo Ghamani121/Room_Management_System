@@ -122,7 +122,7 @@ export async function deleteroomById(req:Request, res:Response)
         if(!deletedroom)
             return res.status(404).json({message:'room with given id not found'});
 
-        res.status(StatusCodes.CREATED).send();
+        res.status(StatusCodes.NO_CONTENT).send();
     }
     catch(error){
         console.error(error);
