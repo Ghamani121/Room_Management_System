@@ -1,11 +1,13 @@
 import { Router } from "express";
 import * as bookingController from './booking.controller'
 import * as bookingValidation from './booking.validation';
+import { authenticateJWT,authorizeAdmin } from "../../../middlewares/authenticate.middleware";
+import { checkEmployeeAccessMiddleware } from "../../../utils/employeeAccess";
 import {validateObjectId} from '../../../utils/validateobjectid';
 
 const router=Router();
 
-// router.post('/',  bookingValidation.createbookingValidation  ,bookingController.createbooking);
+router.post('/', authenticateJWT, bookingValidation.validateCreateBooking ,bookingController.createbooking);
 
 
 // router.get('/',  bookingController.getbooking);
@@ -20,4 +22,4 @@ const router=Router();
 
 export default router;
 
-//development logic:routes->controller->service->validation
+//development logic:routes->controller->service->validation/
