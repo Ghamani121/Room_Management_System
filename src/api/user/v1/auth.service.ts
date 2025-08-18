@@ -18,8 +18,6 @@ export async function loginService(email: string, password: string) {
     if (!user) {
         return { status: StatusCodes.UNAUTHORIZED, data: { message: "Invalid email" } };
     }
-console.log("Raw password entered:", password);
-console.log("Does it match temp format?", isTempPasswordFormat(password));
 
     //detect if the user is logging in with temp password to force passsword change
     //we haave specific format for default password, so just check user input mataches the foramt to determine if thery are logging in for the first time

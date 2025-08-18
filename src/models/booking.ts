@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-interface Attendee {
+export interface Attendee {
   name: string;
   email: string;
 }
@@ -11,7 +11,7 @@ export interface BookingDocument extends Document {
   title: string;
   startTime: Date;
   endTime: Date;
-  status: 'confirmed' | 'cancelled';
+  status: 'confirmed' | 'cancelled' | 'pending';
   attendees: Attendee[];
 }
 
@@ -28,10 +28,10 @@ const bookingSchema = new Schema<BookingDocument>({
   endTime: { type: Date, required: true },
   status: {
     type: String,
-    enum: ['confirmed', 'cancelled'],
+    enum: ['confirmed', 'cancelled','pending'],
     default: 'confirmed'
   },
-  attendees: { type: [attendeeSchema], default: [] }
+  attendees: { type: [attendeeSchema], default: [],required:true }
  }, {timestamps:true});//automatically generates createdAt and UpdatedAt
 
 const Booking = model<BookingDocument>('Booking', bookingSchema);
