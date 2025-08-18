@@ -67,31 +67,31 @@ export async function createbooking(data:{
 
 
 
-// //get all Rooms in db
-// export async function getroom():Promise<RoomDocument[]> {
-//     return Room.find().exec();
-// }
-
-// //get room from db acc to id
-// export async function getroomById(id:string):Promise<RoomDocument|null> {
-//     return Room.findById(id).exec();
-// }
 
 
-// //update room in db using id
-// export async function updateroomById(
-//     id: string,
-//     data: Partial<{
-//         name:'Board Room' | 'Conference Room';
-//         capacity: number;
-//         equipment: string[];
-//     }>
-// ): Promise<RoomDocument | null> {
-//     return Room.findByIdAndUpdate(id, data, { new: true, runValidators: true }).exec();
-// }
+//buisness logic for updating the booking
+export async function updateBooking(id: string, data: Partial<BookingDocument>): Promise<BookingDocument | null> {
 
-// //deleteroomById
-// export async function deleteroomById(id:string)
-// :Promise<RoomDocument|null>{
-//     return Room.findByIdAndDelete(id).exec();
-// }
+  const existing = await Booking.findById(id);
+  if (!existing) {
+    throw new Error("Booking not found");
+  }
+
+  // Conflict check if startTime & endTime updated
+if (data.startTime || data.endTime) {
+  const newStart = data.startTime || existing.startTime;
+  const newEnd = data.endTime || existing.endTime;
+
+  const conflict = await Booking.findOne({
+    roomId: existing.roomId,
+    status: "confirmed",
+    _id: { $ne: id },
+    startTime: { $lt: newEnd },
+    endTime: { $gt: newStart }
+  });
+
+  if (conflict) throw new Error("Room is booked");
+}
+
+  return Booking.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+}
