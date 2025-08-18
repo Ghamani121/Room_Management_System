@@ -4,6 +4,7 @@ import * as bookingValidation from './booking.validation';
 import { authenticateJWT } from "../../../middlewares/authenticate.middleware";
 import {validateObjectId} from '../../../utils/validateobjectid';
 import {checkBookingUpdatePermission } from "../../../middlewares/bookingPermission";
+import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
 
 const router=Router();
 
@@ -16,7 +17,7 @@ router.post('/', authenticateJWT, bookingValidation.validateCreateBooking ,booki
 router.put('/:id',authenticateJWT, validateObjectId("id"), checkBookingUpdatePermission, bookingValidation.validateUpdateBooking,  bookingController.updatebookingById);
 
 
-// router.delete('/:id', validateObjectId("id"), bookingValidation.deletebookingValidation,  bookingController.deletebookingById);
+router.delete('/:id', authenticateJWT,validateObjectId("id"), checkSelfandAdminAccess("booking"), bookingController.deletebookingById);
 
 export default router;
 

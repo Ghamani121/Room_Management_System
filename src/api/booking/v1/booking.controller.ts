@@ -89,3 +89,30 @@ export async function updatebookingById(req: Request, res: Response) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 }
+
+
+
+//code to delete a booking
+export async function deletebookingById(req:Request, res:Response) 
+{
+    try{
+        const id=req.params.id;
+        console.log("in controller")
+        if(!id) 
+            return res.status(400).json({messsage:'Missing booking ID parameter in given URL'});
+
+        await bookingService.deletebookingById(id);
+
+        res.status(204).send();
+    }
+    catch(error:any){
+        if (error.message === "Booking not found") {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: error.message,
+                message: "Given booking id is not present in the db"
+            });    
+        }
+            
+    res.status(500).json({message:'server error'});
+    }
+}

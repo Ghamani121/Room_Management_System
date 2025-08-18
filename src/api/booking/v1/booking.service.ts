@@ -95,3 +95,16 @@ if (data.startTime || data.endTime) {
 
   return Booking.findByIdAndUpdate(id, data, { new: true, runValidators: true });
 }
+
+
+
+//logic to delete a booking
+export async function deletebookingById(id:string){
+
+    console.log("in sservice yo")
+    const booking = await Booking.findById(id);
+    if (!booking) {
+        throw new Error("Booking not found");
+    }
+    return Booking.findByIdAndDelete(id).exec();
+}

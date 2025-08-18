@@ -3,7 +3,7 @@ import * as userController from './user.controller'
 import * as userValidation from './user.validation';
 import {validateObjectId} from '../../../utils/validateobjectid';
 import { authenticateJWT,authorizeAdmin } from "../../../middlewares/authenticate.middleware";
-import { checkEmployeeAccessMiddleware } from "../../../utils/employeeAccess";
+import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
 
 
 const router=Router();
@@ -14,10 +14,10 @@ router.post('/', authenticateJWT, authorizeAdmin, userValidation.createUserValid
 router.get('/', authenticateJWT, authorizeAdmin, userController.getUser);
 
 
-// router.get('/:id',authenticateJWT, validateObjectId("id"),checkEmployeeAccessMiddleware, userController.getUserById);
-router.get('/:id',authenticateJWT, validateObjectId("id"),checkEmployeeAccessMiddleware(), userController.getUserById);
+// router.get('/:id',authenticateJWT, validateObjectId("id"),checkSelfandAdminAccess, userController.getUserById);
+router.get('/:id',authenticateJWT, validateObjectId("id"),checkSelfandAdminAccess("user"), userController.getUserById);
 
-router.put('/:id',authenticateJWT, validateObjectId("id"),checkEmployeeAccessMiddleware(), userValidation.updateUserValidation,  userController.updateUserById);
+router.put('/:id',authenticateJWT, validateObjectId("id"),checkSelfandAdminAccess("user"), userValidation.updateUserValidation,  userController.updateUserById);
 
 
 router.delete('/:id',authenticateJWT, authorizeAdmin, validateObjectId("id"), userValidation.deleteUserValidation,  userController.deleteUserById);
