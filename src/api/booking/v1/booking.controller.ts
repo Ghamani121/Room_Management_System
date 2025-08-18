@@ -15,7 +15,7 @@ export async function createbooking(req:Request,res:Response)
     catch(error:any)
     {
         if (error.message === "Invalid room id") {
-            // console.log("entered controller")
+            // console.log("entered controller")///
             return res.status(StatusCodes.BAD_REQUEST).json({
                 error: error.message,
                 message: "The provided roomId is not valid"
