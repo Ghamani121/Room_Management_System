@@ -67,6 +67,13 @@ export async function updatebookingById(req: Request, res: Response) {
 
   } catch (error: any) {
 
+    if (error.message === "Missing time field") {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: error.message,
+        message: "Both startTime and endTime must be provided together"
+      });
+    }
+
     if (error.message === "Booking not found") {
       return res.status(StatusCodes.NOT_FOUND).json({
         error: error.message,

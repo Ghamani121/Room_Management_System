@@ -63,50 +63,58 @@ export async function createbooking(data:Partial<BookingDocument>): Promise<Book
 
 //buisness logic for updating the booking
 export async function updateBooking(id: string, data: Partial<BookingDocument>): Promise<BookingDocument | null> {
-
   const existing = await Booking.findById(id);
   if (!existing) {
     throw new Error("Booking not found");
   }
 
-  // Conflict check if startTime & endTime updated
-if (data.startTime || data.endTime) {
-  const newStart = data.startTime || existing.startTime;
-  const newEnd = data.endTime || existing.endTime;
+  // Validate room if being changed
+  if (data.roomId) {
+    if (!isValidObjectId(data.roomId)) throw new Error("Invalid room id");
+    const roomExists = await Room.findById(data.roomId);
+    if (!roomExists) throw new Error("Room not found");
+  }
 
-  const conflict = await Booking.findOne({
-    roomId: existing.roomId,
-    status: "confirmed",
-    _id: { $ne: id },
-    startTime: { $lt: newEnd },
-    endTime: { $gt: newStart }
+  // Handle time updates
+  if (data.startTime || data.endTime) {
+    if (!data.startTime || !data.endTime) {
+      throw new Error("Missing time field");
+    }
+
+    const newStart = data.startTime;
+    const newEnd = data.endTime;
+    const roomId = data.roomId || existing.roomId;
+
+    const conflict = await Booking.findOne({
+      roomId,
+      status: "confirmed",
+      _id: { $ne: id },
+      $or: [
+        { startTime: { $lt: newEnd }, endTime: { $gt: newStart } }
+      ]
+    });
+
+    if (conflict) throw new Error("Room is booked");
+  }
+
+  return Booking.findByIdAndUpdate(id, data, { 
+    new: true, 
+    runValidators: true 
   });
-
-  if (conflict) throw new Error("Room is booked");
 }
-
-  return Booking.findByIdAndUpdate(id, data, { new: true, runValidators: true });
-}
-
 
 
 //logic to delete a booking
-export async function deletebookingById(id:string){
-
-    // console.log("in sservice yo")
-    const booking = await Booking.findById(id);
-    if (!booking) {
-        throw new Error("Booking not found");
-    }
-    return Booking.findByIdAndDelete(id).exec();
+export async function deletebookingById(id: string): Promise<BookingDocument | null> {
+  const deleted = await Booking.findByIdAndDelete(id).exec();
+  if (!deleted) {
+    throw new Error("Booking not found");
+  }
+  return deleted;
 }
 
 
 //logic to fetch all bookings
-export async function getAllBookings() {
-    const bookings = await Booking.find();
-    if (!bookings || bookings.length === 0) {
-        throw new Error("No bookings found");
-    }
-    return bookings;
+export async function getAllBookings(): Promise<BookingDocument[]> {
+  return Booking.find(); // Automatically returns empty array if none found
 }

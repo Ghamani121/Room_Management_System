@@ -33,13 +33,13 @@ export async function checkBookingUpdatePermission(req: Request, res: Response, 
     if (isAdmin && !isOwner) {
       allowedFields = ["status"];
     } else if (isOwner && !isAdmin) {
-      allowedFields = ["title", "attendees", "startTime", "endTime"];
+      allowedFields = ["title", "attendees", "startTime", "endTime","roomId"];
     } else if (isOwner && isAdmin) {
-      allowedFields = ["title", "attendees", "startTime", "endTime", "status"];
+      allowedFields = ["title", "attendees", "startTime", "endTime", "status","roomId"];
     }
 
     // Always forbidden
-    const forbiddenFields = ["roomId", "userId"];
+    const forbiddenFields = ["userId"];
     
     // Collect forbidden fields present in request
     const attemptedForbidden = Object.keys(req.body).filter(
