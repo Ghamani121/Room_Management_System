@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
+import Booking from "../models/booking";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -52,3 +53,4 @@ export function authorizeAdmin(req: Request, res: Response, next: NextFunction) 
   }
   next();
 }
+

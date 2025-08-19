@@ -1,0 +1,254 @@
+[33mcommit 39d180fe397aa970ce59e496a449c38c7e3738ea[m[33m ([m[1;36mHEAD -> [m[1;32mtask9[m[33m, [m[1;31morigin/task9[m[33m)[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 19 10:17:10 2025 +0530
+
+    logic updated
+
+[33mcommit 33711c8f6f8dee650572519b341782f62026a43f[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 19 09:58:15 2025 +0530
+
+    lot of changes  to make in booking api
+
+[33mcommit 38b2da635b4c52e54a5581e914d9d35c6a81567f[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 22:55:46 2025 +0530
+
+    delte is working
+
+[33mcommit 54671389200449fce469b9faea96948b37a0218b[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 19:04:29 2025 +0530
+
+    update booking finally working i wanna die
+
+[33mcommit 20f7c5f52390941669c60d1ba03c326951e1ed1a[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 14:01:04 2025 +0530
+
+    creaete booking api done
+
+[33mcommit efcaf7d2779fc9e480e31599daaaee759bc99fb6[m
+Merge: a77c2d0 cbd18d2
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 00:38:45 2025 +0530
+
+    Merge pull request #6 from Ghamani121/task8
+    
+    have created room api
+    creaeted flow for employee login and change password
+    mail has also been set up
+
+[33mcommit cbd18d2ef04b9141f33522dcff017551d827bd95[m[33m ([m[1;31morigin/task8[m[33m, [m[1;32mtask8[m[33m)[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 00:34:25 2025 +0530
+
+    Update room.ts
+
+[33mcommit 46a5eb0d592070537374925c78ed347a21ecda8b[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 00:28:37 2025 +0530
+
+    Update room.controller.ts
+
+[33mcommit 516398571d4a77af556155ddf351c459b39b73a6[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Mon Aug 18 00:12:07 2025 +0530
+
+    Update room.controller.ts
+
+[33mcommit 36e16f9d8fdb1fbb885c9ecaac85d1e26527a427[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sun Aug 17 23:41:23 2025 +0530
+
+    .
+
+[33mcommit 085bf1de83ea538c5d34ec2e0a83e128be3bc9c7[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sun Aug 17 23:02:58 2025 +0530
+
+    updated an error in room api
+
+[33mcommit 09920d5b8b70756a41360c2205e13ad1ca6a7010[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sun Aug 17 22:48:44 2025 +0530
+
+    task 8 completed
+
+[33mcommit 78a12621de3e74e3ea042013afcf22ac0a063ebd[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sun Aug 17 15:08:54 2025 +0530
+
+    flow for login and update passwrod is done
+
+[33mcommit df6cab841655b82a8580fe36e1750a6d9f3a66ff[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sun Aug 17 00:00:34 2025 +0530
+
+    its generating temp password
+
+[33mcommit a77c2d03d42e2bd7d5ec283100daf340333b880b[m
+Merge: 5e20027 9804a09
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:21:42 2025 +0530
+
+    Merge pull request #5 from Ghamani121/task8
+    
+    Task8
+
+[33mcommit 9804a09f539ba793f154f5277ea0e8a7fb4eda91[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:15:46 2025 +0530
+
+    Update room.ts
+
+[33mcommit e459b47e4d098435a48efbefbf9a0214b2e1608b[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:15:32 2025 +0530
+
+    Update room.ts
+
+[33mcommit a54f0f42fc4fd9384b6a1a554ade07f8f7493b0d[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:15:11 2025 +0530
+
+    Update room.ts
+
+[33mcommit 6bec545959324d3e1749cf25d31c927e02c3e950[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:15:03 2025 +0530
+
+    Update room.ts
+
+[33mcommit 2e55de4eeeccdf30d817f4a449a42a99306023ec[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:14:52 2025 +0530
+
+    Update room.ts
+
+[33mcommit 5ef255b6d771172e8e991903c2bd87efd9e00ca8[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:14:45 2025 +0530
+
+    Update room.ts
+
+[33mcommit 1a02864240194f1fd67bed9c6c1f6cba91d94521[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:14:31 2025 +0530
+
+    Update room.ts
+
+[33mcommit 2bb7ef4f86c276d9b3848f8becd1ad07147b182f[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:14:22 2025 +0530
+
+    Update room.ts
+
+[33mcommit 28267f77eac45c3f7a69593ae77171b24d334f91[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Sat Aug 16 19:14:02 2025 +0530
+
+    created auth for room api
+
+[33mcommit 8547941dbc710850fd3563bfb84792d6351aa8ec[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Thu Aug 14 14:47:47 2025 +0530
+
+    seperated auth file into seperate concerns
+
+[33mcommit 0d82c03e5611426a51155bcec249185a69249cdc[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Thu Aug 14 14:27:58 2025 +0530
+
+    added all user details to jwt
+
+[33mcommit 4881dea7fb33cabafc3e434a6dc362129e2a84dc[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Thu Aug 14 12:37:37 2025 +0530
+
+    Update user.controller.ts
+
+[33mcommit 5e20027fce138ef9cfca77668f3f45dbec66d384[m
+Merge: 78adecd 2a8393a
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Thu Aug 14 01:14:20 2025 +0530
+
+    Merge pull request #2 from Ghamani121/task7
+    
+    Task7
+
+[33mcommit 2a8393af92d5cdfbb265be71a1db384b3aa23740[m[33m ([m[1;31morigin/task7[m[33m, [m[1;32mtask7[m[33m)[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Thu Aug 14 01:12:53 2025 +0530
+
+    full auth is done but applied only to user routes
+
+[33mcommit 2128d740d9ccf4e5e6784bba494b3eae2e3c3094[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Wed Aug 13 15:50:09 2025 +0530
+
+    general auth is working
+
+[33mcommit 3d6dfafdd144713b37b2c018d53e7c49475916f3[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Wed Aug 13 12:54:03 2025 +0530
+
+    logout and login api are working
+
+[33mcommit 97237f21266aa9276278e824301e8e158eea4009[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Wed Aug 13 11:36:41 2025 +0530
+
+    installed jwt and added files for auth
+
+[33mcommit 8d41cd1929022a58d80075b13b1fcd803efd434c[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Wed Aug 13 11:13:12 2025 +0530
+
+    updated it in booking and room routes as well
+
+[33mcommit d5cc96bf380a00f373dc5136b9334a7e43299184[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Wed Aug 13 11:09:56 2025 +0530
+
+    added validation for no id
+
+[33mcommit f296abdde829af5f4c752aaa134f3f3accd9ea32[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 12 23:04:42 2025 +0530
+
+    crud for room collection is done
+
+[33mcommit 2f40095ccb1c21d43526303649d9c15d668eea59[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 12 21:04:35 2025 +0530
+
+    adding room as well
+
+[33mcommit 4d647f7dd49cd1923113233e390fd83fcfd1e23e[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 12 20:24:48 2025 +0530
+
+    Update user.controller.ts
+
+[33mcommit 1ec3d4677842de3af970cc9f8c07a57cb7e2fa50[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 12 20:24:37 2025 +0530
+
+    Update user.controller.ts
+
+[33mcommit 025a7a9bb52ec76ff0b0dcbdd4d7990877744e87[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 12 20:24:27 2025 +0530
+
+    Update user.controller.ts
+
+[33mcommit 1e87da31186acb85d895f4b293fca497b5eed02e[m
+Author: ghamani <138302691+Ghamani121@users.noreply.github.com>
+Date:   Tue Aug 12 20:24:18 2025 +0530
+
+    Update user.controller.ts
+
+[33mcommit 78adecdb824d1bdeb851352ac327788c7fadedc4[m
+Merge: 267641b fe37581
+Au

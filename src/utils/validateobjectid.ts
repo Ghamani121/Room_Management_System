@@ -7,8 +7,6 @@ export function validateObjectId(paramName: string | Types.ObjectId) {
 
     return (req: Request, res: Response, next: NextFunction) => {
 
-        console.log("enterd validation function")
-
         //convert object id to string
         const idToValidate = typeof paramName === 'string' 
             ? req.params[paramName] 

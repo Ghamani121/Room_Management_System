@@ -1,45 +1,21 @@
-import {Request,Response} from 'express';
+import { Request, Response } from 'express';
 import * as bookingService from './booking.service';
 import { StatusCodes } from 'http-status-codes';
 
+// Create booking
+export async function createbooking(req: Request, res: Response) {
+    try {
+        const userId = (req as any).user.id;  
+        const bookingData = { ...req.body, userId };
 
-//logic to create booking
-export async function createbooking(req:Request,res:Response)
-{
-    try{
-        //go to bookingservice file to create booking in db
-        const booking=await bookingService.createbooking(req.body);
-        //respond with status code and booking details
+        const booking = await bookingService.createbooking(bookingData);
         res.status(StatusCodes.CREATED).json(booking);
-    }
-    catch(error:any)
-    {
-        if (error.message === "Invalid room id") {
-            // console.log("entered controller")///
+
+    } catch (error: any) {
+        if (error.message === "Invalid room id" || error.message === "Room not found") {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 error: error.message,
                 message: "The provided roomId is not valid"
-            });
-        }
-
-        if (error.message === "Invalid user id") {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                error: error.message,
-                message: "The provided userId is not valid"
-            });
-        }
-
-        if (error.message === "Room not found") {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                error: error.message,
-                message: "The provided roomId is not valid"
-            });
-        }
-
-        if (error.message === "User not found") {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                error: error.message,
-                message: "The requested user does not exist"
             });
         }
 
@@ -48,104 +24,73 @@ export async function createbooking(req:Request,res:Response)
                 error: error.message,
                 message: "Room already booked for the requested time slot"
             });
-        }     
-           
+        }
+
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }    
-};
+}
 
-// //logic to get all rooms
-// export async function getroom(req:Request,res:Response) {
-//     try{
-//         //first get the info from service layer to what is present in room collection
-//         const room=await roomService.getroom();
+// Update booking
+export async function updatebookingById(req: Request, res: Response) {
+    try {
+        const id = req.params.id;
+        if (!id) return res.status(400).json({ message: 'Missing booking id parameter in URL' });
 
-//         //check if the extracted data has at least one room 
-//         if(!room || room.length==0)
-//             return res.status(200).json({message:'no rooms are found in the database'});
+        const updated = await bookingService.updateBooking(id, req.body);
+        res.status(StatusCodes.OK).json(updated);
 
-//         //now we know room exists, so send the response
-//         res.json(room);
-//     }catch(error)
-//     {
-//         console.error(error);
-//         res.status(500).json({message:'server error'});
-//     }
-// }
+    } catch (error: any) {
+        if (error.message === "Missing time field") {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                error: error.message,
+                message: "Both startTime and endTime must be provided together"
+            });
+        }
 
-// //logic to get room using id
-// export async function getroomById(req:Request,res:Response)
-// {
-//     try{
-//         //takes the id from the path given and checks if the id exists in the url
-//         const id=req.params.id;
-//         if(!id) return res.status(400).json({messsage:'mising room id parameter in given url'});
+        if (error.message === "Booking not found") {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: error.message,
+                message: "Booking not found"
+            });
+        }
 
-//         //calls the service layer to fetch rooms acc to the id extracted
-//         const room=await roomService.getroomById(id);
-//         //checks if id exists in the db
-//         if(!room) return res.status(404).json({message:'room with given id not found'});
-//         res.json(room);
-//     }
-//     catch(error){
-//         console.error(error);
-//         res.status(500).json({message:'server error'});
-//     }
-// }
+        if (error.message === "Room is booked") {
+            return res.status(StatusCodes.CONFLICT).json({
+                error: error.message,
+                message: "Room already booked for the requested time slot"
+            });
+        }
 
-// //logic to update room
-// export async function updateroomById(req:Request, res:Response)
-// {
-//     try{
-//         const id=req.params.id;
-//         //id not given in the url
-//         if(!id) 
-//             return res.status(400).json({messsage:'mising room id parameter in given url'});
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+}
 
-//         //convert room name to lowercase and required case before saving
-//         const roomName=req.body.name?.toLowerCase();
-//         if(roomName==='board room') req.body.name='Board Room';
-//         else req.body.name='Conference Room';
+// Delete booking
+export async function deletebookingById(req: Request, res: Response) {
+    try {
+        const id = req.params.id;
+        if (!id) return res.status(400).json({ message: 'Missing booking ID parameter in URL' });
 
+        await bookingService.deletebookingById(id);
+        res.status(204).send();
 
-//         //calls the service layer to fetch rooms acc to the id extracted
-//         const updatedroom=await roomService.updateroomById(id,req.body);
+    } catch (error: any) {
+        if (error.message === "Booking not found") {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: error.message,
+                message: "Given booking id is not present in the db"
+            });
+        }
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Server error' });
+    }
+}
 
-//         //checks if id exists in the db
-//         if(!updatedroom) return res.status(404).json({message:'room with given id not found'});
-
-//         res.status(200).json(updatedroom);
-//     }
-//     catch(error:any){
-//         console.error(error);
-
-//         if(error.code==11000)
-//             return res.status(409).json({message:'room name already exists'});
-
-//         res.status(500).json({message:'server error'});
-//     }
-// }
-
-
-
-// //logic to delete room by id
-// export async function deleteroomById(req:Request, res:Response) 
-// {
-//     try{
-//         const id=req.params.id;
-//         //id not given in the url
-//         if(!id) 
-//             return res.status(400).json({messsage:'Missing room ID parameter in given URL'});
-
-//         const deletedroom=await roomService.deleteroomById(id);
-
-//         if(!deletedroom)
-//             return res.status(404).json({message:'room with given id not found'});
-
-//         res.status(StatusCodes.NO_CONTENT).send();
-//     }
-//     catch(error){
-//         console.error(error);
-//         res.status(500).json({message:'server error'});
-//     }
-// }
+// Get all bookings
+export async function getAllBookings(req: Request, res: Response) {
+    try {
+        const bookings = await bookingService.getAllBookings();
+        res.status(StatusCodes.OK).json(bookings);
+    } catch (error: any) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error" });
+    }
+}
