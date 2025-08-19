@@ -10,6 +10,7 @@ export async function createbooking(req: Request, res: Response) {
 
         const booking = await bookingService.createbooking(bookingData);
         res.status(StatusCodes.CREATED).json(booking);
+
     } catch (error: any) {
         if (error.message === "Invalid room id" || error.message === "Room not found") {
             return res.status(StatusCodes.BAD_REQUEST).json({
