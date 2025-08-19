@@ -1,37 +1,17 @@
-import {Request,Response} from 'express';
+import { Request, Response } from 'express';
 import * as bookingService from './booking.service';
 import { StatusCodes } from 'http-status-codes';
 
-
-//logic to create booking
-export async function createbooking(req:Request,res:Response)
-{
-    try{
-
-        // take user id from jwt and inject it in the data
+// Create booking
+export async function createbooking(req: Request, res: Response) {
+    try {
         const userId = (req as any).user.id;  
-            const bookingData = {
-                ...req.body,
-                userId,  
-                };
+        const bookingData = { ...req.body, userId };
 
-
-        //go to bookingservice file to create booking in db
-        const booking=await bookingService.createbooking(bookingData);
-        //respond with status code and booking details
+        const booking = await bookingService.createbooking(bookingData);
         res.status(StatusCodes.CREATED).json(booking);
-    }
-    catch(error:any)
-    {
-        if (error.message === "Invalid room id") {
-            // console.log("entered controller")
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                error: error.message,
-                message: "The provided roomId is not valid"
-            });
-        }
-
-        if (error.message === "Room not found") {
+    } catch (error: any) {
+        if (error.message === "Invalid room id" || error.message === "Room not found") {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 error: error.message,
                 message: "The provided roomId is not valid"
@@ -43,95 +23,73 @@ export async function createbooking(req:Request,res:Response)
                 error: error.message,
                 message: "Room already booked for the requested time slot"
             });
-        }     
-           
+        }
+
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }    
-};
-
-
-
-
-
-//res and req for updating booking in the db
-export async function updatebookingById(req: Request, res: Response) {
-  try {
-
-    const id=req.params.id;
-    if(!id)
-        return res.status(400).json({messsage:'mising user id parameter in given url'});
-
-    const updated = await bookingService.updateBooking(id, req.body);
-
-    res.status(StatusCodes.OK).json(updated);
-
-  } catch (error: any) {
-
-    if (error.message === "Missing time field") {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        error: error.message,
-        message: "Both startTime and endTime must be provided together"
-      });
-    }
-
-    if (error.message === "Booking not found") {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        error: error.message,
-        message: "Booking not found"
-      });
-    }
-
-    if (error.message === "Room is booked") {
-      return res.status(StatusCodes.CONFLICT).json({
-        error: error.message,
-        message: "Room already booked for the requested time slot"
-      });
-    }
-
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
-  }
 }
 
+// Update booking
+export async function updatebookingById(req: Request, res: Response) {
+    try {
+        const id = req.params.id;
+        if (!id) return res.status(400).json({ message: 'Missing booking id parameter in URL' });
 
+        const updated = await bookingService.updateBooking(id, req.body);
+        res.status(StatusCodes.OK).json(updated);
 
-//code to delete a booking
-export async function deletebookingById(req:Request, res:Response) 
-{
-    try{
-        const id=req.params.id;
-        // console.log("in controller")
-        if(!id) 
-            return res.status(400).json({messsage:'Missing booking ID parameter in given URL'});
+    } catch (error: any) {
+        if (error.message === "Missing time field") {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                error: error.message,
+                message: "Both startTime and endTime must be provided together"
+            });
+        }
+
+        if (error.message === "Booking not found") {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: error.message,
+                message: "Booking not found"
+            });
+        }
+
+        if (error.message === "Room is booked") {
+            return res.status(StatusCodes.CONFLICT).json({
+                error: error.message,
+                message: "Room already booked for the requested time slot"
+            });
+        }
+
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+}
+
+// Delete booking
+export async function deletebookingById(req: Request, res: Response) {
+    try {
+        const id = req.params.id;
+        if (!id) return res.status(400).json({ message: 'Missing booking ID parameter in URL' });
 
         await bookingService.deletebookingById(id);
-
         res.status(204).send();
-    }
-    catch(error:any){
+
+    } catch (error: any) {
         if (error.message === "Booking not found") {
             return res.status(StatusCodes.NOT_FOUND).json({
                 error: error.message,
                 message: "Given booking id is not present in the db"
-            });    
+            });
         }
-            
-    res.status(500).json({message:'server error'});
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Server error' });
     }
 }
 
-
-//controller to fetch all bookings
+// Get all bookings
 export async function getAllBookings(req: Request, res: Response) {
     try {
         const bookings = await bookingService.getAllBookings();
-        return res.status(StatusCodes.OK).json(bookings);
+        res.status(StatusCodes.OK).json(bookings);
     } catch (error: any) {
-        if (error.message === "No bookings found") {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                error: error.message,
-                message: "There are no bookings available in the database"
-            });
-        }
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error" });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error" });
     }
 }
