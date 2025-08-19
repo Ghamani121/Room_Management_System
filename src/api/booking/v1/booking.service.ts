@@ -7,15 +7,7 @@ import {isValidObjectId} from '../../../utils/validateobjectid';
 
 //create booking in db
 //we are assigning all the parameters recevied to object data having given properties
-export async function createbooking(data:{
-  roomId: Types.ObjectId | string ;
-  userId: Types.ObjectId | string;
-  title: string;
-  startTime: Date;
-  endTime: Date;
-  status: 'confirmed' | 'cancelled' | 'pending';
-  attendees: Attendee[];
-}): Promise<BookingDocument>{
+export async function createbooking(data:Partial<BookingDocument>): Promise<BookingDocument>{
 
 // validate roomId
     if (!data.roomId || !isValidObjectId(data.roomId)) {

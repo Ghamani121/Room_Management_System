@@ -7,8 +7,17 @@ import { StatusCodes } from 'http-status-codes';
 export async function createbooking(req:Request,res:Response)
 {
     try{
+
+        // take user id from jwt and inject it in the data
+        const userId = (req as any).user.id;  
+            const bookingData = {
+                ...req.body,
+                userId,  
+                };
+
+
         //go to bookingservice file to create booking in db
-        const booking=await bookingService.createbooking(req.body);
+        const booking=await bookingService.createbooking(bookingData);
         //respond with status code and booking details
         res.status(StatusCodes.CREATED).json(booking);
     }
@@ -22,24 +31,10 @@ export async function createbooking(req:Request,res:Response)
             });
         }
 
-        if (error.message === "Invalid user id") {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                error: error.message,
-                message: "The provided userId is not valid"
-            });
-        }
-
         if (error.message === "Room not found") {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 error: error.message,
                 message: "The provided roomId is not valid"
-            });
-        }
-
-        if (error.message === "User not found") {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                error: error.message,
-                message: "The requested user does not exist"
             });
         }
 

@@ -11,7 +11,7 @@ export interface BookingDocument extends Document {
   title: string;
   startTime: Date;
   endTime: Date;
-  status: 'confirmed' | 'cancelled' | 'pending';
+  status: 'confirmed' | 'cancelled';
   attendees: Attendee[];
 }
 
@@ -28,7 +28,7 @@ const bookingSchema = new Schema<BookingDocument>({
   endTime: { type: Date, required: true },
   status: {
     type: String,
-    enum: ['confirmed', 'cancelled','pending'],
+    enum: ['confirmed', 'cancelled'],
     default: 'confirmed'
   },
   attendees: { type: [attendeeSchema], default: [],required:true }
