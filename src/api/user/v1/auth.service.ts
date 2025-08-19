@@ -54,7 +54,14 @@ export async function loginService(email: string, password: string) {
         { expiresIn: "30d" }
     );
 
-    return { status: StatusCodes.OK, data: { message: "Login Successful", token } };
+    const user_details={
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+
+    return { status: StatusCodes.OK, data: { message: "Login Successful", token, user: user_details } };
 }
 
 
