@@ -100,7 +100,7 @@ export async function getAllBookings(
   
   const query: any = {};
 
-  // 🔹 Filtering use cases
+  // Filtering use cases
     if (filters.userId) {
         query.userId = new mongoose.Types.ObjectId(filters.userId);
     }
@@ -124,12 +124,13 @@ export async function getAllBookings(
         }
     }
 
-  // 🔹 Pagination setup
+  // Pagination setup
   const page = parseInt(filters.page || "1", 10); // default page = 1
   const limit = parseInt(filters.limit || "10", 10); // default 10 docs per page
-  const skip = (page - 1) * limit;
+  const skip = (page - 1) * limit;//number of records to skiip
+  //eg, if you are on page 3 it will show only 20-30(technically it is skipping the first 20 record acc to page number)
 
-  // 🔹 Sorting setup
+  // Sorting setup
   const sortBy = filters.sortBy || "startTime"; // default sort by booking start time
   const sortOrder = filters.sortOrder === "desc" ? -1 : 1; // default ascending
 
