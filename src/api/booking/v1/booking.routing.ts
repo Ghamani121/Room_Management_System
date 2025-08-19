@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as bookingController from './booking.controller'
 import * as bookingValidation from './booking.validation';
-import { authenticateJWT } from "../../../middlewares/authenticate.middleware";
+import { authenticateJWT, authorizeAdmin } from "../../../middlewares/authenticate.middleware";
 import {validateObjectId} from '../../../utils/validateobjectid';
 import {checkBookingUpdatePermission } from "../../../middlewares/bookingPermission";
 import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
@@ -9,14 +9,8 @@ import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
 const router=Router();
 
 router.post('/', authenticateJWT, bookingValidation.validateCreateBooking ,bookingController.createbooking);
-
-
-// router.get('/',  bookingController.getbooking);
-// router.get('/:id', validateObjectId("id"),  bookingController.getbookingById);
-
+router.get('/', authenticateJWT,authorizeAdmin, bookingController.getAllBookings);
 router.put('/:id',authenticateJWT, validateObjectId("id"), checkBookingUpdatePermission, bookingValidation.validateUpdateBooking,  bookingController.updatebookingById);
-
-
 router.delete('/:id', authenticateJWT,validateObjectId("id"), checkSelfandAdminAccess("booking"), bookingController.deletebookingById);
 
 export default router;

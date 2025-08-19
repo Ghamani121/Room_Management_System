@@ -101,10 +101,20 @@ if (data.startTime || data.endTime) {
 //logic to delete a booking
 export async function deletebookingById(id:string){
 
-    console.log("in sservice yo")
+    // console.log("in sservice yo")
     const booking = await Booking.findById(id);
     if (!booking) {
         throw new Error("Booking not found");
     }
     return Booking.findByIdAndDelete(id).exec();
+}
+
+
+//logic to fetch all bookings
+export async function getAllBookings() {
+    const bookings = await Booking.find();
+    if (!bookings || bookings.length === 0) {
+        throw new Error("No bookings found");
+    }
+    return bookings;
 }

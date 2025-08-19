@@ -85,6 +85,8 @@ const updateBookingSchema = Joi.object({
       return helpers.error("any.invalid", { message: "Start time cannot be in the past" });
     }
 
+    // if(start <endTime)
+
     const hour = start.getHours();
     if (hour < OFFICE_START || hour >= OFFICE_END) {
       return helpers.error("any.invalid", { message: `Start time must be within office hours ${OFFICE_START}:00 - ${OFFICE_END}:00` });

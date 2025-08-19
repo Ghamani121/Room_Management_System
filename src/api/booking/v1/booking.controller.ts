@@ -97,7 +97,7 @@ export async function deletebookingById(req:Request, res:Response)
 {
     try{
         const id=req.params.id;
-        console.log("in controller")
+        // console.log("in controller")
         if(!id) 
             return res.status(400).json({messsage:'Missing booking ID parameter in given URL'});
 
@@ -114,5 +114,22 @@ export async function deletebookingById(req:Request, res:Response)
         }
             
     res.status(500).json({message:'server error'});
+    }
+}
+
+
+//controller to fetch all bookings
+export async function getAllBookings(req: Request, res: Response) {
+    try {
+        const bookings = await bookingService.getAllBookings();
+        return res.status(StatusCodes.OK).json(bookings);
+    } catch (error: any) {
+        if (error.message === "No bookings found") {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                error: error.message,
+                message: "There are no bookings available in the database"
+            });
+        }
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error" });
     }
 }
