@@ -8,10 +8,10 @@ import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
 
 const router=Router();
 
-router.post('/', authenticateJWT, authorizeAdmin, userValidation.createUserValidation  ,userController.createUser);
+router.post('/user', authenticateJWT, authorizeAdmin, userValidation.createUserValidation  ,userController.createUser);
 
 
-router.get('/', authenticateJWT, authorizeAdmin, userController.getUser);
+router.get('/users', authenticateJWT, authorizeAdmin, userController.getUser);
 
 
 // router.get('/:id',authenticateJWT, validateObjectId("id"),checkSelfandAdminAccess, userController.getUserById);

@@ -12,10 +12,10 @@ const app=express();
 app.use(express.json());
 
 //routes
-app.use('/api/user/v1',userRoutes);
-app.use('/api/room/v1',roomRoutes);
-app.use('/api/booking/v1',bookingRoutes);
-app.use('/api/user/auth/v1',authRoutes);
+app.use('/api/users/v1',userRoutes);
+app.use('/api/rooms/v1',roomRoutes);
+app.use('/api/bookings/v1',bookingRoutes);
+app.use('/api/auth/v1',authRoutes);
 
 //starting the server
 const PORT=process.env.PORT || 8080;

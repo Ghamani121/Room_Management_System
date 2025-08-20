@@ -6,8 +6,8 @@ import { authenticateJWT, authorizeAdmin } from "../../../middlewares/authentica
 
 const router=Router();
 
-router.post('/', authenticateJWT, authorizeAdmin, roomValidation.createroomValidation  ,roomController.createroom);
-router.get('/', authenticateJWT, roomController.getroom);
+router.post('/room', authenticateJWT, authorizeAdmin, roomValidation.createroomValidation  ,roomController.createroom);
+router.get('/rooms', authenticateJWT, roomController.getroom);
 router.get('/:id', authenticateJWT, validateObjectId("id"),  roomController.getroomById);
 router.put('/:id', authenticateJWT, authorizeAdmin, validateObjectId("id"), roomValidation.updateroomValidation,  roomController.updateroomById);
 router.delete('/:id', authenticateJWT, authorizeAdmin, validateObjectId("id"), roomValidation.deleteroomValidation,  roomController.deleteroomById);
