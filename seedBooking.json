@@ -1,0 +1,183 @@
+[
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "Team Sync",
+    "startTime": "2025-08-21T10:00:00.000Z",
+    "endTime": "2025-08-21T11:30:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Alice Johnson", "email": "alice.johnson@example.com" },
+      { "name": "Bob Smith", "email": "bob.smith@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Client Meeting",
+    "startTime": "2025-08-22T14:00:00.000Z",
+    "endTime": "2025-08-22T16:00:00.000Z",
+    "status": "cancelled",
+    "attendees": [
+      { "name": "Charlie Brown", "email": "charlie.brown@example.com" },
+      { "name": "Diana Prince", "email": "diana.prince@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Project Review",
+    "startTime": "2025-08-23T09:00:00.000Z",
+    "endTime": "2025-08-23T10:45:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Ethan Miller", "email": "ethan.miller@example.com" },
+      { "name": "Fiona Clark", "email": "fiona.clark@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "Brainstorm Session",
+    "startTime": "2025-08-24T13:00:00.000Z",
+    "endTime": "2025-08-24T15:00:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "George Harris", "email": "george.harris@example.com" },
+      { "name": "Hannah Lee", "email": "hannah.lee@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Weekly Check-in",
+    "startTime": "2025-08-25T15:30:00.000Z",
+    "endTime": "2025-08-25T17:00:00.000Z",
+    "status": "cancelled",
+    "attendees": [
+      { "name": "Irene Adams", "email": "irene.adams@example.com" },
+      { "name": "Jack White", "email": "jack.white@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "Design Discussion",
+    "startTime": "2025-08-26T10:00:00.000Z",
+    "endTime": "2025-08-26T12:30:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Karen Young", "email": "karen.young@example.com" },
+      { "name": "Leo Turner", "email": "leo.turner@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Sprint Planning",
+    "startTime": "2025-08-27T11:00:00.000Z",
+    "endTime": "2025-08-27T12:30:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Mia Lopez", "email": "mia.lopez@example.com" },
+      { "name": "Noah Wilson", "email": "noah.wilson@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "Tech Talk",
+    "startTime": "2025-08-28T09:30:00.000Z",
+    "endTime": "2025-08-28T11:30:00.000Z",
+    "status": "cancelled",
+    "attendees": [
+      { "name": "Olivia King", "email": "olivia.king@example.com" },
+      { "name": "Paul Baker", "email": "paul.baker@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Product Demo",
+    "startTime": "2025-08-29T14:00:00.000Z",
+    "endTime": "2025-08-29T15:45:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Quinn Evans", "email": "quinn.evans@example.com" },
+      { "name": "Rachel Green", "email": "rachel.green@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "One-on-One",
+    "startTime": "2025-08-30T16:00:00.000Z",
+    "endTime": "2025-08-30T17:00:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Steve Rogers", "email": "steve.rogers@example.com" },
+      { "name": "Tony Stark", "email": "tony.stark@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "QA Session",
+    "startTime": "2025-09-01T10:00:00.000Z",
+    "endTime": "2025-09-01T11:30:00.000Z",
+    "status": "cancelled",
+    "attendees": [
+      { "name": "Uma Patel", "email": "uma.patel@example.com" },
+      { "name": "Victor Chen", "email": "victor.chen@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "Retrospective",
+    "startTime": "2025-09-02T13:00:00.000Z",
+    "endTime": "2025-09-02T14:30:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Wendy Morris", "email": "wendy.morris@example.com" },
+      { "name": "Xavier Hall", "email": "xavier.hall@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Training Session",
+    "startTime": "2025-09-03T09:00:00.000Z",
+    "endTime": "2025-09-03T11:00:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Yara Scott", "email": "yara.scott@example.com" },
+      { "name": "Zach Carter", "email": "zach.carter@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a2274961f84d39118f7bb3",
+    "userId": "689c6d51ab99bb02c45ff371",
+    "title": "Daily Standup",
+    "startTime": "2025-09-04T08:30:00.000Z",
+    "endTime": "2025-09-04T09:00:00.000Z",
+    "status": "confirmed",
+    "attendees": [
+      { "name": "Amy Brooks", "email": "amy.brooks@example.com" },
+      { "name": "Brian Fox", "email": "brian.fox@example.com" }
+    ]
+  },
+  {
+    "roomId": "68a226e361f84d39118f7bad",
+    "userId": "689c6e6eab99bb02c45ff373",
+    "title": "Code Review",
+    "startTime": "2025-09-05T15:00:00.000Z",
+    "endTime": "2025-09-05T17:00:00.000Z",
+    "status": "cancelled",
+    "attendees": [
+      { "name": "Clara James", "email": "clara.james@example.com" },
+      { "name": "David Kim", "email": "david.kim@example.com" }
+    ]
+  }
+]
+

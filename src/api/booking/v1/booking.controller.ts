@@ -85,12 +85,33 @@ export async function deletebookingById(req: Request, res: Response) {
     }
 }
 
-// Get all bookings
+// Controller: Fetch all bookings with filters, pagination, sorting
 export async function getAllBookings(req: Request, res: Response) {
-    try {
-        const bookings = await bookingService.getAllBookings();
-        res.status(StatusCodes.OK).json(bookings);
-    } catch (error: any) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server error" });
-    }
+  try {
+    // Pass query params from the request to the service
+    const filters = {
+      userId: req.query.userId as string,
+      roomId: req.query.roomId as string,
+      startTime: req.query.startTime as string,
+      endTime: req.query.endTime as string,
+      page: req.query.page as string,
+      limit: req.query.limit as string,
+      sortBy: req.query.sortBy as string,
+      sortOrder: req.query.sortOrder as string,
+      status: req.query.status as string,
+    };
+
+    const result = await bookingService.getAllBookings(filters);
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Bookings fetched successfully",
+      ...result, // includes data, total, page, limit
+    });
+  } catch (error: any) {
+    console.error("Error fetching bookings:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Server error", error: error.message });
+  }
 }
