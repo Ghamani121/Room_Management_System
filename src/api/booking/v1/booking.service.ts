@@ -96,7 +96,7 @@ export async function getAllBookings(
     status?:string;
     sortOrder?: string;
   }
-): Promise<{ data: BookingDocument[]; total: number; page: number; limit: number }> {
+): Promise<{ data: BookingDocument[] }> {
   
   const query: any = {};
 
@@ -107,9 +107,17 @@ export async function getAllBookings(
     if (filters.roomId) {
         query.roomId = new mongoose.Types.ObjectId(filters.roomId);
     }
-    if (filters.status) {
-        query.status = filters.status;
-    }
+    // const test = await Booking.find({ status: "cancelled" });
+    // console.log(test);
+    // console.log("Filters received:", filters);
+    // console.log("Mongo query:", query);
+
+
+  if (filters.status) {
+      query.status = filters.status;
+  }
+
+
     if (filters.bookingId) {
         query._id = new mongoose.Types.ObjectId(filters.bookingId);
     }
@@ -131,20 +139,22 @@ export async function getAllBookings(
   //eg, if you are on page 3 it will show only 20-30(technically it is skipping the first 20 record acc to page number)
 
   // Sorting setup
-  const sortBy = filters.sortBy || "startTime"; // default sort by booking start time
-  const sortOrder = filters.sortOrder === "desc" ? -1 : 1; // default ascending
+  // const sortBy = filters.sortBy || "startTime"; // default sort by booking start time
+  // const sortOrder = filters.sortOrder === "desc" ? -1 : 1; // default ascending
 
   // 🔹 Get total count (for frontend pagination info)
-  const total = await Booking.countDocuments(query);
+  // const total = await Booking.countDocuments(query);
 
-  // 🔹 Fetch bookings
-  const data = await Booking.find(query)
-    .populate("userId", "name email role") // populate employee basic info
-    .populate("roomId", "name capacity equipment") // populate room details
-    .sort({ [sortBy]: sortOrder })
-    .skip(skip)
-    .limit(limit);
+  // // 🔹 Fetch bookings
+  // const data = await Booking.find(query)
+  //   .populate("userId", "name email role") // populate employee basic info
+  //   .populate("roomId", "name capacity equipment") // populate room details
+  //   .sort({ [sortBy]: sortOrder })
+  //   .skip(skip)
+  //   .limit(limit);
 
-  return { data, total, page, limit };
+  const data=await Booking.find(query);
+
+  return { data};
 }
 

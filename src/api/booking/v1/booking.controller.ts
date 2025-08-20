@@ -98,6 +98,7 @@ export async function getAllBookings(req: Request, res: Response) {
       limit: req.query.limit as string,
       sortBy: req.query.sortBy as string,
       sortOrder: req.query.sortOrder as string,
+      status: req.query.status as string,
     };
 
     const result = await bookingService.getAllBookings(filters);
