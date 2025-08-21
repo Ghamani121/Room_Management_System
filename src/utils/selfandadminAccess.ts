@@ -6,7 +6,7 @@ export function checkSelfandAdminAccess(resourceType: "user" | "booking" = "user
 
   return async (req: Request, res: Response, next: NextFunction) => {
 
-    console.log("in self and admin")
+    // console.log("in self and admin")
     const user = (req as any).user;
     if (!user) {
       return res.status(401).json({ message: "Unauthorized: no user found" });

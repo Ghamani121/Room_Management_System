@@ -88,10 +88,11 @@ export async function changePasswordService(
   newPassword: string
 ) {
   try {
-    // 1. Find user
+    // 1. Find user and make sure userid and email match
     const user = await User.findOne<UserDocument>({ _id: userId, email }).select("+password");
 
     if (!user ) {
+      console.log(user)
       return { status: StatusCodes.BAD_REQUEST, data: { error: "UserNotFound", message: "User not found in the db" } };
     }
 
