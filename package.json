@@ -8,7 +8,10 @@
     "start": "nodemon",
     "dev": "nodemon src/app.ts",
     "test": "jest",
-    "test:coverage": "jest --coverage --collectCoverageFrom=./src/**/*.ts"
+    "test:coverage": "jest --coverage",
+    "test:room": "jest src/api/room/v1/test/ --coverage",
+    "test:watch": "jest --watch",
+    "test:src": "jest src --coverage"
   },
   "repository": {
     "type": "git",

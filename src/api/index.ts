@@ -4,7 +4,7 @@ import { connectToDB } from '../config/db';
 import userRoutes from './user/v1/user.routing';
 import roomRoutes from './room/v1/room.routing';
 import bookingRoutes from './booking/v1/booking.routing';
-import authRoutes from './user/v1/auth.routing';
+import authRoutes from './auth/v1/auth.routing';
 
 const app=express();
 
