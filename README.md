@@ -1,10 +1,10 @@
-# 📅 Room Booking System  
+# Room Booking System  
 
 A comprehensive **meeting room management system** designed for modern office environments. This system streamlines room reservations, eliminates booking conflicts, and provides efficient resource scheduling for organizations.  
 
 ---
 
-## 🌟 Features  
+## Features  
 
 ### Core Functionality  
 - **Room Management**: Create, view, update, and delete meeting rooms with detailed specifications  
@@ -19,7 +19,7 @@ A comprehensive **meeting room management system** designed for modern office en
 
 ---
 
-## 🚀 Getting Started  
+## Getting Started  
 
 ### Prerequisites  
 - **Node.js** (v14 or higher)  
@@ -45,7 +45,7 @@ npm install
 Create a .env file in the root directory with the following variables:
 
 
-```
+```.env
 PORT=5000
 DATABASE_URL=mongodb://localhost:27017/room_management_system
 JWT_SECRET=your-super-secret-jwt-key
@@ -57,5 +57,5 @@ MAIL_PASS=your-app-specific-password
 
 Start the development server:
 
-```
+```bash
 npm start
