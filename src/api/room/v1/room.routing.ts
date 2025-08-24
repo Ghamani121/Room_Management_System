@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as roomController from './room.controller'
 import * as roomValidation from './room.validation';
 import {validateObjectId} from '../../../utils/validateobjectid';
-import { authenticateJWT, authorizeAdmin } from "../../../middlewares/authenticate.middleware";
+import { authenticateJWT, authorizeAdmin } from "../../../middlewares/auth.middleware";
 
 const router=Router();
 

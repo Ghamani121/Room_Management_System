@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as bookingController from './booking.controller'
 import * as bookingValidation from './booking.validation';
-import { authenticateJWT, authorizeAdmin } from "../../../middlewares/authenticate.middleware";
+import { authenticateJWT, authorizeAdmin } from "../../../middlewares/auth.middleware";
 import {validateObjectId} from '../../../utils/validateobjectid';
 import {checkBookingUpdatePermission } from "../../../middlewares/bookingPermission";
 import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";

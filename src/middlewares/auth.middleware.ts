@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
-import Booking from "../models/booking";
-
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 //describes what the jwt payload we receive will look like

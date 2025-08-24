@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as userController from './user.controller'
 import * as userValidation from './user.validation';
 import {validateObjectId} from '../../../utils/validateobjectid';
-import { authenticateJWT,authorizeAdmin } from "../../../middlewares/authenticate.middleware";
+import { authenticateJWT,authorizeAdmin } from "../../../middlewares/auth.middleware";
 import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
 
 
