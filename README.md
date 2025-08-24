@@ -35,14 +35,14 @@ A comprehensive **meeting room management system** designed for modern office en
    git clone <repository-url>
    cd room-booking-system
 
-2. Install dependencies
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
 ### Environment Setup
 
-   Create a .env file in the root directory with the following variables:  
+   **Create a .env file in the root directory with the following variables:**  
    ```.env
    PORT=5000
    DATABASE_URL=mongodb://localhost:27017/room_management_system
@@ -53,6 +53,6 @@ A comprehensive **meeting room management system** designed for modern office en
 
 ### Run the Application
 
-   Start the development server:
+   **Start the development server:**
    ```bash
    npm start
