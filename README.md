@@ -36,26 +36,23 @@ A comprehensive **meeting room management system** designed for modern office en
    cd room-booking-system
 
 2. Install dependencies
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 ### Environment Setup
 
-Create a .env file in the root directory with the following variables:
-
-
-```.env
-PORT=5000
-DATABASE_URL=mongodb://localhost:27017/room_management_system
-JWT_SECRET=your-super-secret-jwt-key
-MAIL_USER=your-email@gmail.com
-MAIL_PASS=your-app-specific-password
-```
+   Create a .env file in the root directory with the following variables:  
+   ```.env
+   PORT=5000
+   DATABASE_URL=mongodb://localhost:27017/room_management_system
+   JWT_SECRET=your-super-secret-jwt-key
+   MAIL_USER=your-email@gmail.com
+   MAIL_PASS=your-app-specific-password
+   ```
 
 ### Run the Application
 
-Start the development server:
-
-```bash
-npm start
+   Start the development server:
+   ```bash
+   npm start
