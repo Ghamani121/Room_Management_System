@@ -1,89 +1,130 @@
 import 'package:flutter/material.dart';
 
-class RegisterRoomScreen extends StatefulWidget{
-  const RegisterRoomScreen({super.key});
+class RegisterRoomPage extends StatelessWidget {
+  const RegisterRoomPage({super.key});
 
   @override
-  State<RegisterRoomScreen> createState()=> _RegisterRoomScreenState();
-}
-
-class _RegisterRoomScreenState extends State<RegisterRoomScreen>
-{
-  final List<String> roomName=['Board Room','Conference Room'];
-  String? selectedRoomName;
-
-  @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Create Room")),
-        body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Room Name"),
-                  const SizedBox(height: 8),
-                  DropdownButtonFormField<String>(
-                      value: selectedRoomName,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          "Register Room",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: const Color(0xFFC60210), // your primary red color
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 15),
+
+              // Room Name Dropdown
+              const Text("Room Name", style: TextStyle(fontSize:18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey[100],
+                ),
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  underline: const SizedBox(),
+                  hint: const Text("Select Room"),
+                  items: const [
+                    DropdownMenuItem(value: "Room A", child: Text("Bhishma")),
+                    DropdownMenuItem(value: "Room B", child: Text("Ajeya")),
+                  ],
+                  onChanged: (value) {},
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Capacity (typeable + up/down)
+              const Text("Capacity", style: TextStyle(fontSize:18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey[100],
+                ),
+                child: Row(
+                  children: [
+                    // Down button
+                    IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () {},
+                    ),
+                    // Editable text field
+                    Expanded(
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "0",
+                        ),
                       ),
-                    items: roomName.map((type)
-                    {
-                      return DropdownMenuItem(
-                      value: type,
-                      child: Text(type),
-                      );
-                    }).toList(),
-                    onChanged: (value)
-                    {
-                      setState(() {
-                        selectedRoomName=value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                    ),
+                    // Up button
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
 
-                  //capacity
-                  const Text("capacity"),
-                  const SizedBox(height: 8),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText:"Enter capacity",
+              // Equipment
+              const Text("Equipment", style: TextStyle(fontSize:18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey[100],
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.add_circle_outline),
+                    SizedBox(width: 8),
+                    Text("Add item"),
+                  ],
+                ),
+              ),
+              const Spacer(),
+
+              // Create Room Button
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFC60210), // primary red
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  const SizedBox(height: 16),
-
-                  //equipment
-                  const Text("equipment"),
-                  const SizedBox(height: 8),
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Enter equipment",
-                    ),
+                  onPressed: () {},
+                  child: const Text(
+                    "Create Room",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
                   ),
-
-                  const SizedBox(height: 24),
-
-                  //submit button
-                  Center(
-                    child: ElevatedButton(
-                        onPressed: (){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Static room has been created :)")),
-                          );
-                        },
-                        child: const Text("Create a room")),
-                  )
-                ],
+                ),
               )
-            )
-        )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
