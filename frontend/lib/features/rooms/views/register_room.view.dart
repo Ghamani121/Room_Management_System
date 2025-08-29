@@ -124,66 +124,80 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
     );
   }
 
-  /// --- Equipment Section ---
   Widget _buildEquipmentSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("Equipment",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text("Equipment", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      const SizedBox(height: 8),
 
-        // List of added equipment
-        if (vm.equipment.isNotEmpty) ...[
-          Column(
-            children: vm.equipment
-                .map((item) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: TextFormField(
-                        readOnly: true,
-                        initialValue: item,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.grey[50],
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.close,
-                                size: 20, color: Colors.grey),
-                            onPressed: () {
-                              setState(() {
-                                vm.removeEquipment(item);
-                              });
-                            },
-                          ),
-                        ),
+      // List of added equipment
+      if (vm.equipment.isNotEmpty)
+        Column(
+          children: List.generate(vm.equipment.length, (index) {
+            final item = vm.equipment[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      readOnly: true,
+                      initialValue: item,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.grey[50],
                       ),
-                    ))
-                .toList(),
-          ),
-          const SizedBox(height: 10),
-        ],
-
-        // Add item field
-        TextFormField(
-          controller: _equipmentController,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText: "Add item",
-            prefixIcon: const Icon(Icons.add_circle_outline),
-          ),
-          onFieldSubmitted: (value) {
-            final text = value.trim();
-            if (text.isNotEmpty) {
-              setState(() {
-                vm.addEquipment(text);
-                _equipmentController.clear();
-              });
-            }
-          },
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.grey),
+                    onPressed: () {
+                      setState(() {
+                        vm.removeEquipment(item);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
-      ],
-    );
-  }
+
+      const SizedBox(height: 10),
+
+      // Inline add equipment
+      Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              controller: _equipmentController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Add equipment",
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            icon: const Icon(Icons.add_circle_outline, color: Colors.green),
+            onPressed: () {
+              final text = _equipmentController.text.trim();
+              if (text.isNotEmpty) {
+                setState(() {
+                  vm.addEquipment(text);
+                  _equipmentController.clear();
+                });
+              }
+            },
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 
   /// --- Create Room Button ---
   Widget _buildCreateRoomButton() {

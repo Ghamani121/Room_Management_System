@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      // home: const RegisterRoomView(),
-      home:const BookRoomView(),
+      home: const RegisterRoomView(),
+      // home:const BookRoomView(),
     );
   }
 }
