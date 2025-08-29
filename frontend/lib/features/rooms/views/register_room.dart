@@ -43,6 +43,7 @@ class RegisterRoomPage extends StatelessWidget {
                     DropdownMenuItem(value: "Room A", child: Text("Bhishma")),
                     DropdownMenuItem(value: "Room B", child: Text("Ajeya")),
                   ],
+
                   onChanged: (value) {},
                 ),
               ),
