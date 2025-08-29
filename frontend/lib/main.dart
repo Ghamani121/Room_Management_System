@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'features/rooms/screens/register_room.dart';
+import 'features/rooms/views/register_room.dart';
 
+// entry point of flutter application
+//every flutter app starts from main funciton
+//runApp loads the root widget which is MyApp onto the widget tree
 void main() {
   runApp(const MyApp());
 }
 
+//root of the widget tree
+//stateless-app itself doesn't need to store/change the internal state
+//stateless just builds the ui and delegates funtionality to its children
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

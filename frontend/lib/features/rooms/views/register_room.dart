@@ -16,7 +16,7 @@ class RegisterRoomPage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFFC60210), // your primary red color
+        backgroundColor: const Color(0xFFC60210), // your primary red colorf
       ),
       body: SafeArea(
         child: Padding(
