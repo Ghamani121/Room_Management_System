@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'features/rooms/views/register_room_view.dart';
+import 'features/rooms/views/register_room.view.dart';
+import 'features/bookings/views/book_room.view.dart';
 
 // entry point of flutter application
 //every flutter app starts from main funciton
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const RegisterRoomView(),
+      // home: const RegisterRoomView(),
+      home:const BookRoomView(),
     );
   }
 }

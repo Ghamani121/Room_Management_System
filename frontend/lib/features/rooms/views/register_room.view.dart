@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../rooms.model.dart';
-import '../viewmodels/register_room_viewmodel.dart';
+import '../viewmodels/register_room.viewmodel.dart';
 
 class RegisterRoomView extends StatefulWidget {
   const RegisterRoomView({super.key});
@@ -38,22 +38,27 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
         backgroundColor: const Color(0xFFC60210),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: vm.formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 15),
-                _buildRoomDropdown(),
-                const SizedBox(height: 20),
-                _buildCapacityField(),
-                const SizedBox(height: 20),
-                _buildEquipmentSection(),
-                const SizedBox(height: 35),
-                _buildCreateRoomButton(),
-              ],
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Form(
+                key: vm.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    _buildRoomDropdown(),
+                    const SizedBox(height: 20),
+                    _buildCapacityField(),
+                    const SizedBox(height: 20),
+                    _buildEquipmentSection(),
+                    const SizedBox(height: 35),
+                    _buildCreateRoomButton(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
