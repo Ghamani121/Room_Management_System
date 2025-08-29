@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 const createroomSchema=Joi.object({
     name: Joi.string().lowercase().valid('board room','conference room').required(),
     capacity: Joi.number().integer().min(1).max(20).required(),
-    equipment: Joi.array().items(Joi.string()).required()
+    equipment: Joi.array().items(Joi.string())
 });
 
 //req and res are express objects
