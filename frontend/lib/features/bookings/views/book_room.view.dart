@@ -130,6 +130,7 @@ class _BookRoomViewState extends State<BookRoomView> {
             errorText: viewModel.roomError, // <-- show error
           ),
           hint: const Text("Select Room"),
+          dropdownColor: Colors.white,
           items: const [
             DropdownMenuItem(value: "room1_id", child: Text("Bhishma")),
             DropdownMenuItem(value: "room2_id", child: Text("Ajeya")),
