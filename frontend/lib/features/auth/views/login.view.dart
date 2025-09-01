@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/auth/viewmodels/login.viewmodel.dart';
+import 'package:rms/features/bookings/views/dashboard.view.dart';
 
 //we are creating a custom widget for login ui which extends stateful widget
 //we can use mehtods from parent widget, we can ensure the given method exists usng overrride
@@ -117,7 +118,12 @@ Widget _buildLoginButton() {
           ),
         ),
         onPressed: () {
-           viewModel.login();
+            if (viewModel.login()) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const DashboardView()),
+              );
+            }
         },
         child: const Text(
           "Login",

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 //provides notifications for the widget when state changes
 class LoginViewModel extends ChangeNotifier {
   //texteditingcontroller: get text,clear text, display defalt text
@@ -49,12 +50,12 @@ class LoginViewModel extends ChangeNotifier {
     return null;
   }
 
-  void login() {
-    print("hello");
+  bool login() {
     if (formKey.currentState!.validate()) {
-      debugPrint(
-        "Login with: ${emailController.text}, ${passwordController.text}",
-      );
+      debugPrint("Login with: ${emailController.text}, ${passwordController.text}");
+      return true; // success
     }
+    return false;
   }
+
 }

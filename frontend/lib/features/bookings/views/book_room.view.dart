@@ -87,6 +87,7 @@ class _BookRoomViewState extends State<BookRoomView> {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: const Color(0xFFC60210),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
