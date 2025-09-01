@@ -87,6 +87,7 @@ class _BookRoomViewState extends State<BookRoomView> {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: const Color(0xFFC60210),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -97,7 +98,7 @@ class _BookRoomViewState extends State<BookRoomView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20),
                   _buildRoomDropdown(),
                   const SizedBox(height: 20),
                   _buildTitleField(),
