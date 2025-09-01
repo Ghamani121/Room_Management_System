@@ -97,7 +97,7 @@ class _BookRoomViewState extends State<BookRoomView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20),
                   _buildRoomDropdown(),
                   const SizedBox(height: 20),
                   _buildTitleField(),
