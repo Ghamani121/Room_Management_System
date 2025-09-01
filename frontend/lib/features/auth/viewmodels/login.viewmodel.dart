@@ -49,11 +49,12 @@ class LoginViewModel extends ChangeNotifier {
     return null;
   }
 
-  void login()
-  {
-    if(formKey.currentState!.validate())
-    {
-      debugPrint("Login with: ${emailController.text}, ${passwordController.text}");
+  void login() {
+    print("hello");
+    if (formKey.currentState!.validate()) {
+      debugPrint(
+        "Login with: ${emailController.text}, ${passwordController.text}",
+      );
     }
   }
 }

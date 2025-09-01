@@ -44,14 +44,19 @@ class _LoginViewState extends State<LoginView> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
-          child: Center(
+          child: Form(
+            key: viewModel.formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start, //align to the left
               children: [
                 const SizedBox(height: 20),
                 _buildEmailSection(),
                 const SizedBox(height: 20),
-                _buildPasswordSection()],
+                _buildPasswordSection(),
+                const SizedBox(height: 35),
+                _buildLoginButton(),
+                ],
+                
             ),
           ),
         ),
@@ -112,7 +117,7 @@ Widget _buildLoginButton() {
           ),
         ),
         onPressed: () {
-          setState(() => viewModel.login());
+           viewModel.login();
         },
         child: const Text(
           "Login",
@@ -121,6 +126,4 @@ Widget _buildLoginButton() {
       ),
     );
   }
-
-
 }
