@@ -72,10 +72,9 @@ class _LoginViewState extends State<LoginView> {
           controller: viewModel.emailController,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
-            hintText: "Enter email",
-            errorText:viewModel.emailError,
+            hintText: "Enter email"),
+          validator:viewModel.validateEmail
           ),
-        )
       ],
     );
   }
@@ -95,9 +94,9 @@ class _LoginViewState extends State<LoginView> {
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: "Enter temporary password",
-            errorText:viewModel.passwordError,
           ),
-        )
+          obscureText: true,
+          validator: viewModel.validatePassword),
       ],
     );
   }
@@ -113,7 +112,7 @@ Widget _buildLoginButton() {
           ),
         ),
         onPressed: () {
-          setState(() => viewModel.Login());
+          setState(() => viewModel.login());
         },
         child: const Text(
           "Login",
