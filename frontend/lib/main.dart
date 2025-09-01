@@ -10,6 +10,7 @@ void main() {
 }
 
 //root of the widget tree
+
 //stateless-app itself doesn't need to store/change the internal state
 //stateless just builds the ui and delegates funtionality to its children
 class MyApp extends StatelessWidget {
