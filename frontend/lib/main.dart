@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rms/features/bookings/views/display_bookings.view.dart';
 import 'features/rooms/views/register_room.view.dart';
 import 'features/bookings/views/book_room.view.dart';
 import 'features/auth/views/login.view.dart';
+import 'package:rms/features/rooms/views/display_rooms.view.dart';
 
 // entry point of flutter application
 //every flutter app starts from main funciton
@@ -27,8 +29,9 @@ class MyApp extends StatelessWidget {
       ),
       // home: const RegisterRoomView(),
       // home:const BookRoomView(),
-      home: const LoginView(),
+      // home: const LoginView(),
       // home:const BookRoomView(),
+      home: const DisplayBookingsView(),
     );
   }
 }

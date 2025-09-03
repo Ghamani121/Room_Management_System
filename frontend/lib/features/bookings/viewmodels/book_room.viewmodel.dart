@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/bookings/bookings.model.dart';
+import 'package:rms/features/bookings/services/book_room.service.dart';
+
 
 class BookRoomViewModel extends ChangeNotifier {
   /// Form state
   String? selectedRoom;
   DateTime? startTime;
   DateTime? endTime;
-  final List<Attendee> attendees = [];
-
+  final List<Map<String, String>> attendees = [];
+  
+  
   final TextEditingController titleController = TextEditingController();
   final TextEditingController attendeeNameController = TextEditingController();
   final TextEditingController attendeeEmailController = TextEditingController();
@@ -25,6 +28,44 @@ class BookRoomViewModel extends ChangeNotifier {
     attendeeEmailController.dispose();
   }
 
+  final BookingService _service = BookingService();
+
+  Future<void> createBooking(BuildContext context) async {
+      if (!validateForm()) return;
+
+      final Map<String, String> roomMap = {
+      "Board Room": "68b81053797fd4e4212cc822",        // put actual MongoDB ID here
+      "Conference Room": "68b81073797fd4e4212cc824",  // put actual MongoDB ID here
+    };
+
+      final booking = Booking(
+        roomId: roomMap[selectedRoom]!,
+        title: titleController.text.trim(),
+        startTime: startTime!,
+        endTime: endTime!,
+        attendees: attendees
+            .map((a) => Attendee(name: a['name']!, email: a['email']!))
+            .toList(),
+      );
+    debugPrint("\n\n\nCreated booking: ${booking.roomId},${booking.title},${booking.startTime},${booking.endTime},${booking.attendees},");
+      try {
+        final createdBooking = await _service.createBooking(booking);
+
+        // ✅ show success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Booking created successfully")),
+        );
+
+        debugPrint("Created booking: ${createdBooking.id}");
+
+        Navigator.pop(context, createdBooking); // return to list page
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: $e")),
+        );
+      }
+    }
+  
   /// Reset form state
   // void resetForm() {
   //   selectedRoom = null;
@@ -74,13 +115,16 @@ class BookRoomViewModel extends ChangeNotifier {
   }
 
   /// --- VALIDATION ---
-  String? validateRoom() {
-    if (selectedRoom == null) return "Room is required";
-    if (!(["room1_id", "room2_id"].contains(selectedRoom))) {
-      return "Invalid room selected";
-    }
-    return null;
+String? validateRoom() {
+  if (selectedRoom == null) return "Room is required";
+
+  final validRooms = ["Board Room", "Conference Room"]; // keys of your map
+  if (!validRooms.contains(selectedRoom)) {
+    return "Invalid room selected";
   }
+  return null;
+}
+
 
   String? validateTitle() {
     final title = titleController.text.trim();
@@ -180,27 +224,22 @@ class BookRoomViewModel extends ChangeNotifier {
   }
 
   /// On submit
-  Booking? createBooking() {
-    if (!validateForm()) return null;
+  // void createBooking() {
+  //   if (!validateForm()) return;
 
-    final booking = Booking(
-      roomId: selectedRoom!,
-      title:
-          titleController.text.trim().isNotEmpty
-              ? titleController.text.trim()
-              : null,
-      startTime: startTime!,
-      endTime: endTime!,
-      attendees: attendees,
-    );
+  //   final bookingData = {
+  //     'roomId': selectedRoom,
+  //     'title': titleController.text.trim(),
+  //     'startTime': startTime!.toIso8601String(),
+  //     'endTime': endTime!.toIso8601String(),
+  //     'attendees': attendees,
+  //   };
 
-    debugPrint("Booking Created:");
-    debugPrint(booking.toString());
+  //   debugPrint("Booking Created:");
+  //   debugPrint(bookingData.toString());
 
-    return booking;
-
-    // resetForm();
-  }
+  //   // resetForm();
+  // }
 
   /// --- Helpers ---
   bool _isValidEmail(String email) {
