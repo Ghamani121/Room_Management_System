@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
+
 class BookRoomViewModel extends ChangeNotifier {
   /// Form state
   String? selectedRoom;
   DateTime? startTime;
   DateTime? endTime;
+  final List<Map<String, String>> attendees = [];
   
   
   final TextEditingController titleController = TextEditingController();
-  final List<Map<String, String>> attendees = [];
   final TextEditingController attendeeNameController = TextEditingController();
   final TextEditingController attendeeEmailController = TextEditingController();
 
