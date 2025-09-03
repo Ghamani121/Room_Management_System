@@ -77,18 +77,24 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
     );
   }
 
-  Widget _buildAddBooking() {
-    return FloatingActionButton(
-      backgroundColor: const Color(0xFFC60210),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const BookRoomView()),
-        );
-      },
-      child: const Icon(Icons.add, color: Colors.white),
-    );
-  }
+Widget _buildAddBooking() {
+  return FloatingActionButton(
+    backgroundColor: const Color(0xFFC60210),
+    onPressed: () async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const BookRoomView()),
+      );
+
+      if (result != null) {
+        // ✅ Fetch updated list from backend
+        _loadBookings();
+      }
+    },
+    child: const Icon(Icons.add, color: Colors.white),
+  );
+}
+
 }
 
 class BookingCard extends StatelessWidget {

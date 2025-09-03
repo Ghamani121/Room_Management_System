@@ -133,8 +133,8 @@ class _BookRoomViewState extends State<BookRoomView> {
           hint: const Text("Select Room"),
           dropdownColor: Colors.white,
           items: const [
-            DropdownMenuItem(value: "room1_id", child: Text("Bhishma")),
-            DropdownMenuItem(value: "room2_id", child: Text("Ajeya")),
+            DropdownMenuItem(value: "Board Room", child: Text("Bhishma")),
+            DropdownMenuItem(value: "Conference Room", child: Text("Ajeya")),
           ],
           onChanged: (value) => setState(() => viewModel.selectedRoom = value),
         ),
@@ -146,7 +146,7 @@ class _BookRoomViewState extends State<BookRoomView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Title (Optional)", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const Text("Title", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextFormField(
           controller: viewModel.titleController,
@@ -311,9 +311,11 @@ class _BookRoomViewState extends State<BookRoomView> {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        onPressed: () {
-          setState(() => viewModel.createBooking());
+        onPressed: () async {
+          await viewModel.createBooking(context);
+          setState(() {}); // if you need UI refresh afterwards
         },
+
         child: const Text(
           "Create Booking",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
