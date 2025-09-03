@@ -85,28 +85,29 @@ class BookRoomViewModel extends ChangeNotifier {
   // }
 
   /// Add attendee
-  void addAttendee() {
-    final name = attendeeNameController.text.trim();
-    final email = attendeeEmailController.text.trim();
+void addAttendee() {
+  final name = attendeeNameController.text.trim();
+  final email = attendeeEmailController.text.trim();
 
-    // Validate inputs
-    if (name.isEmpty && email.isEmpty) {
-      attendeeError = "Name and Email are required";
-    } else if (name.isEmpty) {
-      attendeeError = "Name is required";
-    } else if (email.isEmpty) {
-      attendeeError = "Email is required";
-    } else if (!_isValidEmail(email)) {
-      attendeeError = "Invalid email format";
-    } else {
-      // valid input, add attendee
-      attendees.add(Attendee(name: name, email: email));
-      attendeeNameController.clear();
-      attendeeEmailController.clear();
-      attendeeError = null; // clear previous errors
-    }
-    notifyListeners();
+  // Validate inputs
+  if (name.isEmpty && email.isEmpty) {
+    attendeeError = "Name and Email are required";
+  } else if (name.isEmpty) {
+    attendeeError = "Name is required";
+  } else if (email.isEmpty) {
+    attendeeError = "Email is required";
+  } else if (!_isValidEmail(email)) {
+    attendeeError = "Invalid email format";
+  } else {
+    // valid input, add attendee
+    attendees.add({'name': name, 'email': email});
+    attendeeNameController.clear();
+    attendeeEmailController.clear();
+    attendeeError = null; // clear previous errors
   }
+  notifyListeners();
+}
+
 
   /// Remove attendee
   void removeAttendee(int index) {
@@ -176,27 +177,28 @@ String? validateRoom() {
     return null;
   }
 
-  String? validateAttendees() {
-    // Check current typed fields
-    final currentName = attendeeNameController.text.trim();
-    final currentEmail = attendeeEmailController.text.trim();
+String? validateAttendees() {
+  // Check current typed fields
+  final currentName = attendeeNameController.text.trim();
+  final currentEmail = attendeeEmailController.text.trim();
 
-    if ((currentName.isNotEmpty && currentEmail.isEmpty) ||
-        (currentName.isEmpty && currentEmail.isNotEmpty)) {
-      return "Both name and email must be filled for new attendee";
-    }
-    if (currentName.isNotEmpty && !_isValidEmail(currentEmail)) {
-      return "Invalid email format for new attendee";
-    }
-
-    // Check added attendees
-    for (final a in attendees) {
-      if (a.name.isEmpty || !_isValidEmail(a.email)) {
-        return "Invalid attendee: name and valid email required";
-      }
-    }
-    return null; // all good
+  if ((currentName.isNotEmpty && currentEmail.isEmpty) ||
+      (currentName.isEmpty && currentEmail.isNotEmpty)) {
+    return "Both name and email must be filled for new attendee";
   }
+  if (currentName.isNotEmpty && !_isValidEmail(currentEmail)) {
+    return "Invalid email format for new attendee";
+  }
+
+  // Check added attendees
+  for (final a in attendees) {
+    if (a['name']!.isEmpty || !_isValidEmail(a['email']!)) {
+      return "Invalid attendee: name and valid email required";
+    }
+  }
+  return null; // all good
+}
+
 
   /// Run all validations
   bool validateForm() {

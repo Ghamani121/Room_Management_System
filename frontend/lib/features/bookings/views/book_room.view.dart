@@ -226,9 +226,9 @@ class _BookRoomViewState extends State<BookRoomView> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        key: ValueKey(attendee.email),
+                        key: ValueKey(attendee['email']),
                         readOnly: true,          
-                        initialValue: attendee.name,
+                        initialValue: attendee['name'],
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           filled: true,
@@ -240,9 +240,9 @@ class _BookRoomViewState extends State<BookRoomView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextFormField(
-                        key: ValueKey("${attendee.email ?? 'unknown'}_email"),
+                        key: ValueKey("${attendee['email'] ?? 'unknown'}_email"),
                         readOnly: true,
-                        initialValue: attendee.email,
+                        initialValue: attendee['email'],
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           filled: true,
@@ -311,13 +311,9 @@ class _BookRoomViewState extends State<BookRoomView> {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        onPressed: () {
-          final booking = viewModel.createBooking();
-          if (booking != null) {
-            Navigator.pop(context, booking); // send back to Dashboard
-          } else {
-            setState(() {}); // refresh UI to show validation errors
-          }
+        onPressed: () async {
+          await viewModel.createBooking(context);
+          setState(() {}); // if you need UI refresh afterwards
         },
 
         child: const Text(
