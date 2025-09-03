@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/bookings/viewmodels/dashboard.viewmodel.dart';
 import 'package:rms/features/bookings/views/book_room.view.dart';
+import 'package:rms/features/bookings/bookings.model.dart';
+import 'booking_details.view.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -11,6 +13,28 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   DashboardViewModel viewModel = DashboardViewModel();
+
+  //to store booking temporarily
+  final List<Booking> _bookings = [];
+
+  //because user enters room name which needs to converted to booking id format
+  final Map<String, String> roomNames = {
+    'r1': 'Board Room',
+    'r2': 'Conference Room',
+  };
+
+  Future<void> _navigateToBookRoom() async {
+    final booking = await Navigator.push<Booking>(
+      context,
+      MaterialPageRoute(builder: (_) => const BookRoomView()),
+    );
+    //add data from booking to a _booking list
+    if (booking != null) {
+      setState(() {
+        _bookings.add(booking);
+      });
+    }
+  }
 
   @override
   // void dispose() {
@@ -40,7 +64,7 @@ class _DashboardViewState extends State<DashboardView> {
               constraints: const BoxConstraints(maxWidth: 600),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [const SizedBox(height: 20)],
+                children: [_buildBookingCard()],
               ),
             ),
           ),
@@ -50,16 +74,45 @@ class _DashboardViewState extends State<DashboardView> {
     );
   }
 
+  Widget _buildBookingCard() {
+    if (_bookings.isEmpty) {
+      return const Center(child: Text("No bookings yet. Tap + to create"));
+    }
+    return ListView.builder(
+          shrinkWrap: true, // ✅ makes ListView fit content
+          physics: const NeverScrollableScrollPhysics(), // ✅ disables inner scrolling
+      itemCount: _bookings.length,
+      itemBuilder: (context, index) {
+        final booking = _bookings[index];
+        return Card(
+          child: ListTile(
+            title: Text("Room: ${booking.roomId}"),
+            subtitle:
+                booking.title != null
+                    ? Text(booking.title!)
+                    : const Text("No title"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookingDetailsView(booking: booking),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildAddBooking() {
     return FloatingActionButton(
       backgroundColor: const Color(0xFFC60210),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const BookRoomView()),
-        );
-      },
-      child: const Icon(Icons.add,color: Colors.white),
+      onPressed: _navigateToBookRoom, // <-- call the function
+      child: const Icon(Icons.add, color: Colors.white),
     );
   }
+
+
+
 }
