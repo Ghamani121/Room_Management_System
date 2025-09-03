@@ -10,6 +10,10 @@ class Attendee {
       Attendee(name: json['name'], email: json['email']);
 
   Map<String, dynamic> toJson() => {'name': name, 'email': email};
+
+    @override
+  String toString() => 'Attendee(name: $name, email: $email)';
+
 }
 
 class Booking {
@@ -47,7 +51,7 @@ class Booking {
         endTime: DateTime.parse(json['endTime'] as String),
         status: json['status'] as String?,
         attendees: (json['attendees'] as List<dynamic>?)
-            ?.map((a) => Attendee.fromJson(a))
+            ?.map((a) => Attendee.fromJson(Map<String, dynamic>.from(a)))
             .toList(),
         createdAt: json['createdAt'] != null
             ? DateTime.parse(json['createdAt'] as String)
@@ -58,6 +62,7 @@ class Booking {
       );
 
   /// To JSON for API request
+  /// 
   Map<String, dynamic> toJson() => {
         'roomId': roomId,
         if (title != null) 'title': title,
@@ -105,4 +110,22 @@ class Booking {
       (json.decode(bookings) as List<dynamic>)
           .map((b) => Booking.fromJson(b))
           .toList();
+
+    @override
+      String toString() {
+        return '''
+    Booking(
+      id: $id,
+      roomId: $roomId,
+      userId: $userId,
+      title: $title,
+      startTime: $startTime,
+      endTime: $endTime,
+      status: $status,
+      attendees: $attendees,
+      createdAt: $createdAt,
+      updatedAt: $updatedAt
+    )''';
+    }
+
 }
