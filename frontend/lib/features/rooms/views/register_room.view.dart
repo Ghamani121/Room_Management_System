@@ -213,7 +213,7 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
         onPressed: () {
           if (vm.validateForm()) {
             Room room = vm.buildRoom();
-            print("Room Created: ${room.toJson()}");
+            print("Room Created: ${room.toCreateJson()}");
 
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Room created successfully!")),
