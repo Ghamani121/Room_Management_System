@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms/features/bookings/views/display_bookings.view.dart';
 import 'features/rooms/views/register_room.view.dart';
 import 'features/bookings/views/book_room.view.dart';
 import 'features/auth/views/login.view.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       // home:const BookRoomView(),
       // home: const LoginView(),
       // home:const BookRoomView(),
-      home: const DisplayRoomView(),
+      home: const DisplayBookingsView(),
     );
   }
 }

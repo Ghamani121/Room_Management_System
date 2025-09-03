@@ -19,7 +19,19 @@ class DisplayBookingsService {
     // print("Response body: ${response.body}");
     // print("gekk");
     if (response.statusCode == 200) {
-      return jsonDecode(response.body) as List;
+      final decoded = jsonDecode(response.body);
+
+      // If backend wraps data
+      if (decoded is Map<String, dynamic> && decoded.containsKey('data')) {
+        return decoded['data'] as List<dynamic>;
+      }
+
+      // If backend directly returns a list
+      if (decoded is List) {
+        return decoded;
+      }
+
+      throw Exception("Unexpected response format: ${response.body}");
     } else {
       throw Exception("Failed to fetch bookings: ${response.statusCode}");
     }
