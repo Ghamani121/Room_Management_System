@@ -17,8 +17,10 @@ const createBookingSchema = Joi.object({
   startTime: Joi.date().required().custom((value, helpers) => {
     const now = new Date();
     const start = new Date(value);
-    const startOfDay = new Date(start).setUTCHours(0, 0, 0, 0);
-    const startMs = start.getTime() - startOfDay;
+const startHours = start.getHours();
+const startMinutes = start.getMinutes();
+const startMs = (startHours * 60 + startMinutes) * 60 * 1000;
+
 
     // Check start time is not in the past
     if (start < now) {
@@ -40,8 +42,10 @@ const createBookingSchema = Joi.object({
 
     const start = new Date(helpers.state.ancestors[0].startTime);
     const end = new Date(value);
-    const endOfDay = new Date(end).setUTCHours(0, 0, 0, 0);
-    const endMs = end.getTime() - endOfDay;
+const endHours = end.getHours();
+const endMinutes = end.getMinutes();
+const endMs = (endHours * 60 + endMinutes) * 60 * 1000;
+
 
     // 1. Check office hours (8 AM to 8 PM)
         if (endMs < OFFICE_START_MS || endMs > OFFICE_END_MS) {
