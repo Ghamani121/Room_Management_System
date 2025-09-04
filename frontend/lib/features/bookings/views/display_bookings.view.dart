@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rms/features/bookings/viewmodels/display_bookings.viewmodel.dart';
 import 'package:rms/features/bookings/views/book_room.view.dart';
 import 'package:rms/features/bookings/bookings.model.dart';
+
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:rms/features/rooms/views/register_room.view.dart';
+
 import 'package:intl/intl.dart';
 
 class DisplayBookingsView extends StatefulWidget {
@@ -74,27 +78,54 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
                     },
                   ),
       ),
-      floatingActionButton: _buildAddBooking(),
+      floatingActionButton: _buildAddItems(),
     );
   }
 
-Widget _buildAddBooking() {
-  return FloatingActionButton(
-    backgroundColor: const Color(0xFFC60210),
-    onPressed: () async {
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const BookRoomView()),
-      );
 
-      if (result != null) {
-        // ✅ Fetch updated list from backend
-        _loadBookings();
-      }
-    },
-    child: const Icon(Icons.add, color: Colors.white),
+Widget _buildAddItems() {
+  return SpeedDial(
+    icon: Icons.add,
+    activeIcon: Icons.close,
+    backgroundColor: const Color(0xFFC60210),
+    foregroundColor: Colors.white,
+    spacing: 12,
+    spaceBetweenChildren: 8,
+    children: [
+      // ✅ Create Room
+      SpeedDialChild(
+        child: const Icon(Icons.meeting_room, color: Colors.white),
+        backgroundColor: Colors.blue,
+        label: 'Create Room',
+        onTap: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RegisterRoomView()),
+          );
+          if (result != null) {
+            _loadBookings(); // or reload rooms if needed
+          }
+        },
+      ),
+      // ✅ Create Booking
+      SpeedDialChild(
+        child: const Icon(Icons.event, color: Colors.white),
+        backgroundColor: Colors.green,
+        label: 'Create Booking',
+        onTap: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const BookRoomView()),
+          );
+          if (result != null) {
+            _loadBookings();
+          }
+        },
+      ),
+    ],
   );
 }
+
 
 }
 
