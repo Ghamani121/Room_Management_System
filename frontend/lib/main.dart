@@ -4,11 +4,17 @@ import 'features/rooms/views/register_room.view.dart';
 import 'features/bookings/views/book_room.view.dart';
 import 'features/auth/views/login.view.dart';
 import 'package:rms/features/rooms/views/display_rooms.view.dart';
+import 'config.service.dart';
 
 // entry point of flutter application
 //every flutter app starts from main funciton
 //runApp loads the root widget which is MyApp onto the widget tree
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load baseUrl from backend
+  await ConfigService.loadConfig();
+
   runApp(const MyApp());
 }
 
