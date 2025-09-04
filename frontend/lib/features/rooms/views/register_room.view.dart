@@ -36,6 +36,7 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
             style: TextStyle(
                 fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: const Color(0xFFC60210),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -83,8 +84,8 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
           hint: const Text("Select Room"),
           dropdownColor: Colors.white,
           items: const [
-            DropdownMenuItem(value: "Bhishma", child: Text("Bhishma")),
-            DropdownMenuItem(value: "Ajeya", child: Text("Ajeya")),
+            DropdownMenuItem(value: "Board Room", child: Text("Bhishma")),
+            DropdownMenuItem(value: "Conference Room", child: Text("Ajeya")),
           ],
           validator: vm.validateRoom,
           onChanged: (value) => setState(() => vm.setRoom(value)),
@@ -210,18 +211,32 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        onPressed: () {
-          if (vm.validateForm()) {
-            Room room = vm.buildRoom();
-            print("Room Created: ${room.toCreateJson()}");
+        onPressed: () async {
+                if (!vm.validateForm()) return;
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Room created successfully!")),
-            );
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => const Center(child: CircularProgressIndicator()),
+                );
 
-            _resetForm();
-          }
-        },
+                try {
+                  final createdRoom = await vm.createRoom();
+
+                  if (createdRoom != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Room created successfully!")),
+                    );
+                    _resetForm();
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Failed to create room: $e")),
+                  );
+                } finally {
+                  Navigator.of(context).pop(); // hide loading
+                }
+              },
         child: const Text("Create Room",
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),

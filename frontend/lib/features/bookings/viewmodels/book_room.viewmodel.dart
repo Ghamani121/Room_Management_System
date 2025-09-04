@@ -34,7 +34,7 @@ class BookRoomViewModel extends ChangeNotifier {
       if (!validateForm()) return;
 
       final Map<String, String> roomMap = {
-      "Board Room": "68b81053797fd4e4212cc822",        // put actual MongoDB ID here
+      "Board Room": "68b96284de52982b994a724b",        // put actual MongoDB ID here
       "Conference Room": "68b81073797fd4e4212cc824",  // put actual MongoDB ID here
     };
 
@@ -51,7 +51,7 @@ class BookRoomViewModel extends ChangeNotifier {
       try {
         final createdBooking = await _service.createBooking(booking);
 
-        // ✅ show success snackbar
+        // show success snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Booking created successfully")),
         );

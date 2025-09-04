@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:rms/features/rooms/services/register_room.service.dart';
 import '../rooms.model.dart';
+import '../rooms.service.dart';
 
 class RegisterRoomViewModel extends ChangeNotifier {
   // State
   String? selectedRoom;
   int capacity = 0;
-  final TextEditingController capacityController = TextEditingController();
   final List<String> equipment = [];
+
+  final TextEditingController capacityController = TextEditingController();
+
+  final RegisterRoomService _service = RegisterRoomService();
 
   // Form key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -14,6 +19,27 @@ class RegisterRoomViewModel extends ChangeNotifier {
   RegisterRoomViewModel() {
     capacityController.text = capacity.toString();
   }
+
+Future<Room?> createRoom() async {
+  if (!validateForm()) return null; // Validate form first
+  final room = buildRoom();
+
+  try {
+    final createdRoom = await _service.createRoom(room);
+
+    // Print created room data
+    print("\n\nCreated Room Data:");
+    print("Name: ${createdRoom.name}");
+    print("Capacity: ${createdRoom.capacity}");
+    print("Equipment: ${createdRoom.equipment.join(", ")}");
+
+    return createdRoom;
+  } catch (e) {
+    print("Error creating room: $e");
+    rethrow;
+  }
+}
+
 
   // --- Room ---
   void setRoom(String? value) {
@@ -25,7 +51,7 @@ class RegisterRoomViewModel extends ChangeNotifier {
     if (value == null || value.isEmpty) {
       return "Please select a room";
     }
-    if (value != "Ajeya" && value != "Bhishma") {
+    if (value != "Board Room" && value != "Conference Room") {
       return "Invalid room selected";
     }
     return null;
