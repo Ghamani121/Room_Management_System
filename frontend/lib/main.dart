@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
       ),
       // home: const RegisterRoomView(),
       // home:const BookRoomView(),
-      // home: const LoginView(),
+      home: const LoginView(),
       // home:const BookRoomView(),
-      home: const DisplayBookingsView(),
+      // home: const DisplayBookingsView(),
     );
   }
 }

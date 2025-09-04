@@ -117,14 +117,31 @@ Widget _buildLoginButton() {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        onPressed: () {
-            if (viewModel.login()) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const DisplayBookingsView()),
-              );
+          onPressed: () async {
+            if (viewModel.formKey.currentState!.validate()) {
+              try {
+                final success = await viewModel.login(); // login returns bool based on API
+                if (success) {
+                  // Navigate only if login was successful
+                  if (mounted) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DisplayBookingsView()),
+                    );
+                  }
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Login failed!")),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Login failed: $e")),
+                );
+              }
             }
-        },
+          },
         child: const Text(
           "Login",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
