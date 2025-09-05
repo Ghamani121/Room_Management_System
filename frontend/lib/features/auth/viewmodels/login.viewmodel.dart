@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rms/features/auth/service/login.service.dart';
 
 //provides notifications for the widget when state changes
-class LoginViewModel extends ChangeNotifier {
+class LoginViewModel{
   //texteditingcontroller: get text,clear text, display defalt text
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -17,8 +16,6 @@ class LoginViewModel extends ChangeNotifier {
   //globalkey allows you to access the form state outside the form widget
   final formKey = GlobalKey<FormState>();
 
-  final LoginService _service = LoginService();
-
   //dispose controllers
   void disposeControllers() {
     emailController.dispose();
@@ -26,45 +23,45 @@ class LoginViewModel extends ChangeNotifier {
   }
 
 
-Future<bool> login() async {
-  if (!formKey.currentState!.validate()) return false;
+// Future<bool> login() async {
+//   if (!formKey.currentState!.validate()) return false;
 
-  try {
-    final result = await _service.login(
-      emailController.text.trim(),
-      passwordController.text.trim(),
-    );
+//   try {
+//     final result = await _service.login(
+//       emailController.text.trim(),
+//       passwordController.text.trim(),
+//     );
 
-    // Print the actual data returned by backend
-    print("Login successful: ${result.user.name}, token: ${result.token}");
-    return true;
-  } catch (e) {
-    print("Login failed: $e");
-    return false;
-  }
-}
+//     // Print the actual data returned by backend
+//     print("Login successful: ${result.user.name}, token: ${result.token}");
+//     return true;
+//   } catch (e) {
+//     print("Login failed: $e");
+//     return false;
+//   }
+// }
 
 
 
-  Future<void> _loginApi() async {
-    try {
-      final result = await _service.login(
-        emailController.text.trim(),
-        passwordController.text.trim(),
-      );
-      print("\n\n\nLogin successful: ${result.user.name}, email: ${result.user.email}");
+  // Future<void> _loginApi() async {
+  //   try {
+  //     final result = await _service.login(
+  //       emailController.text.trim(),
+  //       passwordController.text.trim(),
+  //     );
+  //     print("\n\n\nLogin successful: ${result.user.name}, email: ${result.user.email}");
 
-    } catch (e) {
-      print("\n\n\nLogin failed: $e");
-    }
-  }
+  //   } catch (e) {
+  //     print("\n\n\nLogin failed: $e");
+  //   }
+  // }
 
   //reset form state
   void resetForm() {
     emailController.clear();
     passwordController.clear();
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   String? validateEmail(String? value) {

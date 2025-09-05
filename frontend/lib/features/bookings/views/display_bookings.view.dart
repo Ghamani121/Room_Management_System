@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:rms/features/bookings/viewmodels/display_bookings.viewmodel.dart';
 import 'package:rms/features/bookings/views/book_room.view.dart';
 import 'package:rms/features/bookings/bookings.model.dart';
-
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
-
 import 'package:intl/intl.dart';
+
+import 'package:provider/provider.dart';
+import 'package:rms/features/auth/providers/auth.provider.dart';
 
 class DisplayBookingsView extends StatefulWidget {
   const DisplayBookingsView({super.key});
@@ -53,80 +54,89 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
           ),
         ),
         backgroundColor: const Color(0xFFC60210),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              Provider.of<AuthProvider>(context, listen: false).logout();
+              // No need for Navigator.pop — UI will auto-switch to LoginView
+            },
+            color:Colors.white,
+          ),
+        ],
       ),
       body: SafeArea(
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _bookings.isEmpty
+        child:
+            _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _bookings.isEmpty
                 ? const Center(child: Text("No bookings available"))
                 : ListView.builder(
-                    padding: const EdgeInsets.all(20.0),
-                    itemCount: _bookings.length,
-                    itemBuilder: (context, index) {
-                      final booking = _bookings[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BookingDetailsView(booking: booking),
-                            ),
-                          );
-                        },
-                        child: BookingCard(booking: booking),
-                      );
-                    },
-                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  itemCount: _bookings.length,
+                  itemBuilder: (context, index) {
+                    final booking = _bookings[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (_) => BookingDetailsView(booking: booking),
+                          ),
+                        );
+                      },
+                      child: BookingCard(booking: booking),
+                    );
+                  },
+                ),
       ),
       floatingActionButton: _buildAddItems(),
     );
   }
 
-
-Widget _buildAddItems() {
-  return SpeedDial(
-    icon: Icons.add,
-    activeIcon: Icons.close,
-    backgroundColor: const Color(0xFFC60210),
-    foregroundColor: Colors.white,
-    spacing: 12,
-    spaceBetweenChildren: 8,
-    children: [
-      // ✅ Create Room
-      SpeedDialChild(
-        child: const Icon(Icons.meeting_room, color: Colors.white),
-        backgroundColor: Colors.blue,
-        label: 'Create Room',
-        onTap: () async {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RegisterRoomView()),
-          );
-          if (result != null) {
-            _loadBookings(); // or reload rooms if needed
-          }
-        },
-      ),
-      // ✅ Create Booking
-      SpeedDialChild(
-        child: const Icon(Icons.event, color: Colors.white),
-        backgroundColor: Colors.green,
-        label: 'Create Booking',
-        onTap: () async {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const BookRoomView()),
-          );
-          if (result != null) {
-            _loadBookings();
-          }
-        },
-      ),
-    ],
-  );
-}
-
-
+  Widget _buildAddItems() {
+    return SpeedDial(
+      icon: Icons.add,
+      activeIcon: Icons.close,
+      backgroundColor: const Color(0xFFC60210),
+      foregroundColor: Colors.white,
+      spacing: 12,
+      spaceBetweenChildren: 8,
+      children: [
+        // ✅ Create Room
+        SpeedDialChild(
+          child: const Icon(Icons.meeting_room, color: Colors.white),
+          backgroundColor: Colors.blue,
+          label: 'Create Room',
+          onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RegisterRoomView()),
+            );
+            if (result != null) {
+              _loadBookings(); // or reload rooms if needed
+            }
+          },
+        ),
+        // ✅ Create Booking
+        SpeedDialChild(
+          child: const Icon(Icons.event, color: Colors.white),
+          backgroundColor: Colors.green,
+          label: 'Create Booking',
+          onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookRoomView()),
+            );
+            if (result != null) {
+              _loadBookings();
+            }
+          },
+        ),
+      ],
+    );
+  }
 }
 
 class BookingCard extends StatelessWidget {
@@ -168,46 +178,84 @@ class BookingDetailsView extends StatelessWidget {
           ),
         ),
         backgroundColor: const Color(0xFFC60210),
-        iconTheme: const IconThemeData(color: Colors.white), // ✅ back button white
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ), // ✅ back button white
       ),
-      body:SafeArea( 
-      child:SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500), // ✅ prevent stretching
-            child: Card(
-              color: Colors.white,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _detailRow(Icons.confirmation_number, "Booking ID", booking.id ?? "-"),
-                    _detailRow(Icons.meeting_room, "Room ID", booking.roomId),
-                    _detailRow(Icons.person, "User ID", booking.userId ?? "-"),
-                    _detailRow(Icons.title, "Title", booking.title ?? "-"),
-                    _detailRow(Icons.access_time, "Start Time", booking.startTime.toString()),
-                    _detailRow(Icons.access_time_filled, "End Time", booking.endTime.toString()),
-                    _detailRow(Icons.check_circle, "Status", booking.status ?? "-"),
-                    _detailRow(Icons.group, "Attendees",
-                        booking.attendees?.map((a) => a.name).join(", ") ?? "None"),
-                    _detailRow(Icons.calendar_today, "Created At",
-                        booking.createdAt != null ? formatter.format(booking.createdAt!) : "-"),
-                    _detailRow(Icons.update, "Updated At",
-                        booking.updatedAt != null ? formatter.format(booking.updatedAt!) : "-"),
-                  ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: 500,
+              ), // ✅ prevent stretching
+              child: Card(
+                color: Colors.white,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _detailRow(
+                        Icons.confirmation_number,
+                        "Booking ID",
+                        booking.id ?? "-",
+                      ),
+                      _detailRow(Icons.meeting_room, "Room ID", booking.roomId),
+                      _detailRow(
+                        Icons.person,
+                        "User ID",
+                        booking.userId ?? "-",
+                      ),
+                      _detailRow(Icons.title, "Title", booking.title ?? "-"),
+                      _detailRow(
+                        Icons.access_time,
+                        "Start Time",
+                        booking.startTime.toString(),
+                      ),
+                      _detailRow(
+                        Icons.access_time_filled,
+                        "End Time",
+                        booking.endTime.toString(),
+                      ),
+                      _detailRow(
+                        Icons.check_circle,
+                        "Status",
+                        booking.status ?? "-",
+                      ),
+                      _detailRow(
+                        Icons.group,
+                        "Attendees",
+                        booking.attendees?.map((a) => a.name).join(", ") ??
+                            "None",
+                      ),
+                      _detailRow(
+                        Icons.calendar_today,
+                        "Created At",
+                        booking.createdAt != null
+                            ? formatter.format(booking.createdAt!)
+                            : "-",
+                      ),
+                      _detailRow(
+                        Icons.update,
+                        "Updated At",
+                        booking.updatedAt != null
+                            ? formatter.format(booking.updatedAt!)
+                            : "-",
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-    ),
     );
   }
 
@@ -223,11 +271,19 @@ class BookingDetailsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87)),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(value, style: const TextStyle(fontSize: 15, color: Colors.black54)),
+                Text(
+                  value,
+                  style: const TextStyle(fontSize: 15, color: Colors.black54),
+                ),
               ],
             ),
           ),
@@ -236,4 +292,3 @@ class BookingDetailsView extends StatelessWidget {
     );
   }
 }
-

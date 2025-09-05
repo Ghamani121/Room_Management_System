@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/auth/viewmodels/login.viewmodel.dart';
-import 'package:rms/features/bookings/views/display_bookings.view.dart';
+import 'package:provider/provider.dart';
+import 'package:rms/features/auth/providers/auth.provider.dart';
+
 
 //we are creating a custom widget for login ui which extends stateful widget
 //we can use mehtods from parent widget, we can ensure the given method exists usng overrride
@@ -117,31 +119,23 @@ Widget _buildLoginButton() {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-          onPressed: () async {
-            if (viewModel.formKey.currentState!.validate()) {
-              try {
-                final success = await viewModel.login(); // login returns bool based on API
-                if (success) {
-                  // Navigate only if login was successful
-                  if (mounted) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DisplayBookingsView()),
-                    );
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Login failed!")),
-                  );
-                }
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Login failed: $e")),
-                );
-              }
+        onPressed: () async {
+          if (viewModel.formKey.currentState!.validate()) {
+            final auth = Provider.of<AuthProvider>(context, listen: false);
+
+            final success = await auth.login(
+              viewModel.emailController.text.trim(),
+              viewModel.passwordController.text.trim(),
+            );
+
+            if (!success) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Login failed!")),
+              );
             }
-          },
+            // no need to manually navigate — main.dart decides based on auth.isLoggedIn
+          }
+        },
         child: const Text(
           "Login",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),

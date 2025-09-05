@@ -4,13 +4,21 @@ import 'features/rooms/views/register_room.view.dart';
 import 'features/bookings/views/book_room.view.dart';
 import 'features/auth/views/login.view.dart';
 import 'config.service.dart';
+import 'package:provider/provider.dart';
+import 'package:rms/features/auth/providers/auth.provider.dart';
+
 
 // entry point of flutter application
 //every flutter app starts from main funciton
 //runApp loads the root widget which is MyApp onto the widget tree
-void main() async {
-
-  runApp(const MyApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      //login state is global for all screens
+      create: (_) => AuthProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 //root of the widget tree
@@ -30,9 +38,15 @@ class MyApp extends StatelessWidget {
       ),
       // home: const RegisterRoomView(),
       // home:const BookRoomView(),
-      home: const LoginView(),
       // home:const BookRoomView(),
       // home: const DisplayBookingsView(),
+            home: Consumer<AuthProvider>(
+        builder: (context, auth, _) {
+          return auth.isLoggedIn
+              ? const DisplayBookingsView()
+              : const LoginView();
+        },
+      ),
     );
   }
 }
