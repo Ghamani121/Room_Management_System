@@ -11,7 +11,7 @@ class LoginService {
 
   /// Login API call
   Future<Welcome> login(String email, String password) async {
-    final url = Uri.parse("${ConfigService.baseUrl}/auth/v1/login"); // adjust endpoint if needed
+    final url = Uri.parse("${ConfigService.baseUrl}/auth/v1/login");
 
     try {
       final response = await http.post(
