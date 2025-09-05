@@ -15,7 +15,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       final result = await _service.login(email, password);
       _authData = result;
-      notifyListeners(); // tell the UI to rebuild
+      notifyListeners(); 
       return true;
     } catch (e) {
       debugPrint("Auth login failed: $e");
