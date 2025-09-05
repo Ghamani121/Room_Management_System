@@ -22,7 +22,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
   void _loadRooms() async {
     try {
       // print("hello");
-      List<Room> rooms = await viewModel.fetchRooms();
+      List<Room> rooms = await viewModel.fetchRooms(context);
       for (var room in rooms) {
         print(
           "Room: ${room.name}, Capacity: ${room.capacity}, Equipment: ${room.equipment}",

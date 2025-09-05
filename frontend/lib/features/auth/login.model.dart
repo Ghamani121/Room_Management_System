@@ -32,14 +32,14 @@ class User {
 }
 
 class Welcome {
-  String message;
+  String? message;
   String token;
-  User user;
+  User? user;
 
   Welcome({
-    required this.message,
+    this.message,
     required this.token,
-    required this.user,
+    this.user,
   });
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
@@ -51,6 +51,6 @@ class Welcome {
   Map<String, dynamic> toJson() => {
         "message": message,
         "token": token,
-        "user": user.toJson(),
+        "user": user?.toJson(),
       };
 }

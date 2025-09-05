@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rms/features/rooms/services/register_room.service.dart';
 import '../rooms.model.dart';
 import '../rooms.service.dart';
+import 'package:rms/features/auth/providers/auth.provider.dart';
+import 'package:provider/provider.dart';
 
 class RegisterRoomViewModel extends ChangeNotifier {
   // State
@@ -20,12 +22,20 @@ class RegisterRoomViewModel extends ChangeNotifier {
     capacityController.text = capacity.toString();
   }
 
-Future<Room?> createRoom() async {
-  if (!validateForm()) return null; // Validate form first
+Future<Room?> createRoom(BuildContext context) async {
+
+
+  if (!validateForm()) return null; 
+
+  final auth = Provider.of<AuthProvider>(context, listen: false);
+  final token = auth.authData?.token ?? "";
+
   final room = buildRoom();
 
+  
+
   try {
-    final createdRoom = await _service.createRoom(room);
+    final createdRoom = await _service.createRoom(room,token);
 
     // Print created room data
     print("\n\nCreated Room Data:");
