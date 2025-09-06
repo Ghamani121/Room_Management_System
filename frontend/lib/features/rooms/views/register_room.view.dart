@@ -221,7 +221,7 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
                 );
 
                 try {
-                  final createdRoom = await vm.createRoom();
+                  final createdRoom = await vm.createRoom(context);
 
                   if (createdRoom != null) {
                     ScaffoldMessenger.of(context).showSnackBar(

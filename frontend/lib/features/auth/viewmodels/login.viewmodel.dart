@@ -22,40 +22,6 @@ class LoginViewModel{
     passwordController.dispose();
   }
 
-
-// Future<bool> login() async {
-//   if (!formKey.currentState!.validate()) return false;
-
-//   try {
-//     final result = await _service.login(
-//       emailController.text.trim(),
-//       passwordController.text.trim(),
-//     );
-
-//     // Print the actual data returned by backend
-//     print("Login successful: ${result.user.name}, token: ${result.token}");
-//     return true;
-//   } catch (e) {
-//     print("Login failed: $e");
-//     return false;
-//   }
-// }
-
-
-
-  // Future<void> _loginApi() async {
-  //   try {
-  //     final result = await _service.login(
-  //       emailController.text.trim(),
-  //       passwordController.text.trim(),
-  //     );
-  //     print("\n\n\nLogin successful: ${result.user.name}, email: ${result.user.email}");
-
-  //   } catch (e) {
-  //     print("\n\n\nLogin failed: $e");
-  //   }
-  // }
-
   //reset form state
   void resetForm() {
     emailController.clear();

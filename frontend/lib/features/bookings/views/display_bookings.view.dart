@@ -5,7 +5,6 @@ import 'package:rms/features/bookings/bookings.model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:intl/intl.dart';
-
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 
@@ -18,6 +17,7 @@ class DisplayBookingsView extends StatefulWidget {
 
 class _DisplayBookingsViewState extends State<DisplayBookingsView> {
   DisplayBookingsViewModel viewModel = DisplayBookingsViewModel();
+
   List<Booking> _bookings = [];
   bool _isLoading = true;
 
@@ -29,7 +29,7 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
 
   void _loadBookings() async {
     try {
-      List<Booking> bookings = await viewModel.fetchBookings();
+      List<Booking> bookings = await viewModel.fetchBookings(context);
       setState(() {
         _bookings = bookings;
         _isLoading = false;
@@ -44,27 +44,86 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          "Dashboard",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color(0xFFC60210),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              Provider.of<AuthProvider>(context, listen: false).logout();
-              // No need for Navigator.pop — UI will auto-switch to LoginView
-            },
-            color:Colors.white,
-          ),
-        ],
-      ),
+appBar: AppBar(
+  title: const Text(
+    "Dashboard",
+    style: TextStyle(
+      fontSize: 30,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+  ),
+  backgroundColor: const Color(0xFFC60210),
+  actions: [
+    // 🔹 Sort
+    PopupMenuButton<String>(
+      icon: const Icon(Icons.sort, color: Colors.white),
+      onSelected: (value) {
+        setState(() => _isLoading = true);
+        viewModel.fetchBookings(
+          context,
+          sortBy: value,
+          sortOrder: "asc", // or toggle asc/desc
+        ).then((bookings) {
+          setState(() {
+            _bookings = bookings;
+            _isLoading = false;
+          });
+        });
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(value: "title", child: Text("Title")),
+        const PopupMenuItem(value: "startTime", child: Text("Start Time")),
+        const PopupMenuItem(value: "roomId", child: Text("Room")),
+      ],
+    ),
+
+    // 🔹 Filter
+    PopupMenuButton<String>(
+      icon: const Icon(Icons.filter_list, color: Colors.white),
+      onSelected: (value) async {
+        if (value == "date") {
+          final picked = await showDateRangePicker(
+            context: context,
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2030),
+          );
+          if (picked != null) {
+            setState(() => _isLoading = true);
+            viewModel.fetchBookings(
+              context,
+              startTime: picked.start.toIso8601String(),
+              endTime: picked.end.toIso8601String(),
+            ).then((bookings) {
+              setState(() {
+                _bookings = bookings;
+                _isLoading = false;
+              });
+            });
+          }
+        }
+        if (value == "roomId") {
+          // TODO: show dialog/dropdown of available rooms
+          print("Filter by Room");
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(value: "date", child: Text("Date Range")),
+        const PopupMenuItem(value: "roomId", child: Text("Room")),
+      ],
+    ),
+
+    // 🔹 Logout
+    IconButton(
+      icon: const Icon(Icons.logout),
+      onPressed: () {
+        Provider.of<AuthProvider>(context, listen: false).logout();
+      },
+      color: Colors.white,
+    ),
+  ],
+),
+
       body: SafeArea(
         child:
             _isLoading
