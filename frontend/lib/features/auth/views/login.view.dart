@@ -130,7 +130,7 @@ Widget _buildLoginButton() {
 
             if (!success) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Login failed!")),
+                const SnackBar(content: Text("Invalid email or password")),
               );
             }
             // no need to manually navigate — main.dart decides based on auth.isLoggedIn
