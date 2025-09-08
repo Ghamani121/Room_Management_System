@@ -24,7 +24,8 @@ class DisplayBookingsService {
     if (endTime != null) queryParams['endTime'] = endTime;
 
     final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
-print("\n\n\n\nFetching bookings from: $uri");
+  print("\n\n\n\nFetching bookings from: $uri");
+  print("📦 Query Params: $queryParams");
 
     final response = await http.get(
       uri,

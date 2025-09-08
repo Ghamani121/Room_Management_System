@@ -90,13 +90,14 @@ export async function getAllBookings(
     startTime?: string;
     endTime?: string;
     bookingId?:string;
+    title?:string;
     page?: string;
     limit?: string;
     sortBy?: string;
     status?:string;
     sortOrder?: string;
   }
-): Promise<{ data: BookingDocument[] }> {
+): Promise<{ data: any[] }> {
   
   const query: any = {};
 
@@ -107,30 +108,52 @@ export async function getAllBookings(
     if (filters.roomId) {
         query.roomId = new mongoose.Types.ObjectId(filters.roomId);
     }
-    // const test = await Booking.find({ status: "cancelled" });
-    // console.log(test);
-    // console.log("Filters received:", filters);
-    // console.log("Mongo query:", query);
 
+    if (filters.status) {
+        query.status = filters.status;
+    }
 
-  if (filters.status) {
-      query.status = filters.status;
-  }
-
+    if (filters.title) {
+    query.title = { $regex: filters.title, $options: "i" };
+    }
 
     if (filters.bookingId) {
         query._id = new mongoose.Types.ObjectId(filters.bookingId);
     }
 
-    if (filters.startTime || filters.endTime) {
-        query.startTime = {};
-        if (filters.startTime) {
-        query.startTime.$gte = new Date(filters.startTime);
-        }
-        if (filters.endTime) {
-        query.startTime.$lte = new Date(filters.endTime);
-        }
-    }
+if (filters.startTime) {
+  const dayStart = new Date(filters.startTime);
+  dayStart.setHours(0, 0, 0, 0);
+
+  const dayEnd = new Date(filters.startTime);
+  dayEnd.setHours(23, 59, 59, 999);
+
+  // Get bookings that overlap the day
+  query.$or = [
+    {
+      startTime: { $lte: dayEnd },
+      endTime: { $gte: dayStart },
+    },
+  ];
+}
+
+
+
+    // Example filter: get bookings between two dates
+// const startFilter = new Date("2025-10-29T15:30:00.000Z");
+// const endFilter = new Date("2025-10-29T17:00:00.000Z");
+
+// const bookings = await Booking.find({
+//   startTime: { $gte: startFilter },  // startTime >= startFilter
+//   endTime: { $lte: endFilter }       // endTime <= endFilter
+// })
+// .populate("userId", "name email role")
+// .populate("roomId", "name capacity equipment")
+// .sort({ startTime: 1 })  // ascending order
+// .lean(); // return plain JS objects
+
+// console.log(bookings);
+
 
   // Pagination setup
   const page = parseInt(filters.page || "1", 10); // default page = 1
@@ -139,22 +162,44 @@ export async function getAllBookings(
   //eg, if you are on page 3 it will show only 20-30(technically it is skipping the first 20 record acc to page number)
 
   // Sorting setup
-  // const sortBy = filters.sortBy || "startTime"; // default sort by booking start time
-  // const sortOrder = filters.sortOrder === "desc" ? -1 : 1; // default ascending
+  const sortBy = filters.sortBy || "startTime"; // default sort by booking start time
+  const sortOrder = filters.sortOrder === "desc" ? -1 : 1; // default ascending
 
   // 🔹 Get total count (for frontend pagination info)
   // const total = await Booking.countDocuments(query);
 
-  // // 🔹 Fetch bookings
-  // const data = await Booking.find(query)
-  //   .populate("userId", "name email role") // populate employee basic info
-  //   .populate("roomId", "name capacity equipment") // populate room details
-  //   .sort({ [sortBy]: sortOrder })
-  //   .skip(skip)
-  //   .limit(limit);
+  // Fetch bookings with populate
+  const rawData = await Booking.find(query)
+    .populate("userId", "name email role") 
+    .populate("roomId", "name capacity equipment")
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
+    .limit(limit)
+    .lean(); // lean() = plain JS objects instead of Mongoose docs
 
-  const data=await Booking.find(query);
+  // 🔹 Transform to match Flutter Booking model
+  // Transform to Flutter-compatible format
+  const data = rawData.map((b: any) => ({
+    _id: b._id.toString(),
+    roomId: b.roomId?._id?.toString() ?? "",   // ensures string
+    userId: b.userId?._id?.toString() ?? "",   // ensures string
+    title: b.title ?? "",
+    startTime: b.startTime,
+    endTime: b.endTime,
+    status: b.status ?? "confirmed",
+    attendees: b.attendees?.map((a: any) => ({
+      name: a.name,
+      email: a.email,
+    })) ?? [],
+    createdAt: b.createdAt,
+    updatedAt: b.updatedAt,
+  }));
 
-  return { data};
+//   console.log(data);
+// console.log("hello")
+//   console.log(filters);
+
+  return { data };
 }
+
 
