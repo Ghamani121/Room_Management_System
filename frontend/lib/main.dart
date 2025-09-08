@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/bookings/views/display_bookings.view.dart';
+import 'package:rms/features/users/views/display_users.view.dart';
 import 'features/rooms/views/register_room.view.dart';
 import 'features/bookings/views/book_room.view.dart';
 import 'features/auth/views/login.view.dart';
 import 'config.service.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
+import 'package:rms/features/users/views/create_user.view.dart';
 
 
 // entry point of flutter application
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
             home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
           return auth.isLoggedIn
-              ? const DisplayBookingsView()
+              ? const DisplayUsersView()
               : const LoginView();
         },
       ),
