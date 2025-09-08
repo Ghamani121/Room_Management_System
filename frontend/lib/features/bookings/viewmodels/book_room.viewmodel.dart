@@ -73,24 +73,6 @@ class BookRoomViewModel extends ChangeNotifier {
     }
   }
 
-  /// Reset form state
-  // void resetForm() {
-  //   selectedRoom = null;
-  //   titleController.clear();
-  //   startTime = null;
-  //   endTime = null;
-  //   attendees.clear();
-  //   attendeeNameController.clear();
-  //   attendeeEmailController.clear();
-
-  //   roomError = null;
-  //   titleError = null;
-  //   timeError = null;
-  //   attendeeError = null;
-
-  //   notifyListeners();
-  // }
-
   /// Add attendee
   void addAttendee() {
     final name = attendeeNameController.text.trim();

@@ -65,6 +65,7 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
               iconTheme: const IconThemeData(color: Colors.white),
             ),
             child: PopupMenuButton<String>(
+              color: Colors.white,
               icon: const Icon(Icons.swap_vert, color: Colors.white),
               onSelected: (value) {
                 setState(() => _isLoading = true);
@@ -96,6 +97,7 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
               iconTheme: const IconThemeData(color: Colors.white),
             ),
             child: PopupMenuButton<String>(
+              color: Colors.white,
               icon: const Icon(Icons.tune, color: Colors.white, size: 28),
               onSelected: (value) async {
                 if (value == "date") {

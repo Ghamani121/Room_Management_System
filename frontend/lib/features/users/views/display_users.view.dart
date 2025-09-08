@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:rms/features/rooms/viewmodels/display_rooms.viewmodel.dart';
-import 'package:rms/features/rooms/rooms.model.dart';
+import 'package:rms/features/users/viewmodels/display_users.viewmodel.dart';
+import 'package:rms/features/users/users.model.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
-import 'package:intl/intl.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-
-class DisplayRoomView extends StatefulWidget {
-  const DisplayRoomView({super.key});
+class DisplayUsersView extends StatefulWidget {
+  const DisplayUsersView({super.key});
 
   @override
-  State<DisplayRoomView> createState() => _DisplayRoomViewState();
+  State<DisplayUsersView> createState() => _DisplayUsersViewState();
 }
 
-class _DisplayRoomViewState extends State<DisplayRoomView> {
-  final viewModel = DisplayRoomsViewModel();
-  List<Room> _rooms = [];
+class _DisplayUsersViewState extends State<DisplayUsersView> {
+  DisplayUsersViewModel viewModel = DisplayUsersViewModel();
+
+  List<User> _users = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadRooms();
+    _loadUsers();
   }
 
-  void _loadRooms() async {
+  void _loadUsers() async {
     try {
-      List<Room> rooms = await viewModel.fetchRooms(context);
+      List<User> users = await viewModel.fetchUsers(context);
       setState(() {
-        _rooms = rooms;
+        _users = users;
         _isLoading = false;
       });
     } catch (e) {
-      print("Error fetching rooms: $e");
+      print("Error fetching users: $e");
       setState(() => _isLoading = false);
     }
   }
@@ -46,7 +46,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "Room Details",
+          "Dashboard",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
         ),
         backgroundColor: const Color(0xFFC60210),
         actions: [
-          // // 🔹 Sort
+          // 🔹 Sort
           // Theme(
           //   data: Theme.of(context).copyWith(
           //     cardColor: Colors.white, // dropdown background
@@ -65,14 +65,15 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
           //     iconTheme: const IconThemeData(color: Colors.white),
           //   ),
           //   child: PopupMenuButton<String>(
+          //     color: Colors.white,
           //     icon: const Icon(Icons.swap_vert, color: Colors.white),
           //     onSelected: (value) {
           //       setState(() => _isLoading = true);
           //       viewModel
-          //           .fetchRooms(context, sortBy: value, sortOrder: "asc")
-          //           .then((rooms) {
+          //           .fetchUsers(context, sortBy: value, sortOrder: "asc")
+          //           .then((users) {
           //             setState(() {
-          //               _rooms = rooms;
+          //               _users = users;
           //               _isLoading = false;
           //             });
           //           });
@@ -84,6 +85,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
           //             value: "startTime",
           //             child: Text("Start Time"),
           //           ),
+                    
           //         ],
           //   ),
           // ),
@@ -98,6 +100,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
           //     iconTheme: const IconThemeData(color: Colors.white),
           //   ),
           //   child: PopupMenuButton<String>(
+          //     color: Colors.white,
           //     icon: const Icon(Icons.tune, color: Colors.white, size: 28),
           //     onSelected: (value) async {
           //       if (value == "date") {
@@ -109,14 +112,14 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
           //         if (picked != null) {
           //           setState(() => _isLoading = true);
           //           viewModel
-          //               .fetchRooms(
+          //               .fetchUsers(
           //                 context,
           //                 startTime: picked.start.toIso8601String(),
           //                 endTime: picked.end.toIso8601String(),
           //               )
-          //               .then((rooms) {
+          //               .then((users) {
           //                 setState(() {
-          //                   _rooms = rooms;
+          //                   _users = users;
           //                   _isLoading = false;
           //                 });
           //               });
@@ -143,23 +146,23 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
         child:
             _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : _rooms.isEmpty
-                ? const Center(child: Text("No rooms available"))
+                : _users.isEmpty
+                ? const Center(child: Text("No users available"))
                 : ListView.builder(
                   padding: const EdgeInsets.all(20.0),
-                  itemCount: _rooms.length,
+                  itemCount: _users.length,
                   itemBuilder: (context, index) {
-                    final room = _rooms[index];
+                    final user = _users[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => RoomDetailsView(room: room),
+                            builder: (_) => UserDetailsView(user: user),
                           ),
                         );
                       },
-                      child: RoomCard(room: room),
+                      child: UserCard(user: user),
                     );
                   },
                 ),
@@ -187,7 +190,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
               context,
               MaterialPageRoute(builder: (context) => const RegisterRoomView()),
             );
-            if (result != null) _loadRooms();
+            if (result != null) _loadUsers();
           },
         ),
         // ✅ Create User
@@ -200,7 +203,7 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
               context,
               MaterialPageRoute(builder: (context) => const CreateUserView()),
             );
-            if (result != null) _loadRooms();
+            if (result != null) _loadUsers();
           },
         ),
       ],
@@ -208,9 +211,9 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
   }
 }
 
-class RoomCard extends StatelessWidget {
-  final Room room;
-  const RoomCard({super.key, required this.room});
+class UserCard extends StatelessWidget {
+  final User user;
+  const UserCard({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -220,17 +223,17 @@ class RoomCard extends StatelessWidget {
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
-        title: Text(room.name ?? "Untitled Room"),
-        subtitle: Text("Capacity: ${room.capacity}"),
+        title: Text(user.name),
+        subtitle: Text("Email: ${user.email}"),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       ),
     );
   }
 }
 
-class RoomDetailsView extends StatelessWidget {
-  final Room room;
-  const RoomDetailsView({super.key, required this.room});
+class UserDetailsView extends StatelessWidget {
+  final User user;
+  const UserDetailsView({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +242,7 @@ class RoomDetailsView extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "Room Details",
+          "User Details",
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -266,22 +269,29 @@ class RoomDetailsView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _detailRow(Icons.meeting_room, "Room ID", room.id ?? "-"),
-                      _detailRow(Icons.title, "Title", room.name ?? "-"),
-                      _detailRow(Icons.reduce_capacity, "Capacity", room.capacity.toString()?? "-" ),
-                      _detailRow(Icons.group, "Equipment", room.equipment?.join(", ") ?? "None"),
+                      _detailRow(
+                        Icons.confirmation_number,
+                        "User ID",
+                        user.id ?? "-",
+                      ),
+                      _detailRow(Icons.title, "Email", user.email ?? "-"),
+                      _detailRow(
+                        Icons.signal_wifi_statusbar_null_outlined,
+                        "Role",
+                        user.role,
+                      ),
                       _detailRow(
                         Icons.calendar_today,
                         "Created At",
-                        room.createdAt != null
-                            ? formatter.format(room.createdAt!)
+                        user.createdAt != null
+                            ? formatter.format(user.createdAt!)
                             : "-",
                       ),
                       _detailRow(
                         Icons.update,
                         "Updated At",
-                        room.updatedAt != null
-                            ? formatter.format(room.updatedAt!)
+                        user.updatedAt != null
+                            ? formatter.format(user.updatedAt!)
                             : "-",
                       ),
                     ],

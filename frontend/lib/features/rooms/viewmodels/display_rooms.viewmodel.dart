@@ -12,9 +12,8 @@ class DisplayRoomsViewModel {
 
     final auth = Provider.of<AuthProvider>(context, listen: false);
     final token = auth.authData?.token ?? "";
-
-
     final data = await _service.getRooms(token);
-    return data.map<Room>((json) => Room.fromJson(json)).toList();
+
+    return data;
   }
 }
