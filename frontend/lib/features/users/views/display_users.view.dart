@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
+import 'package:rms/main.dart';
 import 'package:rms/utils/bottom_nav_bar.util.dart';
 
 class DisplayUsersView extends StatefulWidget {
@@ -17,8 +18,6 @@ class DisplayUsersView extends StatefulWidget {
 }
 
 class _DisplayUsersViewState extends State<DisplayUsersView> {
-
-
   DisplayUsersViewModel viewModel = DisplayUsersViewModel();
   List<User> _users = [];
   bool _isLoading = true;
@@ -89,7 +88,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
           //             value: "startTime",
           //             child: Text("Start Time"),
           //           ),
-                    
+
           //         ],
           //   ),
           // ),
@@ -142,6 +141,10 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               Provider.of<AuthProvider>(context, listen: false).logout();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const MyApp()),
+                (route) => false,
+              );
             },
           ),
         ],
@@ -173,8 +176,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
       ),
       floatingActionButton: _buildAddItems(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavBar(currentIndex: 1,context: context ),
-
+      bottomNavigationBar: BottomNavBar(currentIndex: 1, context: context),
     );
   }
 
@@ -216,7 +218,6 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
       ],
     );
   }
-
 }
 
 class UserCard extends StatelessWidget {

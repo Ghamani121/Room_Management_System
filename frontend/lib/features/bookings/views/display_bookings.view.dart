@@ -173,19 +173,19 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
       spacing: 12,
       spaceBetweenChildren: 8,
       children: [
-        // ✅ Create Room
-        SpeedDialChild(
-          child: const Icon(Icons.meeting_room, color: Colors.white),
-          backgroundColor: Colors.blue,
-          label: 'Create Room',
-          onTap: () async {
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const RegisterRoomView()),
-            );
-            if (result != null) _loadBookings();
-          },
-        ),
+      //   // ✅ Create Room
+      //   SpeedDialChild(
+      //     child: const Icon(Icons.meeting_room, color: Colors.white),
+      //     backgroundColor: Colors.blue,
+      //     label: 'Create Room',
+      //     onTap: () async {
+      //       final result = await Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => const RegisterRoomView()),
+      //       );
+      //       if (result != null) _loadBookings();
+      //     },
+      //   ),
         // ✅ Create Booking
         SpeedDialChild(
           child: const Icon(Icons.event, color: Colors.white),

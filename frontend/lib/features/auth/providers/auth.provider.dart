@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import '../login.model.dart';
 import 'package:rms/features/auth/services/login.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 
 class AuthProvider extends ChangeNotifier {
   final LoginService _service = LoginService();
 
   Welcome? _authData;
-  Welcome? get authData => _authData;
 
+  Welcome? get authData => _authData;
+  String? get role => _authData?.user?.role;
   bool get isLoggedIn => _authData != null;
 
   AuthProvider() {
@@ -19,9 +22,13 @@ class AuthProvider extends ChangeNotifier {
   Future<void> _loadTokenOnStart() async {
     final prefs = await SharedPreferences.getInstance();
     final savedToken = prefs.getString('auth_token');
+    final savedUserJson = prefs.getString('auth_user');
 
-    if (savedToken != null && savedToken.isNotEmpty) {
-      _authData = Welcome(token: savedToken);
+    if (savedToken != null && savedToken.isNotEmpty && savedUserJson != null) {
+      _authData = Welcome(
+        token: savedToken,
+        user: User.fromJson(json.decode(savedUserJson)),
+      );
       notifyListeners();
     }
   }
@@ -33,13 +40,12 @@ class AuthProvider extends ChangeNotifier {
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth_token', result.token ?? "");
+      await prefs.setString('auth_user', json.encode(result.user?.toJson()));
 
       notifyListeners();
-      
-      return true;
 
-    } 
-    catch (e) {
+      return true;
+    } catch (e) {
       debugPrint("Auth login failed: $e");
       return false;
     }
@@ -50,6 +56,7 @@ class AuthProvider extends ChangeNotifier {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
+    await prefs.remove('auth_role');
 
     notifyListeners();
   }

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:rms/main.dart';
 import 'package:rms/utils/bottom_nav_bar.util.dart';
 
 class DisplayRoomView extends StatefulWidget {
@@ -135,6 +136,10 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               Provider.of<AuthProvider>(context, listen: false).logout();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const MyApp()),
+                (route) => false,
+              );
             },
           ),
         ],
