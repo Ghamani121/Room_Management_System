@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       // home: const DisplayBookingsView(),
       home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
-          return auth.isLoggedIn ? const DisplayRoomView() : const LoginView();
+          return auth.isLoggedIn ? const DisplayUsersView() : const LoginView();
         },
       ),
     );

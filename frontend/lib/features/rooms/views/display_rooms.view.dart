@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
+import 'package:rms/utils/bottom_nav_bar.util.dart';
 
 class DisplayRoomView extends StatefulWidget {
   const DisplayRoomView({super.key});
@@ -165,6 +165,8 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
                 ),
       ),
       floatingActionButton: _buildAddItems(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavBar(currentIndex: 0, context: context),
     );
   }
 
@@ -268,8 +270,16 @@ class RoomDetailsView extends StatelessWidget {
                     children: [
                       _detailRow(Icons.meeting_room, "Room ID", room.id ?? "-"),
                       _detailRow(Icons.title, "Title", room.name ?? "-"),
-                      _detailRow(Icons.reduce_capacity, "Capacity", room.capacity.toString()?? "-" ),
-                      _detailRow(Icons.group, "Equipment", room.equipment?.join(", ") ?? "None"),
+                      _detailRow(
+                        Icons.reduce_capacity,
+                        "Capacity",
+                        room.capacity.toString() ?? "-",
+                      ),
+                      _detailRow(
+                        Icons.group,
+                        "Equipment",
+                        room.equipment?.join(", ") ?? "None",
+                      ),
                       _detailRow(
                         Icons.calendar_today,
                         "Created At",

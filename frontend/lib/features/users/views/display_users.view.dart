@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
+import 'package:rms/utils/bottom_nav_bar.util.dart';
 
 class DisplayUsersView extends StatefulWidget {
   const DisplayUsersView({super.key});
@@ -16,10 +17,13 @@ class DisplayUsersView extends StatefulWidget {
 }
 
 class _DisplayUsersViewState extends State<DisplayUsersView> {
-  DisplayUsersViewModel viewModel = DisplayUsersViewModel();
 
+
+  DisplayUsersViewModel viewModel = DisplayUsersViewModel();
   List<User> _users = [];
   bool _isLoading = true;
+
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -46,7 +50,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "Dashboard",
+          "User Details",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -168,6 +172,9 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
                 ),
       ),
       floatingActionButton: _buildAddItems(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavBar(currentIndex: 1,context: context ),
+
     );
   }
 
@@ -209,6 +216,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
       ],
     );
   }
+
 }
 
 class UserCard extends StatelessWidget {
