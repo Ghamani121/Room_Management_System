@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/users/viewmodels/display_users.viewmodel.dart';
-import 'package:rms/features/bookings/views/book_room.view.dart';
 import 'package:rms/features/users/users.model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
+import 'package:rms/features/users/views/create_user.view.dart';
 
 class DisplayUsersView extends StatefulWidget {
   const DisplayUsersView({super.key});
@@ -56,74 +56,82 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
         backgroundColor: const Color(0xFFC60210),
         actions: [
           // 🔹 Sort
-          Theme(
-            data: Theme.of(context).copyWith(
-              cardColor: Colors.white, // dropdown background
-              textTheme: const TextTheme(
-                bodyMedium: TextStyle(color: Colors.black87),
-              ),
-              iconTheme: const IconThemeData(color: Colors.white),
-            ),
-            child: PopupMenuButton<String>(
-              icon: const Icon(Icons.swap_vert, color: Colors.white),
-              onSelected: (value) {
-                setState(() => _isLoading = true);
-                viewModel.fetchUsers(
-                  context,
-                  sortBy: value,
-                  sortOrder: "asc",
-                ).then((users) {
-                  setState(() {
-                    _users = users;
-                    _isLoading = false;
-                  });
-                });
-              },
-              itemBuilder: (context) => const [
-                PopupMenuItem(value: "title", child: Text("Title")),
-                PopupMenuItem(value: "startTime", child: Text("Start Time")),
-              ],
-            ),
-          ),
+          // Theme(
+          //   data: Theme.of(context).copyWith(
+          //     cardColor: Colors.white, // dropdown background
+          //     textTheme: const TextTheme(
+          //       bodyMedium: TextStyle(color: Colors.black87),
+          //     ),
+          //     iconTheme: const IconThemeData(color: Colors.white),
+          //   ),
+          //   child: PopupMenuButton<String>(
+          //     color: Colors.white,
+          //     icon: const Icon(Icons.swap_vert, color: Colors.white),
+          //     onSelected: (value) {
+          //       setState(() => _isLoading = true);
+          //       viewModel
+          //           .fetchUsers(context, sortBy: value, sortOrder: "asc")
+          //           .then((users) {
+          //             setState(() {
+          //               _users = users;
+          //               _isLoading = false;
+          //             });
+          //           });
+          //     },
+          //     itemBuilder:
+          //         (context) => const [
+          //           PopupMenuItem(value: "title", child: Text("Title")),
+          //           PopupMenuItem(
+          //             value: "startTime",
+          //             child: Text("Start Time"),
+          //           ),
+                    
+          //         ],
+          //   ),
+          // ),
 
-          // 🔹 Filter
-          Theme(
-            data: Theme.of(context).copyWith(
-              cardColor: Colors.white,
-              textTheme: const TextTheme(
-                bodyMedium: TextStyle(color: Colors.black87),
-              ),
-              iconTheme: const IconThemeData(color: Colors.white),
-            ),
-            child: PopupMenuButton<String>(
-              icon: const Icon(Icons.tune, color: Colors.white, size: 28),
-              onSelected: (value) async {
-                if (value == "date") {
-                  final picked = await showDateRangePicker(
-                    context: context,
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime(2030),
-                  );
-                  if (picked != null) {
-                    setState(() => _isLoading = true);
-                    viewModel.fetchUsers(
-                      context,
-                      startTime: picked.start.toIso8601String(),
-                      endTime: picked.end.toIso8601String(),
-                    ).then((users) {
-                      setState(() {
-                        _users = users;
-                        _isLoading = false;
-                      });
-                    });
-                  }
-                }
-              },
-              itemBuilder: (context) => const [
-                PopupMenuItem(value: "date", child: Text("Date Range")),
-              ],
-            ),
-          ),
+          // // 🔹 Filter
+          // Theme(
+          //   data: Theme.of(context).copyWith(
+          //     cardColor: Colors.white,
+          //     textTheme: const TextTheme(
+          //       bodyMedium: TextStyle(color: Colors.black87),
+          //     ),
+          //     iconTheme: const IconThemeData(color: Colors.white),
+          //   ),
+          //   child: PopupMenuButton<String>(
+          //     color: Colors.white,
+          //     icon: const Icon(Icons.tune, color: Colors.white, size: 28),
+          //     onSelected: (value) async {
+          //       if (value == "date") {
+          //         final picked = await showDateRangePicker(
+          //           context: context,
+          //           firstDate: DateTime(2020),
+          //           lastDate: DateTime(2030),
+          //         );
+          //         if (picked != null) {
+          //           setState(() => _isLoading = true);
+          //           viewModel
+          //               .fetchUsers(
+          //                 context,
+          //                 startTime: picked.start.toIso8601String(),
+          //                 endTime: picked.end.toIso8601String(),
+          //               )
+          //               .then((users) {
+          //                 setState(() {
+          //                   _users = users;
+          //                   _isLoading = false;
+          //                 });
+          //               });
+          //         }
+          //       }
+          //     },
+          //     itemBuilder:
+          //         (context) => const [
+          //           PopupMenuItem(value: "date", child: Text("Date Range")),
+          //         ],
+          //   ),
+          // ),
 
           // 🔹 Logout
           IconButton(
@@ -135,28 +143,29 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
         ],
       ),
       body: SafeArea(
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _users.isEmpty
+        child:
+            _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _users.isEmpty
                 ? const Center(child: Text("No users available"))
                 : ListView.builder(
-                    padding: const EdgeInsets.all(20.0),
-                    itemCount: _users.length,
-                    itemBuilder: (context, index) {
-                      final user = _users[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => UserDetailsView(user: user),
-                            ),
-                          );
-                        },
-                        child: UserCard(user: user),
-                      );
-                    },
-                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  itemCount: _users.length,
+                  itemBuilder: (context, index) {
+                    final user = _users[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => UserDetailsView(user: user),
+                          ),
+                        );
+                      },
+                      child: UserCard(user: user),
+                    );
+                  },
+                ),
       ),
       floatingActionButton: _buildAddItems(),
     );
@@ -192,7 +201,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
           onTap: () async {
             final result = await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const BookRoomView()),
+              MaterialPageRoute(builder: (context) => const CreateUserView()),
             );
             if (result != null) _loadUsers();
           },
@@ -233,7 +242,7 @@ class UserDetailsView extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "Meeting Details",
+          "User Details",
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -252,17 +261,39 @@ class UserDetailsView extends StatelessWidget {
               child: Card(
                 color: Colors.white,
                 elevation: 5,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _detailRow(Icons.confirmation_number, "User ID", user.id ?? "-"),
+                      _detailRow(
+                        Icons.confirmation_number,
+                        "User ID",
+                        user.id ?? "-",
+                      ),
                       _detailRow(Icons.title, "Email", user.email ?? "-"),
-                      _detailRow(Icons.signal_wifi_statusbar_null_outlined, "Role", user.role),
-                      _detailRow(Icons.calendar_today, "Created At", user.createdAt != null ? formatter.format(user.createdAt!) : "-"),
-                      _detailRow(Icons.update, "Updated At", user.updatedAt != null ? formatter.format(user.updatedAt!) : "-"),
+                      _detailRow(
+                        Icons.signal_wifi_statusbar_null_outlined,
+                        "Role",
+                        user.role,
+                      ),
+                      _detailRow(
+                        Icons.calendar_today,
+                        "Created At",
+                        user.createdAt != null
+                            ? formatter.format(user.createdAt!)
+                            : "-",
+                      ),
+                      _detailRow(
+                        Icons.update,
+                        "Updated At",
+                        user.updatedAt != null
+                            ? formatter.format(user.updatedAt!)
+                            : "-",
+                      ),
                     ],
                   ),
                 ),
@@ -286,9 +317,19 @@ class UserDetailsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87)),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(value, style: const TextStyle(fontSize: 15, color: Colors.black54)),
+                Text(
+                  value,
+                  style: const TextStyle(fontSize: 15, color: Colors.black54),
+                ),
               ],
             ),
           ),

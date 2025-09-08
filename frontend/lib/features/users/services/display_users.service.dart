@@ -8,24 +8,16 @@ class DisplayUsersService {
   final String baseUrl = "${ConfigService.baseUrl}/users/v1/users";
 
   Future<List<User>> getUsers(
-    String token,{  
-    String? sortBy,
-    String? sortOrder,
-    String? startTime,
-    String? endTime,
-    }
+    String token
   ) async {
 
     final queryParams = <String, String>{};
 
-    if (sortBy != null) queryParams['sortBy'] = sortBy;
-    if (sortOrder != null) queryParams['sortOrder'] = sortOrder;
-    if (startTime != null) queryParams['startTime'] = startTime;
-    if (endTime != null) queryParams['endTime'] = endTime;
-
     final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
-  print("\n\n\n\nFetching users from: $uri");
-  print("📦 Query Params: $queryParams");
+
+
+      print("\n\n\n\nFetching users from: $uri");
+      print("Query Params: $queryParams");
 
     final response = await http.get(
       uri,

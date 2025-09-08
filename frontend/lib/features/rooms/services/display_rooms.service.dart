@@ -7,7 +7,6 @@ class DisplayRoomsService {
   final String baseUrl = "${ConfigService.baseUrl}/rooms/v1/rooms";//changed from locat host so it can print on pc using 10.0.2.2
   
   Future<List<dynamic>> getRooms(String token) async {
-    print("hello");
     final response = await http.get(
       Uri.parse(baseUrl),
       headers: {
@@ -15,9 +14,6 @@ class DisplayRoomsService {
         "Authorization": "Bearer $token",
       },
     );
-    // print("Response status: ${response.statusCode}");
-    // print("Response body: ${response.body}");
-    // print("gekk");
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as List;
     } else {

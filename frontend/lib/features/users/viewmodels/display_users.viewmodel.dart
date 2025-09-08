@@ -22,11 +22,7 @@ class DisplayUsersViewModel {
     final token = auth.authData?.token ?? "";
 
     return await _service.getUsers(
-      token,
-      sortBy: sortBy,
-      sortOrder: sortOrder,
-      startTime: startTime,
-      endTime: endTime,
+      token
     );
   }
 }
