@@ -22,7 +22,7 @@ class BookingDetailsView extends StatelessWidget {
         title: const Text(
           "Meeting Details",
           style: TextStyle(
-            fontSize: 26,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
