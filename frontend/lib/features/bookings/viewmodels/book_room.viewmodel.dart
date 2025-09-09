@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
-import 'package:rms/features/bookings/bookings.model.dart';
+import 'package:rms/features/bookings/models/bookings.model.dart';
 import 'package:rms/features/bookings/services/book_room.service.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +37,7 @@ class BookRoomViewModel extends ChangeNotifier {
     final token = auth.authData?.token ?? "";
 
     final Map<String, String> roomMap = {
-      "Board Room": "68b96284de52982b994a724b", // put actual MongoDB ID here
+      "Board Room": "68baaa17f3c57cf3841ab985", // put actual MongoDB ID here
       "Conference Room":
           "68b81073797fd4e4212cc824", // put actual MongoDB ID here
     };

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rms/features/rooms/rooms.model.dart';
+import 'package:rms/features/rooms/models/rooms.model.dart';
 import 'package:rms/features/rooms/services/display_rooms.service.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 

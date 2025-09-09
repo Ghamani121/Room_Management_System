@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
-import 'package:rms/features/users/users.model.dart';
+import 'package:rms/features/users/models/users.model.dart';
 import 'package:rms/features/users/services/display_users.service.dart';
 import 'package:provider/provider.dart';
 

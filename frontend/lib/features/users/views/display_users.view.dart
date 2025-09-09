@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/users/viewmodels/display_users.viewmodel.dart';
-import 'package:rms/features/users/users.model.dart';
+import 'package:rms/features/users/models/users.model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

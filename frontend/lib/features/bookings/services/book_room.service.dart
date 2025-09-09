@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rms/features/bookings/bookings.model.dart';
+import 'package:rms/features/bookings/models/bookings.model.dart';
 import 'package:rms/config.service.dart';
 
 class BookingService {

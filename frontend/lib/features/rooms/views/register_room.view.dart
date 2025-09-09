@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../rooms.model.dart';
+import '../models/rooms.model.dart';
 import '../viewmodels/register_room.viewmodel.dart';
 
 class RegisterRoomView extends StatefulWidget {
