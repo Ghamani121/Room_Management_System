@@ -3,7 +3,6 @@ import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'package:rms/features/bookings/models/bookings.model.dart';
 import 'package:rms/features/bookings/services/display_bookings.service.dart';
 import 'package:provider/provider.dart';
-import 'package:rms/features/auth/providers/auth.provider.dart';
 
 class DisplayBookingsViewModel {
 
