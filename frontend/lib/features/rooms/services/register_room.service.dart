@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rms/features/rooms/rooms.model.dart';
+import 'package:rms/features/rooms/models/rooms.model.dart';
 import 'package:rms/config.service.dart';
 
 class RegisterRoomService {

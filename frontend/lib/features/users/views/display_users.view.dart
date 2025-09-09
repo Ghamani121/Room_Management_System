@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/users/viewmodels/display_users.viewmodel.dart';
-import 'package:rms/features/users/users.model.dart';
+import 'package:rms/features/users/models/users.model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
+import 'package:rms/main.dart';
+import 'package:rms/utils/bottom_nav_bar.util.dart';
 
 class DisplayUsersView extends StatefulWidget {
   const DisplayUsersView({super.key});
@@ -17,9 +19,10 @@ class DisplayUsersView extends StatefulWidget {
 
 class _DisplayUsersViewState extends State<DisplayUsersView> {
   DisplayUsersViewModel viewModel = DisplayUsersViewModel();
-
   List<User> _users = [];
   bool _isLoading = true;
+
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -46,7 +49,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "Dashboard",
+          "User Details",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -85,7 +88,7 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
           //             value: "startTime",
           //             child: Text("Start Time"),
           //           ),
-                    
+
           //         ],
           //   ),
           // ),
@@ -138,6 +141,10 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               Provider.of<AuthProvider>(context, listen: false).logout();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const MyApp()),
+                (route) => false,
+              );
             },
           ),
         ],
@@ -168,6 +175,8 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
                 ),
       ),
       floatingActionButton: _buildAddItems(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavBar(currentIndex: 1, context: context),
     );
   }
 

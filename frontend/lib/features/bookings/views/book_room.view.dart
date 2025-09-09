@@ -133,8 +133,8 @@ class _BookRoomViewState extends State<BookRoomView> {
           hint: const Text("Select Room"),
           dropdownColor: Colors.white,
           items: const [
-            DropdownMenuItem(value: "Board Room", child: Text("Bhishma")),
-            DropdownMenuItem(value: "Conference Room", child: Text("Ajeya")),
+            DropdownMenuItem(value: "Board Room", child: Text("Board Room")),
+            DropdownMenuItem(value: "Conference Room", child: Text("Conference Room")),
           ],
           onChanged: (value) => setState(() => viewModel.selectedRoom = value),
         ),

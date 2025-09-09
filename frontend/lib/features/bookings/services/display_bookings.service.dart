@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rms/config.service.dart';
-import 'package:rms/features/bookings/bookings.model.dart';
+import 'package:rms/features/bookings/models/bookings.model.dart';
 
 class DisplayBookingsService {
   

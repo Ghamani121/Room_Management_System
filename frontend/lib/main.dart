@@ -36,15 +36,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Room Management System',
       theme: ThemeData(primarySwatch: Colors.red),
-      // home: const RegisterRoomView(),
-      // home:const BookRoomView(),
-      // home:const BookRoomView(),
-      // home: const DisplayBookingsView(),
       home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
-          return auth.isLoggedIn ? const DisplayRoomView() : const LoginView();
+          if (!auth.isLoggedIn) return const LoginView();
+          // Decide based on role
+          return auth.authData?.user?.role == "admin"
+              ? const DisplayUsersView()
+              : const DisplayBookingsView();
         },
       ),
+
     );
   }
 }

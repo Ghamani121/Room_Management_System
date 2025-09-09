@@ -17,40 +17,38 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"] ?? "",
-        name: json["name"] ?? "",
-        email: json["email"] ?? "",
-        role: json["role"] ?? "",
-      );
+    id: json["id"] ?? "",
+    name: json["name"] ?? "",
+    email: json["email"] ?? "",
+    role: json["role"] ?? "",
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "email": email,
-        "role": role,
-      };
+    "id": id,
+    "name": name,
+    "email": email,
+    "role": role,
+  };
 }
 
 class Welcome {
   String? message;
   String token;
   User? user;
+  String? role;
 
-  Welcome({
-    this.message,
-    required this.token,
-    this.user,
-  });
+  Welcome({this.message, required this.token, this.user,this.role});
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-        message: json["message"] ?? "",
-        token: json["token"] ?? "",
-        user: User.fromJson(json["user"] ?? {}),
-      );
+    message: json["message"] ?? "",
+    token: json["token"] ?? "",
+    role: json['role'] ?? "",
+    user: User.fromJson(json["user"] ?? {}),
+  );
 
   Map<String, dynamic> toJson() => {
-        "message": message,
-        "token": token,
-        "user": user?.toJson(),
-      };
+    "message": message,
+    "token": token,
+    "user": user?.toJson(),
+  };
 }
