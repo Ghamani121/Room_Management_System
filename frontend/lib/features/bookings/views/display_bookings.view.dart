@@ -170,14 +170,18 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
                   itemBuilder: (context, index) {
                     final booking = _bookings[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (_) => BookingDetailsView(booking: booking),
-                          ),
-                        );
+                      onTap: () async{
+                        final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BookingDetailsView(booking: booking),
+                        ),
+                      );
+
+                      if (result == true) {
+                        // Booking was deleted, reload the list
+                        _loadBookings();
+                      }
                       },
                       child: BookingCard(booking: booking),
                     );

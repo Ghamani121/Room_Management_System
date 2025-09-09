@@ -1,18 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:rms/features/bookings/models/bookings.model.dart';
 import 'package:intl/intl.dart';
+import 'package:rms/features/bookings/viewmodels/booking_details.viewmodel.dart';
 
-class BookingDetailsView extends StatelessWidget {
+const Color primaryRed = Color(0xFFC60210);
+
+class BookingDetailsView extends StatefulWidget {
   final Booking booking;
-  final String? roomName; // Placeholder for room name
-
-  static const Color primaryRed = Color(0xFFC60210);
+  final String? roomName;
 
   const BookingDetailsView({
     super.key,
     required this.booking,
     this.roomName,
   });
+
+  @override
+  State<BookingDetailsView> createState() => _BookingDetailsViewState();
+}
+
+class _BookingDetailsViewState extends State<BookingDetailsView> {
+  late Booking booking;
+  String? roomName;
+  late BookingDetailsViewmodel viewmodel;
+
+  @override
+  void initState() {
+    super.initState();
+    booking = widget.booking;
+    roomName = widget.roomName;
+    viewmodel = BookingDetailsViewmodel();
+  }
+
+  Future<void> _cancelBooking() async {
+    try {
+      final success = await viewmodel.deleteBooking(context, booking.id ?? "");
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Booking cancelled successfully")),
+        );
+        Navigator.pop(context, true); // go back and refresh list
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to cancel booking: $e")),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +99,28 @@ class BookingDetailsView extends StatelessWidget {
                         AttendeesSection(attendees: booking.attendees!),
                       ],
                       const SizedBox(height: 30),
-                      const CancelButton(),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryRed,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 3,
+                          ),
+                          onPressed: _cancelBooking,
+                          child: const Text(
+                            "Cancel Meeting",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -104,7 +161,7 @@ class DateSection extends StatelessWidget {
     final DateFormat formatter = DateFormat('dd MMM yyyy');
     return Row(
       children: [
-        const Icon(Icons.calendar_today, color: BookingDetailsView.primaryRed),
+        const Icon(Icons.calendar_today, color: primaryRed),
         const SizedBox(width: 12),
         Text(
           date != null ? formatter.format(date!) : "-",
@@ -127,7 +184,7 @@ class TimeSection extends StatelessWidget {
     final DateFormat formatter = DateFormat('hh:mm a');
     return Row(
       children: [
-        const Icon(Icons.access_time, color: BookingDetailsView.primaryRed),
+        const Icon(Icons.access_time, color: primaryRed),
         const SizedBox(width: 12),
         Text(
           startTime != null && endTime != null
@@ -160,7 +217,7 @@ class RoomSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.meeting_room, color: BookingDetailsView.primaryRed),
+        const Icon(Icons.meeting_room, color: primaryRed),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -173,7 +230,6 @@ class RoomSection extends StatelessWidget {
   }
 }
 
-
 // Attendees Widget
 class AttendeesSection extends StatelessWidget {
   final List attendees;
@@ -184,7 +240,7 @@ class AttendeesSection extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Icon(Icons.group, color: BookingDetailsView.primaryRed),
+        const Icon(Icons.group, color: primaryRed),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -196,37 +252,3 @@ class AttendeesSection extends StatelessWidget {
     );
   }
 }
-
-// Cancel Button Widget
-class CancelButton extends StatelessWidget {
-  const CancelButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: BookingDetailsView.primaryRed,
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          elevation: 3,
-        ),
-        onPressed: () {
-          // Add cancel logic here
-        },
-        child: const Text(
-          "Cancel Meeting",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
