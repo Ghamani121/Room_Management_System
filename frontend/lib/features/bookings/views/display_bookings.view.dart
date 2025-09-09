@@ -21,6 +21,9 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
   List<Booking> _bookings = [];
   bool _isLoading = true;
 
+  //persist filters
+  
+
   @override
   void initState() {
     super.initState();
