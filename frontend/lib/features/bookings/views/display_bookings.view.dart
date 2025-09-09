@@ -3,10 +3,9 @@ import 'package:rms/features/bookings/viewmodels/display_bookings.viewmodel.dart
 import 'package:rms/features/bookings/views/book_room.view.dart';
 import 'package:rms/features/bookings/models/bookings.model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
-import 'package:rms/features/rooms/views/register_room.view.dart';
+import 'booking_details.view.dart';
 
 class DisplayBookingsView extends StatefulWidget {
   const DisplayBookingsView({super.key});
@@ -41,7 +40,7 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
         sortOrder: _sortOrder,
         startTime: _startTime,
         endTime: _endTime,
-        );
+      );
       setState(() {
         _bookings = bookings;
         _isLoading = false;
@@ -90,7 +89,10 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
               itemBuilder:
                   (context) => const [
                     PopupMenuItem(value: "title", child: Text("Title")),
-                    PopupMenuItem(value: "startTime",child: Text("Start Time"),),
+                    PopupMenuItem(
+                      value: "startTime",
+                      child: Text("Start Time"),
+                    ),
                   ],
             ),
           ),
@@ -128,22 +130,21 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
                             _isLoading = false;
                           });
                         });
-                      } 
-                }else if (value == "clear") {
-                    setState(() {
-                      _isLoading = true;
-                      _sortBy = null;
-                      _startTime = null;
-                      _endTime = null;
-                    });
-                    _loadBookings();
                   }
+                } else if (value == "clear") {
+                  setState(() {
+                    _isLoading = true;
+                    _sortBy = null;
+                    _startTime = null;
+                    _endTime = null;
+                  });
+                  _loadBookings();
+                }
               },
               itemBuilder:
                   (context) => const [
                     PopupMenuItem(value: "date", child: Text("Date Range")),
                     PopupMenuItem(value: "clear", child: Text("Clear Filters")),
-
                   ],
             ),
           ),
@@ -169,14 +170,18 @@ class _DisplayBookingsViewState extends State<DisplayBookingsView> {
                   itemBuilder: (context, index) {
                     final booking = _bookings[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (_) => BookingDetailsView(booking: booking),
-                          ),
-                        );
+                      onTap: () async{
+                        final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BookingDetailsView(booking: booking),
+                        ),
+                      );
+
+                      if (result == true) {
+                        // Booking was deleted, reload the list
+                        _loadBookings();
+                      }
                       },
                       child: BookingCard(booking: booking),
                     );
@@ -240,138 +245,8 @@ class BookingCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         title: Text(booking.title ?? "Untitled Booking"),
-        subtitle: Text("Room: ${booking.roomId}\nUser: ${booking.userId}"),
+        subtitle: Text("Room: ${booking.roomId} "),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      ),
-    );
-  }
-}
-
-class BookingDetailsView extends StatelessWidget {
-  final Booking booking;
-  const BookingDetailsView({super.key, required this.booking});
-
-  @override
-  Widget build(BuildContext context) {
-    final DateFormat formatter = DateFormat('dd MMM yyyy, hh:mm a');
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          "Meeting Details",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color(0xFFC60210),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Card(
-                color: Colors.white,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _detailRow(
-                        Icons.confirmation_number,
-                        "Booking ID",
-                        booking.id ?? "-",
-                      ),
-                      _detailRow(Icons.meeting_room, "Room ID", booking.roomId),
-                      _detailRow(
-                        Icons.person,
-                        "User ID",
-                        booking.userId ?? "-",
-                      ),
-                      _detailRow(Icons.title, "Title", booking.title ?? "-"),
-                      _detailRow(
-                        Icons.access_time,
-                        "Start Time",
-                        booking.startTime.toString(),
-                      ),
-                      _detailRow(
-                        Icons.access_time_filled,
-                        "End Time",
-                        booking.endTime.toString(),
-                      ),
-                      _detailRow(
-                        Icons.check_circle,
-                        "Status",
-                        booking.status ?? "-",
-                      ),
-                      _detailRow(
-                        Icons.group,
-                        "Attendees",
-                        booking.attendees?.map((a) => a.name).join(", ") ??
-                            "None",
-                      ),
-                      _detailRow(
-                        Icons.calendar_today,
-                        "Created At",
-                        booking.createdAt != null
-                            ? formatter.format(booking.createdAt!)
-                            : "-",
-                      ),
-                      _detailRow(
-                        Icons.update,
-                        "Updated At",
-                        booking.updatedAt != null
-                            ? formatter.format(booking.updatedAt!)
-                            : "-",
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _detailRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: const Color(0xFFC60210), size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(fontSize: 15, color: Colors.black54),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

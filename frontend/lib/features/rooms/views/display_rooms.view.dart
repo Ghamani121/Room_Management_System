@@ -3,12 +3,12 @@ import 'package:rms/features/rooms/viewmodels/display_rooms.viewmodel.dart';
 import 'package:rms/features/rooms/models/rooms.model.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
-import 'package:intl/intl.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:rms/main.dart';
 import 'package:rms/utils/bottom_nav_bar.util.dart';
+import 'room_details.view.dart';
 
 class DisplayRoomView extends StatefulWidget {
   const DisplayRoomView({super.key});
@@ -235,111 +235,3 @@ class RoomCard extends StatelessWidget {
   }
 }
 
-class RoomDetailsView extends StatelessWidget {
-  final Room room;
-  const RoomDetailsView({super.key, required this.room});
-
-  @override
-  Widget build(BuildContext context) {
-    final DateFormat formatter = DateFormat('dd MMM yyyy, hh:mm a');
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          "Room Details",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color(0xFFC60210),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Card(
-                color: Colors.white,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _detailRow(Icons.meeting_room, "Room ID", room.id ?? "-"),
-                      _detailRow(Icons.title, "Title", room.name ?? "-"),
-                      _detailRow(
-                        Icons.reduce_capacity,
-                        "Capacity",
-                        room.capacity.toString() ?? "-",
-                      ),
-                      _detailRow(
-                        Icons.group,
-                        "Equipment",
-                        room.equipment?.join(", ") ?? "None",
-                      ),
-                      _detailRow(
-                        Icons.calendar_today,
-                        "Created At",
-                        room.createdAt != null
-                            ? formatter.format(room.createdAt!)
-                            : "-",
-                      ),
-                      _detailRow(
-                        Icons.update,
-                        "Updated At",
-                        room.updatedAt != null
-                            ? formatter.format(room.updatedAt!)
-                            : "-",
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _detailRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: const Color(0xFFC60210), size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(fontSize: 15, color: Colors.black54),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

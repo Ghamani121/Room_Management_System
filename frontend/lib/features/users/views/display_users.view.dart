@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:rms/features/users/viewmodels/display_users.viewmodel.dart';
 import 'package:rms/features/users/models/users.model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'package:rms/features/rooms/views/register_room.view.dart';
 import 'package:rms/features/users/views/create_user.view.dart';
 import 'package:rms/main.dart';
 import 'package:rms/utils/bottom_nav_bar.util.dart';
+import 'user_details.view.dart';
 
 class DisplayUsersView extends StatefulWidget {
   const DisplayUsersView({super.key});
@@ -235,114 +235,6 @@ class UserCard extends StatelessWidget {
         title: Text(user.name),
         subtitle: Text("Email: ${user.email}"),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      ),
-    );
-  }
-}
-
-class UserDetailsView extends StatelessWidget {
-  final User user;
-  const UserDetailsView({super.key, required this.user});
-
-  @override
-  Widget build(BuildContext context) {
-    final DateFormat formatter = DateFormat('dd MMM yyyy, hh:mm a');
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          "User Details",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color(0xFFC60210),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Card(
-                color: Colors.white,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _detailRow(
-                        Icons.confirmation_number,
-                        "User ID",
-                        user.id ?? "-",
-                      ),
-                      _detailRow(Icons.title, "Email", user.email ?? "-"),
-                      _detailRow(
-                        Icons.signal_wifi_statusbar_null_outlined,
-                        "Role",
-                        user.role,
-                      ),
-                      _detailRow(
-                        Icons.calendar_today,
-                        "Created At",
-                        user.createdAt != null
-                            ? formatter.format(user.createdAt!)
-                            : "-",
-                      ),
-                      _detailRow(
-                        Icons.update,
-                        "Updated At",
-                        user.updatedAt != null
-                            ? formatter.format(user.updatedAt!)
-                            : "-",
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _detailRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: const Color(0xFFC60210), size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(fontSize: 15, color: Colors.black54),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
