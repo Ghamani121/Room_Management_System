@@ -5,7 +5,6 @@ import 'package:rms/features/auth/services/login.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-
 class AuthProvider extends ChangeNotifier {
   final LoginService _service = LoginService();
 
@@ -13,6 +12,7 @@ class AuthProvider extends ChangeNotifier {
 
   Welcome? get authData => _authData;
   String? get role => _authData?.user?.role;
+  String? get id => _authData?.user?.id;
   bool get isLoggedIn => _authData != null;
 
   AuthProvider() {
@@ -57,6 +57,7 @@ class AuthProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
     await prefs.remove('auth_role');
+    await prefs.remove('auth_id');
 
     notifyListeners();
   }

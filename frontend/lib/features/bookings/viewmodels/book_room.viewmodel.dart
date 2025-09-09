@@ -53,10 +53,12 @@ class BookRoomViewModel extends ChangeNotifier {
               .toList(),
     );
 
-    debugPrint("\n\n\nCreated booking: ${booking.roomId},${booking.title},${booking.startTime},${booking.endTime},${booking.attendees},");
-    
+    debugPrint(
+      "\n\n\nCreated booking: ${booking.roomId},${booking.title},${booking.startTime},${booking.endTime},${booking.attendees},",
+    );
+
     try {
-      final createdBooking = await _service.createBooking(booking,token);
+      final createdBooking = await _service.createBooking(booking, token);
 
       // show success snackbar
       ScaffoldMessenger.of(context).showSnackBar(

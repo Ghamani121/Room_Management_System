@@ -8,7 +8,9 @@ class DisplayBookingsService {
   final String baseUrl = "${ConfigService.baseUrl}/bookings/v1/bookings";
 
   Future<List<Booking>> getBookings(
-    String token,{  
+    String token,
+    String userId,
+    {  
     String? sortBy,
     String? sortOrder,
     String? startTime,
@@ -17,6 +19,7 @@ class DisplayBookingsService {
   ) async {
 
     final queryParams = <String, String>{};
+    queryParams['userId'] = userId;
 
     if (sortBy != null) queryParams['sortBy'] = sortBy;
     if (sortOrder != null) queryParams['sortOrder'] = sortOrder;
@@ -24,8 +27,9 @@ class DisplayBookingsService {
     if (endTime != null) queryParams['endTime'] = endTime;
 
     final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
-  print("\n\n\n\nFetching bookings from: $uri");
-  print("📦 Query Params: $queryParams");
+
+    print("\n\n\n\nFetching bookings from: $uri");
+    print("Query Params: $queryParams");
 
     final response = await http.get(
       uri,
@@ -45,7 +49,7 @@ class DisplayBookingsService {
               .map((e) => Booking.fromJson(e))
               .toList();
         }
-
+      
         // backend returns list
         if (decoded is List) {
           return decoded.map((e) => Booking.fromJson(e)).toList();

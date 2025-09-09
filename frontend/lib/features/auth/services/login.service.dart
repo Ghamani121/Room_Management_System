@@ -4,6 +4,7 @@ import 'package:rms/config.service.dart';
 import 'package:rms/features/auth/login.model.dart';
 
 class LoginService {
+  
   /// Replace with your auth token if needed
   final String? token;
 

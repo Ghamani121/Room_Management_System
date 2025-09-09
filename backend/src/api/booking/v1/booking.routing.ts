@@ -9,7 +9,7 @@ import { checkSelfandAdminAccess } from "../../../utils/selfandadminAccess";
 const router=Router();
 
 router.post('/booking', authenticateJWT, bookingValidation.validateCreateBooking ,bookingController.createbooking);
-router.get('/bookings', authenticateJWT,authorizeAdmin, bookingController.getAllBookings);
+router.get('/bookings', authenticateJWT, bookingController.getAllBookings);
 router.put('/:id',authenticateJWT, validateObjectId("id"), checkBookingUpdatePermission, bookingValidation.validateUpdateBooking,  bookingController.updatebookingById);
 router.delete('/:id', authenticateJWT,validateObjectId("id"), checkSelfandAdminAccess("booking"), bookingController.deletebookingById);
 
