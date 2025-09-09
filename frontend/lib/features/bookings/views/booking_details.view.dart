@@ -56,7 +56,7 @@ class BookingDetailsView extends StatelessWidget {
                         endTime: booking.endTime,
                       ),
                       const SizedBox(height: 16),
-                      RoomSection(roomName: roomName),
+                      RoomSection(roomId: booking.roomId),
                       if (booking.attendees != null &&
                           booking.attendees!.isNotEmpty) ...[
                         const SizedBox(height: 16),
@@ -142,8 +142,19 @@ class TimeSection extends StatelessWidget {
 
 // Room Widget
 class RoomSection extends StatelessWidget {
-  final String? roomName;
-  const RoomSection({super.key, this.roomName});
+  final String? roomId;
+  const RoomSection({super.key, this.roomId});
+
+  String _getRoomName(String? id) {
+    switch (id) {
+      case "68baaa17f3c57cf3841ab985":
+        return "Board Room";
+      case "68b81073797fd4e4212cc824":
+        return "Conference Room";
+      default:
+        return "Unknown Room";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +164,7 @@ class RoomSection extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: Text(
-            roomName ?? "Fetching room...",
+            _getRoomName(roomId),
             style: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
         ),
@@ -161,6 +172,7 @@ class RoomSection extends StatelessWidget {
     );
   }
 }
+
 
 // Attendees Widget
 class AttendeesSection extends StatelessWidget {
