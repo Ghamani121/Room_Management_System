@@ -161,17 +161,28 @@ class _DisplayUsersViewState extends State<DisplayUsersView> {
                   itemBuilder: (context, index) {
                     final user = _users[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => UserDetailsView(user: user),
                           ),
                         );
+
+                        if (result == true) {
+                          // Optimistic remove
+                          setState(() {
+                            _users.removeWhere((u) => u.id == user.id);
+                          });
+
+                          // Optional: refresh from backend to ensure consistency
+                          _loadUsers();
+                        }
                       },
                       child: UserCard(user: user),
                     );
                   },
+
                 ),
       ),
       floatingActionButton: _buildAddItems(),

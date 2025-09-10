@@ -1,13 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rms/features/users/models/users.model.dart';
-import 'package:rms/features/rooms/viewmodels/room_details.viewmodel.dart';
+import 'package:rms/features/users/viewmodels/user_details.viewmodel.dart';
 
-class UserDetailsView extends StatelessWidget {
+const Color primaryRed = Color(0xFFC60210);
+
+class UserDetailsView extends StatefulWidget {
   final User user;
-  static const Color primaryRed = Color(0xFFC60210);
 
   const UserDetailsView({super.key, required this.user});
+
+  @override
+  State<UserDetailsView> createState() => _UserDetailsViewState();
+}
+
+class _UserDetailsViewState extends State<UserDetailsView> {
+  late User user;
+  late UserDetailsViewmodel viewmodel;
+
+  
+  @override
+  void initState() {
+    super.initState();
+    user = widget.user;
+    viewmodel = UserDetailsViewmodel();
+  }
+
+  Future<void> _cancelUser() async {
+    try {
+      final success = await viewmodel.deleteUser(context, user.id ?? "");
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("User deleted successfully")),
+        );
+        Navigator.pop(context, true); // go back and refresh list
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to delete user: $e")),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +87,27 @@ class UserDetailsView extends StatelessWidget {
                       const SizedBox(height: 16),
                       UpdatedAtSection(date: user.updatedAt),
                       const SizedBox(height: 30),
-                      const RemoveUserButton(),
+                      Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryRed,
+                                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                elevation: 3,
+                              ),
+                              onPressed: _cancelUser,
+                              child: const Text(
+                                "Remove User",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
                     ],
                   ),
                 ),
@@ -92,7 +147,7 @@ class EmailSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.email, color: UserDetailsView.primaryRed),
+        const Icon(Icons.email, color: primaryRed),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -114,7 +169,7 @@ class RoleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.security, color: UserDetailsView.primaryRed),
+        const Icon(Icons.security, color: primaryRed),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -137,7 +192,7 @@ class CreatedAtSection extends StatelessWidget {
     final DateFormat formatter = DateFormat('dd MMM yyyy, hh:mm a');
     return Row(
       children: [
-        const Icon(Icons.calendar_today, color: UserDetailsView.primaryRed),
+        const Icon(Icons.calendar_today, color: primaryRed),
         const SizedBox(width: 12),
         Text(
           date != null ? formatter.format(date!) : "-",
@@ -158,45 +213,13 @@ class UpdatedAtSection extends StatelessWidget {
     final DateFormat formatter = DateFormat('dd MMM yyyy, hh:mm a');
     return Row(
       children: [
-        const Icon(Icons.update, color: UserDetailsView.primaryRed),
+        const Icon(Icons.update, color: primaryRed),
         const SizedBox(width: 12),
         Text(
           date != null ? formatter.format(date!) : "-",
           style: const TextStyle(fontSize: 16, color: Colors.black87),
         ),
       ],
-    );
-  }
-}
-
-/// Remove User Button
-class RemoveUserButton extends StatelessWidget {
-  const RemoveUserButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: UserDetailsView.primaryRed,
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          elevation: 3,
-        ),
-        onPressed: () {
-          // TODO: add remove user logic here
-        },
-        child: const Text(
-          "Remove User",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
     );
   }
 }
