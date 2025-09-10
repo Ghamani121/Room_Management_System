@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rms/config.service.dart';
 
-class BookingDetailsService {
-  Future<bool> deleteBooking(String token, String bookingId) async {
+class UserDetailsService {
+  Future<bool> deleteUser(String token, String userId) async {
     final url = Uri.parse(
-      "${ConfigService.baseUrl}/bookings/v1/$bookingId",
+      "${ConfigService.baseUrl}/users/v1/$userId",
     );
 
     debugPrint("$url");
@@ -21,7 +21,7 @@ class BookingDetailsService {
     if (response.statusCode == 204) {
       return true;
     } else {
-      throw Exception("Failed to delete booking: ${response.body}");
+      throw Exception("Failed to delete user: ${response.body}");
     }
   }
 }
