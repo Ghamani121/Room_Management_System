@@ -37,9 +37,9 @@ class BookRoomViewModel extends ChangeNotifier {
     final token = auth.authData?.token ?? "";
 
     final Map<String, String> roomMap = {
-      "Board Room": "68baaa17f3c57cf3841ab985", // put actual MongoDB ID here
+      "Board Room": "68c14c4ef7b6835c097f139e", // put actual MongoDB ID here
       "Conference Room":
-          "68b81073797fd4e4212cc824", // put actual MongoDB ID here
+          "68c14c66f7b6835c097f13a1", // put actual MongoDB ID here
     };
 
     final booking = Booking(
@@ -155,8 +155,7 @@ class BookRoomViewModel extends ChangeNotifier {
       0,
     );
 
-    if (startTime!.isBefore(startLimit))
-      return "Start time must be after 8:00 AM";
+    if (startTime!.isBefore(startLimit)) return "Start time must be after 8:00 AM";
     if (endTime!.isAfter(endLimit)) return "End time must be before 8:00 PM";
 
     final diffMinutes = endTime!.difference(startTime!).inMinutes;
