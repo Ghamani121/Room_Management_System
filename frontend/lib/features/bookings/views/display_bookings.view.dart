@@ -6,6 +6,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'package:rms/features/auth/providers/auth.provider.dart';
 import 'booking_details.view.dart';
+import 'package:intl/intl.dart';
+
 
 class DisplayBookingsView extends StatefulWidget {
   const DisplayBookingsView({super.key});
@@ -245,7 +247,10 @@ class BookingCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         title: Text(booking.title ?? "Untitled Booking"),
-        subtitle: Text("Room: ${booking.roomId} "),
+        subtitle: Text(
+  "Date: ${booking.startTime != null ? DateFormat('dd MMM yyyy').format(booking.startTime!) : '-'}",
+),
+
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       ),
     );
