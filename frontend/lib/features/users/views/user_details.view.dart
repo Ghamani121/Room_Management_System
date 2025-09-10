@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rms/features/users/models/users.model.dart';
+import 'package:rms/features/rooms/viewmodels/room_details.viewmodel.dart';
 
 class UserDetailsView extends StatelessWidget {
   final User user;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms/features/rooms/views/display_rooms.view.dart';
 import '../models/rooms.model.dart';
 import '../viewmodels/register_room.viewmodel.dart';
 
@@ -11,21 +12,8 @@ class RegisterRoomView extends StatefulWidget {
 
 class _RegisterRoomViewState extends State<RegisterRoomView> {
   final RegisterRoomViewModel vm = RegisterRoomViewModel();
-  final TextEditingController _equipmentController = TextEditingController();
+  
 
-  @override
-  void dispose() {
-    vm.capacityController.dispose();
-    _equipmentController.dispose();
-    super.dispose();
-  }
-
-  void _resetForm() {
-    setState(() {
-      vm.resetForm();
-      _equipmentController.clear();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +72,8 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
           hint: const Text("Select Room"),
           dropdownColor: Colors.white,
           items: const [
-            DropdownMenuItem(value: "Board Room", child: Text("Bhishma")),
-            DropdownMenuItem(value: "Conference Room", child: Text("Ajeya")),
+            DropdownMenuItem(value: "Board Room", child: Text("Board Room")),
+            DropdownMenuItem(value: "Conference Room", child: Text("Conference Room")),
           ],
           validator: vm.validateRoom,
           onChanged: (value) => setState(() => vm.setRoom(value)),
@@ -173,7 +161,7 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
         children: [
           Expanded(
             child: TextFormField(
-              controller: _equipmentController,
+              controller: vm.equipmentController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "Add equipment",
@@ -184,11 +172,11 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
           IconButton(
             icon: const Icon(Icons.add_circle_outline, color: Colors.green),
             onPressed: () {
-              final text = _equipmentController.text.trim();
+              final text = vm.equipmentController.text.trim();
               if (text.isNotEmpty) {
                 setState(() {
                   vm.addEquipment(text);
-                  _equipmentController.clear();
+                  vm.equipmentController.clear();
                 });
               }
             },
@@ -212,34 +200,38 @@ class _RegisterRoomViewState extends State<RegisterRoomView> {
           ),
         ),
         onPressed: () async {
-                if (!vm.validateForm()) return;
+          if (!vm.validateForm()) return;
 
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) => const Center(child: CircularProgressIndicator()),
-                );
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: CircularProgressIndicator()),
+          );
 
-                try {
-                  final createdRoom = await vm.createRoom(context);
+          try {
+            final createdRoom = await vm.createRoom(context);
 
-                  if (createdRoom != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Room created successfully!")),
-                    );
-                    _resetForm();
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Failed to create room: $e")),
-                  );
-                } finally {
-                  Navigator.of(context).pop(); // hide loading
-                }
-              },
-        child: const Text("Create Room",
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+            // close loader before navigation
+            Navigator.of(context, rootNavigator: true).pop();
+
+            if (createdRoom != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Room created successfully!")),
+              );
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const DisplayRoomView()),
+              );
+            }
+          } catch (e) {
+            Navigator.of(context, rootNavigator: true).pop(); // close loader
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Failed to create room: $e")),
+            );
+          }  
+        },
+        child: const Text(
+          "Create Room",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
     );
   }

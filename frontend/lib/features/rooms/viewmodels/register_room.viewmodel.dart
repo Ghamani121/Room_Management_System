@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 class RegisterRoomViewModel extends ChangeNotifier {
   // State
   String? selectedRoom;
-  int capacity = 0;
+  int capacity = 1;
   final List<String> equipment = [];
 
   final TextEditingController capacityController = TextEditingController();
-
   final RegisterRoomService _service = RegisterRoomService();
+  final TextEditingController equipmentController = TextEditingController();
 
   // Form key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -21,21 +21,22 @@ class RegisterRoomViewModel extends ChangeNotifier {
     capacityController.text = capacity.toString();
   }
 
-Future<Room?> createRoom(BuildContext context) async {
+  @override
+  void dispose() {
+    capacityController.dispose();
+    equipmentController.dispose();
+    super.dispose();
+  }
 
+  Future<Room?> createRoom(BuildContext context) async {
+    if (!validateForm()) return null;
 
-  if (!validateForm()) return null; 
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final token = auth.authData?.token ?? "";
+    final room = buildRoom();
 
-  final auth = Provider.of<AuthProvider>(context, listen: false);
-  final token = auth.authData?.token ?? "";
-
-  final room = buildRoom();
-
-  
-
-  try {
-    final createdRoom = await _service.createRoom(room,token);
-
+    try {
+      final createdRoom = await _service.createRoom(room, token);
     // Print created room data
     print("\n\nCreated Room Data:");
     print("Name: ${createdRoom.name}");
@@ -68,16 +69,18 @@ Future<Room?> createRoom(BuildContext context) async {
 
   // --- Capacity ---
   void increaseCapacity() {
-    if (capacity < 20) {
-      capacity++;
+    final parsed = int.tryParse(capacityController.text) ?? capacity;
+    if (parsed < 20) {
+      capacity = parsed + 1;
       capacityController.text = capacity.toString();
       notifyListeners();
     }
   }
 
   void decreaseCapacity() {
-    if (capacity > 1) {
-      capacity--;
+    final parsed = int.tryParse(capacityController.text) ?? capacity;
+    if (parsed > 1) {
+      capacity = parsed - 1;
       capacityController.text = capacity.toString();
       notifyListeners();
     }
@@ -106,8 +109,9 @@ Future<Room?> createRoom(BuildContext context) async {
 
   // --- Equipment ---
   void addEquipment(String item) {
-    if (item.trim().isNotEmpty) {
-      equipment.add(item.trim());
+    final trimmed = item.trim();
+    if (trimmed.isNotEmpty && !equipment.contains(trimmed)) {
+      equipment.add(trimmed);
       notifyListeners();
     }
   }
@@ -120,7 +124,7 @@ Future<Room?> createRoom(BuildContext context) async {
   // --- Build Room Object ---
   Room buildRoom() {
     return Room(
-      name: selectedRoom ?? "",
+      name: selectedRoom ?? "Unknown",
       capacity: capacity,
       equipment: equipment,
     );
@@ -129,14 +133,5 @@ Future<Room?> createRoom(BuildContext context) async {
   // --- Validation ---
   bool validateForm() {
     return formKey.currentState?.validate() ?? false;
-  }
-
-  // --- Reset ---
-  void resetForm() {
-    selectedRoom = null;
-    capacity = 0;
-    capacityController.clear();
-    equipment.clear();
-    notifyListeners();
   }
 }

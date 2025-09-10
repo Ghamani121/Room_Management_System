@@ -56,82 +56,6 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
         ),
         backgroundColor: const Color(0xFFC60210),
         actions: [
-          // // 🔹 Sort
-          // Theme(
-          //   data: Theme.of(context).copyWith(
-          //     cardColor: Colors.white, // dropdown background
-          //     textTheme: const TextTheme(
-          //       bodyMedium: TextStyle(color: Colors.black87),
-          //     ),
-          //     iconTheme: const IconThemeData(color: Colors.white),
-          //   ),
-          //   child: PopupMenuButton<String>(
-          //     icon: const Icon(Icons.swap_vert, color: Colors.white),
-          //     onSelected: (value) {
-          //       setState(() => _isLoading = true);
-          //       viewModel
-          //           .fetchRooms(context, sortBy: value, sortOrder: "asc")
-          //           .then((rooms) {
-          //             setState(() {
-          //               _rooms = rooms;
-          //               _isLoading = false;
-          //             });
-          //           });
-          //     },
-          //     itemBuilder:
-          //         (context) => const [
-          //           PopupMenuItem(value: "title", child: Text("Title")),
-          //           PopupMenuItem(
-          //             value: "startTime",
-          //             child: Text("Start Time"),
-          //           ),
-          //         ],
-          //   ),
-          // ),
-
-          // // 🔹 Filter
-          // Theme(
-          //   data: Theme.of(context).copyWith(
-          //     cardColor: Colors.white,
-          //     textTheme: const TextTheme(
-          //       bodyMedium: TextStyle(color: Colors.black87),
-          //     ),
-          //     iconTheme: const IconThemeData(color: Colors.white),
-          //   ),
-          //   child: PopupMenuButton<String>(
-          //     icon: const Icon(Icons.tune, color: Colors.white, size: 28),
-          //     onSelected: (value) async {
-          //       if (value == "date") {
-          //         final picked = await showDateRangePicker(
-          //           context: context,
-          //           firstDate: DateTime(2020),
-          //           lastDate: DateTime(2030),
-          //         );
-          //         if (picked != null) {
-          //           setState(() => _isLoading = true);
-          //           viewModel
-          //               .fetchRooms(
-          //                 context,
-          //                 startTime: picked.start.toIso8601String(),
-          //                 endTime: picked.end.toIso8601String(),
-          //               )
-          //               .then((rooms) {
-          //                 setState(() {
-          //                   _rooms = rooms;
-          //                   _isLoading = false;
-          //                 });
-          //               });
-          //         }
-          //       }
-          //     },
-          //     itemBuilder:
-          //         (context) => const [
-          //           PopupMenuItem(value: "date", child: Text("Date Range")),
-          //         ],
-          //   ),
-          // ),
-
-          // 🔹 Logout
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
@@ -156,13 +80,22 @@ class _DisplayRoomViewState extends State<DisplayRoomView> {
                   itemBuilder: (context, index) {
                     final room = _rooms[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => RoomDetailsView(room: room),
                           ),
                         );
+                        if (result == true) {
+                          // Optimistically remove the room from the list
+                          setState(() {
+                            _rooms.removeWhere((r) => r.id == room.id);
+                          });
+                          
+                          // Optional: refresh from backend to make sure list is synced
+                          _loadRooms();
+                        }
                       },
                       child: RoomCard(room: room),
                     );
@@ -234,4 +167,3 @@ class RoomCard extends StatelessWidget {
     );
   }
 }
-
