@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:rms/config.service.dart';
 
 class BookingDetailsService {
+
+
+
   Future<bool> deleteBooking(String token, String bookingId) async {
     final url = Uri.parse(
       "${ConfigService.baseUrl}/bookings/v1/$bookingId",
@@ -24,4 +27,10 @@ class BookingDetailsService {
       throw Exception("Failed to delete booking: ${response.body}");
     }
   }
+
+  // Future<Booking> updateBooking(String token,String bookingId) async{
+  //   final url=Uri.parse(
+  //     ""
+  //   )
+  // }c
 }
