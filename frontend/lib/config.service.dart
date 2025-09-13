@@ -1,4 +1,4 @@
 class ConfigService {
   // Hardcoded ngrok URL for testing
-  static String baseUrl = "https://64f455d99a14.ngrok-free.app/api";
+  static String baseUrl = "https://d5f75c77be32.ngrok-free.app/api";
 }
