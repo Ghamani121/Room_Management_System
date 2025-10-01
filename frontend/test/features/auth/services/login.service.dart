@@ -15,7 +15,7 @@ void main() {
 
         final body = jsonDecode(request.body) as Map<String, dynamic>;
         expect(body['email'], 'test@example.com');
-        expect(body['password'], 'password123');///
+        expect(body['password'], 'password123');
 
         final responseJson = {
           "message": "Login Successful",
