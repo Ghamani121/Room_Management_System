@@ -11,7 +11,7 @@ void main() {
     test('returns Welcome on 200 and sends correct body', () async {
       final mockClient = MockClient((http.Request request) async {
         expect(request.method, 'POST');
-        expect(request.url.path.endsWith('/auth/v1/login'), true);//////
+        expect(request.url.path.endsWith('/auth/v1/login'), true
 
         final body = jsonDecode(request.body) as Map<String, dynamic>;
         expect(body['email'], 'test@example.com');
